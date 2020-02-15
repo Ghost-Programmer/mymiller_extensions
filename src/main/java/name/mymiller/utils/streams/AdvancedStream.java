@@ -245,7 +245,7 @@ public class AdvancedStream<T> {
     }
 
     /**
-     * @param getDelegate() the delegate to set
+     * @param delegate the delegate to set
      */
     protected synchronized void setDelegate(Stream<T> delegate) {
         this.delegate = delegate;

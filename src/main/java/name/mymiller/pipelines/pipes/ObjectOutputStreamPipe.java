@@ -1,7 +1,7 @@
-package name.mymiller.utils.pipelines.pipes;
+package name.mymiller.pipelines.pipes;
 
-import name.mymiller.utils.pipelines.PipeFuture;
-import name.mymiller.utils.pipelines.PipeInterface;
+import name.mymiller.pipelines.PipeFuture;
+import name.mymiller.pipelines.PipeInterface;
 
 import java.io.ObjectOutputStream;
 import java.util.List;

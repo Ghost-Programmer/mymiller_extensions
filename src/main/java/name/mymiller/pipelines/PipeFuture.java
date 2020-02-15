@@ -1,7 +1,7 @@
 /**
  *
  */
-package name.mymiller.utils.pipelines;
+package name.mymiller.pipelines;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;

@@ -1,4 +1,4 @@
-package name.mymiller.utils.pipelines.switches;
+package name.mymiller.pipelines.switches;
 
 import java.util.function.Predicate;
 

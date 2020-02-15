@@ -1,7 +1,7 @@
 /**
  *
  */
-package name.mymiller.utils.pipelines;
+package name.mymiller.pipelines;
 
 /**
  * Interface that extends the PipeInterface to all for retrieving a collection.

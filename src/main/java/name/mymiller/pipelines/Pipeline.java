@@ -1,4 +1,4 @@
-package name.mymiller.utils.pipelines;
+package name.mymiller.pipelines;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -109,7 +109,7 @@ public class Pipeline<S, T> {
     /**
      * Create a Collector pipe segment by passing in the collector interface
      *
-     * @param Collector Pipe segment Collector Pipe that will be used.
+     * @param collector Pipe segment Collector Pipe that will be used.
      * @return Pipeline with the additional segment added.
      */
     @SuppressWarnings("unchecked")
@@ -471,7 +471,6 @@ public class Pipeline<S, T> {
         /**
          * Constructor to provide the Class it will act on, and the functional interface
          *
-         * @param type   Class it will accept.
          * @param action Functional interface to act on.
          */
         public ActionPipe(Function<? super A, ? extends B> action) {

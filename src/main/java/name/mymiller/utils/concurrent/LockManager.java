@@ -34,7 +34,7 @@ public class LockManager {
     /**
      * WeakHashMap to track the named Locks
      */
-    private static WeakHashMap<String, LockInterface> lockTable = new WeakHashMap<>();
+    private static final WeakHashMap<String, LockInterface> lockTable = new WeakHashMap<>();
 
     /**
      * Retrieve a named Lock. The Lock will be of type SyncLock unless created

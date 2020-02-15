@@ -38,7 +38,7 @@ public class HTMLEditorDisplay extends DisplayScreen {
     private HTMLEditor htmlEditor;
 
     /**
-     * @param displayName
+     * Default Constructor
      */
     public HTMLEditorDisplay() {
         super("HTML Editor");

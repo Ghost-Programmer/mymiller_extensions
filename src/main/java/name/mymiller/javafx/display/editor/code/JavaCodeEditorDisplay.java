@@ -48,7 +48,7 @@ public class JavaCodeEditorDisplay extends DisplayScreen {
             + "    stage.show();\n" + "  }\n" + "}";
 
     /**
-     * @param displayName
+     * Default Constructor
      */
     public JavaCodeEditorDisplay() {
         super("Java Code Editor");

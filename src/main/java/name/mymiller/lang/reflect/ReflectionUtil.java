@@ -135,7 +135,6 @@ public class ReflectionUtil {
      *
      * @param <T>     Type of Objects
      * @param <R>     Value type on objects
-     * @param source  Source
      * @param targetA First element
      * @param targetB Second element
      * @return boolean indicating if they are equals.
@@ -179,7 +178,7 @@ public class ReflectionUtil {
      * @param target      List to check
      * @param firstCheck  Value to to compare on the equals
      * @param first       Getter to check the value.
-     * @param secondCHeck Value to compare on the equals for the second check.
+     * @param secondCheck Value to compare on the equals for the second check.
      * @param second      Getter to check on the second value
      * @return boolean indicating value.
      */

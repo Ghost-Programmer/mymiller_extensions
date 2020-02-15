@@ -1,4 +1,4 @@
-package name.mymiller.utils.pipelines;
+package name.mymiller.pipelines;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface PipeInterface<S, T> {
      * @param data    Object being pushed to the pipe
      * @param futures list of futures associated with this data as possible
      *                terminate points.
-     * @param String  containing the name of this pipeline.
+     * @param pipelineName  containing the name of this pipeline.
      * @return Object after processing has occurred.
      * @throws Throwable TODO
      */

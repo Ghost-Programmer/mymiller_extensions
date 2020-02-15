@@ -1,4 +1,4 @@
-package name.mymiller.utils.pipelines;
+package name.mymiller.pipelines;
 
 import java.util.List;
 
