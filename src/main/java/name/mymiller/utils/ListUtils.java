@@ -1,5 +1,7 @@
 package name.mymiller.utils;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,5 +49,45 @@ public class ListUtils {
         final List<E> unionList = ListUtils.union(a, b);
         unionList.removeAll(ListUtils.intersection(a, b));
         return unionList.stream().distinct().collect(Collectors.toList());
+    }
+
+    /**
+     * Returns boolean indicating if the List is empty
+     * @param list List to check
+     * @param <E> List type
+     * @return boolean indicating if LIst is empty
+     */
+    public static <E> boolean isEmpty(@Nullable List<E> list) {
+        if (list != null) {
+            if (list.size() > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns boolean indicating if the List is not empty
+     * @param list List to check
+     * @param <E> List type
+     * @return boolean indicating if List is not empty
+     */
+    public static <E> boolean notEmpty(@Nullable List<E> list) {
+        return !ListUtils.isEmpty(list);
+    }
+
+    /**
+     * Returns the number of elements in the list.  Checks for Null.
+     * @param list List to check
+     * @param <E> List Type
+     * @return int indicating the number of elements in the list or 0 if null.
+     */
+    public static <E> int size(@Nullable List<E> list) {
+        if(list == null) {
+            return 0;
+        }
+
+        return list.size();
     }
 }
