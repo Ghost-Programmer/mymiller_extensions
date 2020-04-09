@@ -28,7 +28,7 @@ public class StringUtils extends ObjectUtils {
      * @param nullValue String to output if BigDecimal is null
      * @return String value of big
      */
-    static public String StringNotNull(BigDecimal big, String nullValue) {
+    static public String notNull(BigDecimal big, String nullValue) {
         if (big == null) {
             return nullValue;
         }
@@ -42,7 +42,7 @@ public class StringUtils extends ObjectUtils {
      * @param nullValue String to return if null
      * @return String to use for value.
      */
-    static public String StringNotNull(Long value, String nullValue) {
+    static public String notNull(Long value, String nullValue) {
         if (value == null) {
             return nullValue;
         }
@@ -56,7 +56,7 @@ public class StringUtils extends ObjectUtils {
      * @param nullValue String to return if null
      * @return String to use for value.
      */
-    static public String StringNotNull(String string, String nullValue) {
+    static public String notNull(String string, String nullValue) {
         if (string == null) {
             return nullValue;
         }

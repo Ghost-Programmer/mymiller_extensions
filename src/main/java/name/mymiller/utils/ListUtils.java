@@ -1,8 +1,7 @@
 package name.mymiller.utils;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +56,7 @@ public class ListUtils {
      * @param <E> List type
      * @return boolean indicating if LIst is empty
      */
-    public static <E> boolean isEmpty(@Nullable List<E> list) {
+    public static <E> boolean isEmpty( List<E> list) {
         if (list != null) {
             if (list.size() > 0) {
                 return false;
@@ -73,7 +72,7 @@ public class ListUtils {
      * @param <E> List type
      * @return boolean indicating if List is not empty
      */
-    public static <E> boolean notEmpty(@Nullable List<E> list) {
+    public static <E> boolean notEmpty( List<E> list) {
         return !ListUtils.isEmpty(list);
     }
 
@@ -83,11 +82,53 @@ public class ListUtils {
      * @param <E> List Type
      * @return int indicating the number of elements in the list or 0 if null.
      */
-    public static <E> int size(@Nullable List<E> list) {
+    public static <E> int size( List<E> list) {
         if(list == null) {
             return 0;
         }
 
         return list.size();
+    }
+
+    /**
+     *  Gurantees a list will be safe to use, even if null.
+     * @param list List to check if null
+     * @param <E> List Type
+     * @return List, or an empty list of E.
+     */
+    public static <E> List<E> safe( List<E> list) {
+        if(list != null) {
+            return list;
+        }
+
+        return Collections.emptyList();
+    }
+
+    /**
+     *  Performs pagination on the List,  returning the indicated page of elements, or an empty ist.
+     * @param list List to paginate
+     * @param pageSize Number of elements per page
+     * @param page The Page to return
+     * @param <E> Type of Elements
+     * @return Empty list if no matching page, or List containing the page's elements.
+     */
+    public static <E> List<E> page( List<E> list, int pageSize, int page) {
+        List<E> safe = ListUtils.safe(list);
+
+        if(pageSize > 0 && page >= 0 && safe.size() > 0) {
+            int startIndex = pageSize * (page - 1);
+            int endIndex = startIndex + pageSize;
+            if(startIndex > safe.size()) {
+                return Collections.EMPTY_LIST;
+            }
+
+            if(endIndex > safe.size()) {
+                endIndex = safe.size() - 1;
+            }
+
+            return safe.subList(startIndex,endIndex);
+        }
+
+        return Collections.EMPTY_LIST;
     }
 }
