@@ -16,8 +16,10 @@
 package name.mymiller.lang;
 
 import java.text.*;
-import java.time.Instant;
+import java.time.*;
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Advanced class that combines Date, Calendar, and SimpleDateformat into a
@@ -352,6 +354,44 @@ public class AdvancedCalendar {
 	public AdvancedCalendar(Date date, Locale aLocale) {
 		this.calendar = Calendar.getInstance(aLocale);
 		this.calendar.setTime(date);
+	}
+
+	/**
+	 * Constructs an AdvancedCalendar with a LocaleDate.
+	 * @param localDate LocaleDate containing the date to set;
+	 */
+	public AdvancedCalendar(LocalDate localDate) {
+		this.calendar = Calendar.getInstance();
+		this.calendar.set(localDate.getYear(),localDate.getMonthValue()-1,localDate.getDayOfMonth());
+	}
+
+	/**
+	 * Constructs an AdvancedCalendar with a LocaleDateTime
+	 * @param localDateTime
+	 */
+	public AdvancedCalendar(LocalDateTime localDateTime) {
+		this.calendar = Calendar.getInstance();
+		this.calendar.set(localDateTime.getYear(), localDateTime.getMonthValue()-1, localDateTime.getDayOfMonth(),
+				localDateTime.getHour(), localDateTime.getMinute(), localDateTime.getSecond());
+	}
+
+	/**
+	 * Construct an AdvancedCalendar with a LocalDate and LocalTime
+	 * @param localDate LocalDate containing the Date to set
+	 * @param localTime LocalTime containing the Time to set
+	 */
+	public AdvancedCalendar(LocalDate localDate, LocalTime localTime) {
+		this.calendar = Calendar.getInstance();
+		this.calendar.set(localDate.getYear(),localDate.getMonthValue(),localDate.getDayOfMonth(),
+				localTime.getHour(), localTime.getMinute(), localTime.getSecond());
+	}
+
+	/**
+	 * Constructo an AdvancedCalendar based on a ZonedDateTime
+	 * @param zonedDateTime ZonedDateTime containing the Date/Time to set.
+	 */
+	public AdvancedCalendar(ZonedDateTime zonedDateTime) {
+		this(zonedDateTime.toLocalDateTime());
 	}
 
 	/**
@@ -1523,5 +1563,186 @@ public class AdvancedCalendar {
 	@Override
 	public String toString() {
 		return this.format();
+	}
+
+	/**
+	 * Returns the last day of the month for the Current Advanced Calendar
+	 * @return AdvancedCalendar representing the last date of the month.
+	 */
+	public AdvancedCalendar getLastDateOfMonth(){
+		Calendar cal = (Calendar)this.calendar.clone();
+		cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+		return new AdvancedCalendar(cal.getTime().toInstant()
+				.atZone(ZoneId.systemDefault())
+				.toLocalDate());
+	}
+
+	/**
+	 * Returns the last day of the week for the Current Advanced Calendar
+	 * @param endDayOfWeek Integer representing the day of the week that should be ended on.
+	 * @return AdvancedCalendar representing the last date of the month.
+	 */
+	public AdvancedCalendar getLastDayOfWeek(int endDayOfWeek){
+		Calendar cal = (Calendar)this.calendar.clone();
+		cal.set(Calendar.DAY_OF_WEEK, endDayOfWeek);
+		return new AdvancedCalendar(cal.getTime().toInstant()
+				.atZone(ZoneId.systemDefault())
+				.toLocalDate());
+	}
+
+	/**
+	 * Determine if an AdvancedCalendar is after another AdcancedCalendar
+	 * @param calendar AdvancedCalendar to compare
+	 * @return boolean indicating if this AdvancedCalendar is after the the compare one.
+	 */
+	private boolean isAfter(AdvancedCalendar calendar) {
+		return this.getDate().after(calendar.getDate());
+	}
+
+	/**
+	 * Determine if an AdvancedCalendar is before another AdcancedCalendar
+	 * @param calendar AdvancedCalendar to compare
+	 * @return boolean indicating if this AdvancedCalendar is before the the compare one.
+	 */
+	private boolean isBefore(AdvancedCalendar calendar) {
+		return this.getDate().before(calendar.getDate());
+	}
+
+	/**
+	 *
+	 * @return AdvancedCalendar represented as a LocalDate
+	 */
+	public LocalDate toLocaleDate() {
+		return LocalDateTime.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId()).toLocalDate();
+	}
+
+	/**
+	 *
+	 * @return AdvancedCalendar represented as a LocalDateTime
+	 */
+	public LocalDateTime toLocaleDateTime() {
+		return LocalDateTime.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId());
+	}
+
+	/**
+	 *
+	 * @return AdvancedCalendar represented as a ZonedDateTime
+	 */
+	public ZonedDateTime toZonedDateTime() {
+		return ZonedDateTime.ofInstant(this.calendar.toInstant(), ZoneId.systemDefault());
+	}
+
+	/**
+	 * Apply a Function to Date Range of this AdvancedCalendar to end, by breaking the time period into months.
+	 * @param end AdvancedCalendar that is the end of the range.
+	 * @param function BiFunction<AdvancedCalendar,AdvancedCalendar,R> taking in a start and end AdvancedCalendar for the
+	 *                 begining of the month and end of month. R the return type from the BiFunction
+	 * @param <R> R the return type from the BiFunction
+	 * @return List<R> containing the results from the BiFunction
+	 */
+	public <R> List<R> applyByMonth(AdvancedCalendar end, BiFunction<AdvancedCalendar, AdvancedCalendar, R> function) {
+		ArrayList<R> results = new ArrayList<>();
+
+		LocalDate startDate = this.toLocaleDate();
+		LocalDate endDate = end.toLocaleDate();
+		int startYear = startDate.getYear();
+		int endYear = endDate.getYear();
+		int startMonth = startDate.getMonthValue();
+		int endMonth = endDate.getMonthValue();
+
+		boolean exitLoop = false;
+
+		for(int currentYear =  startYear; currentYear <= endYear; currentYear++) {
+			for(int currentMonth = startMonth; currentMonth <= 12 ; currentMonth++) {
+
+				AdvancedCalendar currentStartDateOfMonth = new AdvancedCalendar(LocalDate.of(currentYear,currentMonth,1));
+
+				if(currentYear == startYear && currentMonth == startMonth) {
+					currentStartDateOfMonth = this;
+				}
+
+				AdvancedCalendar lastDateOfCurrentMonth = currentStartDateOfMonth.getLastDateOfMonth();
+
+				if(currentYear == endYear && currentMonth == endMonth) {
+					lastDateOfCurrentMonth = end;
+					exitLoop = true;
+				}
+
+				results.add(function.apply(currentStartDateOfMonth,
+						lastDateOfCurrentMonth));
+
+				if(exitLoop) {
+					break;
+				}
+			}
+			if(exitLoop) {
+				break;
+			}
+		}
+
+		return results;
+	}
+
+	/**
+	 * Apply a Function to Date Range of this AdvancedCalendar to end, by breaking the time period into Weeks Sunday to Saturday.
+	 * @param end AdvancedCalendar that is the end of the range.
+	 * @param function BiFunction<AdvancedCalendar,AdvancedCalendar,R> taking in a start and end AdvancedCalendar for the
+	 *                 begining of the month and end of month. R the return type from the BiFunction
+	 * @param endDayOfWeek int representing the day to use as end of the week.
+	 * @param <R> R the return type from the BiFunction
+	 * @return List<R> containing the results from the BiFunction
+	 */
+	public <R> List<R> applyByWeek(AdvancedCalendar end,int endDayOfWeek, BiFunction<AdvancedCalendar, AdvancedCalendar, R> function) {
+		ArrayList<R> results = new ArrayList<>();
+		AdvancedCalendar currentStartDateOfWeek = this;
+		AdvancedCalendar lastDateOfCurrentWeek = this.getLastDayOfWeek(endDayOfWeek);
+		boolean exitLoop = false;
+
+		do {
+			if(lastDateOfCurrentWeek.isAfter(end)) {
+				lastDateOfCurrentWeek = end;
+				exitLoop = true;
+			}
+
+			if(!currentStartDateOfWeek.isAfter(end)) {
+				results.add(function.apply(currentStartDateOfWeek,
+						lastDateOfCurrentWeek));
+
+				currentStartDateOfWeek = lastDateOfCurrentWeek.add(AdvancedCalendar.DAY_OF_MONTH, 1);
+				lastDateOfCurrentWeek = currentStartDateOfWeek.getLastDateOfMonth();
+			} else {
+				exitLoop = true;
+			}
+
+		} while(!exitLoop);
+
+
+
+		return results;
+	}
+
+	/**
+	 * Apply a Function to Date Range of this AdvancedCalendar to end, by breaking the time period into Days
+	 * @param end AdvancedCalendar that is the end of the range.
+	 * @param function Function<AdvancedCalendar,R> taking in as the day. R the return type from the BiFunction
+	 * @param <R> R the return type from the BiFunction
+	 * @return List<R> containing the results from the BiFunction
+	 */
+	public <R> List<R> applyByDay(AdvancedCalendar end, Function< AdvancedCalendar, R> function) {
+		ArrayList<R> results = new ArrayList<>();
+		AdvancedCalendar currentStartDateOfMonth = this;
+		boolean exitLoop = false;
+
+		do {
+			results.add(function.apply(currentStartDateOfMonth));
+			currentStartDateOfMonth = currentStartDateOfMonth.add(AdvancedCalendar.DAY_OF_MONTH,1);
+
+			if(currentStartDateOfMonth.isAfter(end)){
+				exitLoop = true;
+			}
+
+		} while(!exitLoop);
+
+		return results;
 	}
 }
