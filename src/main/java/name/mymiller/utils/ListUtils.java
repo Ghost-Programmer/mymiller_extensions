@@ -3,6 +3,10 @@ package name.mymiller.utils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -130,5 +134,57 @@ public class ListUtils {
         }
 
         return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * Filter out elements based on Predicate. Simplified method to stream->filter.
+     * @param list List to filter
+     * @param predicate Predciate to indicate whether to remove of keep elements in the list
+     * @param <E> Type of Elements
+     * @return List containing the elements after the filter.
+     */
+    public static <E> List<E> filter( List<E> list, Predicate<E> predicate) {
+        return ListUtils.safe(list).parallelStream().filter(predicate).collect(Collectors.toList());
+    }
+
+    /**
+     * Sets a value on a field for all objects in a list.
+     * @param list List to set value on
+     * @param value Value to set
+     * @param setter Setter reference to set value on
+     * @param <E> Type of item in list
+     * @param <R> Type of Value to set
+     * @return List with value set or an empty list.
+     */
+    public static <E,R> List<E> setValue( List<E> list, R value, BiConsumer<E, R> setter) {
+        return ListUtils.safe(list).parallelStream().map(item -> {
+            setter.accept(item,value);
+
+            return item;
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns a list of values from the field of the list
+     * @param list List to retrieve values from
+     * @param getter Getter method to retrieve value
+     * @param <E> Type of object in LIst
+     * @param <R> Type of Value to get
+     * @return List of type R from all objects in list.
+     */
+    public static <E, R> List<R> getValue( List<E> list, Function<? super E,? extends R> getter) {
+        return ListUtils.safe(list).parallelStream().map(item -> getter.apply(item)).collect(Collectors.toList());
+    }
+
+    /**
+     * Convert a List to a map
+     * @param list List to convert to Map
+     * @param getter Getter to use to get Key
+     * @param <E> Type of Value
+     * @param <R> Type of Key
+     * @return Map of elements E, based on Key R.
+     */
+    public static <E, R> Map<R,E> toMap(List<E> list, Function<? super E,? extends R> getter) {
+        return ListUtils.safe(list).parallelStream().collect(Collectors.toMap(getter,Function.identity()));
     }
 }
