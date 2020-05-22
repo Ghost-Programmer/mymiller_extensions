@@ -811,17 +811,6 @@ public class AdvancedString extends HTMLEditorKit.ParserCallback implements Seri
     }
 
     /**
-     * Convert a string with Date/Time stamp to an AdvancedCalendar object.
-     *
-     * @param pattern String containing the Pattern to parse the dateTime
-     * @return AdvancedCalendar specifying the date.
-     * @throws ParseException Error parsing the string by the described pattern.
-     */
-    public AdvancedCalendar toAdvancedCalendar(String pattern) throws ParseException {
-        return AdvancedCalendar.parse(pattern, this.string);
-    }
-
-    /**
      * @return a newly allocated character array whose length is the length of this
      *         string and whose contents are initialized to contain the character
      *         sequence represented by this string.

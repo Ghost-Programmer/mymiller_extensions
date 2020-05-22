@@ -199,6 +199,8 @@ public class StringUtils extends ObjectUtils {
 
             return cleaned.toString();
         }
+
+        return string;
     }
 
     /**
