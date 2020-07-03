@@ -136,6 +136,13 @@ public class ListUtils {
         return Collections.EMPTY_LIST;
     }
 
+    public static <E> int pages(List<E> list, int pageSize) {
+        if(ListUtils.isEmpty(list)) {
+            return 0;
+        }
+        return (list.size() / pageSize) + 1;
+    }
+
     /**
      * Filter out elements based on Predicate. Simplified method to stream->filter.
      * @param list List to filter
