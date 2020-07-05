@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -121,5 +122,15 @@ public class CalUtils {
         } while (!exitLoop);
 
         return results;
+    }
+
+    public static boolean sameDay(Calendar dateA, Calendar dateB) {
+        if ((dateB != null) && (dateA != null) &&(dateA.get(Calendar.YEAR) == dateB.get(Calendar.YEAR))
+                && (dateA.get(Calendar.MONTH) == dateB.get(Calendar.MONTH))
+                && (dateA.get(Calendar.DAY_OF_MONTH) == dateB.get(Calendar.DAY_OF_MONTH)))
+        {
+            return true;
+        }
+        return false;
     }
 }

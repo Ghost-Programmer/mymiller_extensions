@@ -197,16 +197,18 @@ public class DisplayManager extends AbstractService implements SingletonInterfac
 
     @Override
     protected void stop(int delay) {
-        try {
-            for (final DisplayScreen screen : this.displayScreens) {
-                if (screen != null) {
-                    screen.stop();
+        Platform.runLater(() -> {
+            try {
+                for (final DisplayScreen screen : this.displayScreens) {
+                    if (screen != null) {
+                        screen.stop();
+                    }
                 }
+                Platform.exit();
+            } catch (final Exception e) {
+                LogManager.getLogger(DisplayManager.class).log(Level.SEVERE, "Failed to stop Display Manager", e);
             }
-            this.processingApplication.stop();
-        } catch (final Exception e) {
-            LogManager.getLogger(DisplayManager.class).log(Level.SEVERE, "Failed to stop Display Manager", e);
-        }
+        });
     }
 
     /**
