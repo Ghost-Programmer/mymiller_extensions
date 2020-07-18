@@ -248,30 +248,42 @@ public class AdvancedInetAddress {
      *
      * @return String containing the vendor name.
      */
-    @Deprecated
     public String getMacVendor() {
         if (this.vendorName == null) {
             this.vendorName = "";
             final String mac = this.getMacAddress();
 
             if ((mac != null) && (mac.length() > 8)) {
-                final String vendorID = this.getMacAddress().substring(0, 8).toUpperCase();
-
-                LogManager.getLogger(AdvancedInetAddress.class).log(Level.INFO, "Looking for Vendor ID: " + vendorID);
-
-                try {
-                    final URL url = new URL("http://api.macvendors.com/" + vendorID);
-                    final BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
-
-                    for (String line; (line = reader.readLine()) != null; ) {
-                        this.vendorName = line;
-                    }
-                } catch (final IOException e) {
-                    LogManager.getLogger(AdvancedInetAddress.class).log(Level.SEVERE, "Failed to Find MAC Address", e);
-                }
+                this.vendorName = lookupMacVendor(mac);
             }
         }
         return this.vendorName;
+    }
+
+    /**
+     * Method to lookup the vendor of a MAC Address
+     * @param mac String containg the MAC Address
+     * @return String containing the vendor name.
+     */
+    public static String lookupMacVendor(String mac) {
+        String vendorName = null;
+        if ((mac != null) && (mac.length() > 8)) {
+            final String vendorID = mac.substring(0, 8).toUpperCase();
+
+            LogManager.getLogger(AdvancedInetAddress.class).log(Level.INFO, "Looking for Vendor ID: " + vendorID);
+
+            try {
+                final URL url = new URL("http://api.macvendors.com/" + vendorID);
+                final BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
+
+                for (String line; (line = reader.readLine()) != null; ) {
+                    vendorName = line;
+                }
+            } catch (final IOException e) {
+                LogManager.getLogger(AdvancedInetAddress.class).log(Level.SEVERE, "Failed to Find MAC Address", e);
+            }
+        }
+        return vendorName;
     }
 
     /*
