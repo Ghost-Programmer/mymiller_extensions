@@ -18,7 +18,7 @@
  */
 package name.mymiller.io;
 
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -115,7 +115,7 @@ public class RandomLineFile {
             this.lastLinePosition = this.raf.getFilePointer();
             return this.raf.readLine();
         } catch (final IOException e) {
-            LogManager.getLogger(this.getClass()).log(Level.SEVERE, "Failed to read previous line", e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to read previous line", e);
         }
         return null;
     }

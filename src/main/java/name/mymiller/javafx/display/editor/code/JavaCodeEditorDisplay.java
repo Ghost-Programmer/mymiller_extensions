@@ -25,7 +25,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import name.mymiller.javafx.display.DisplayScreen;
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 /**
  * @author jmiller Java Code Editor Display for creating Java Code files.
@@ -56,7 +56,7 @@ public class JavaCodeEditorDisplay extends DisplayScreen {
 
     @Override
     protected void startDisplay(Stage stage, double height, double width) throws Exception {
-        LogManager.getLogger(JavaCodeEditorDisplay.class).info("Starting Display");
+        Logger.getLogger(JavaCodeEditorDisplay.class.getName()).info("Starting Display");
         // create the editing controls.
         final Label title = new Label("Editing: CodeEditor.java");
         title.setStyle("-fx-font-size: 20;");

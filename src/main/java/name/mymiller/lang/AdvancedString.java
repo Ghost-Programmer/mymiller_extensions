@@ -18,7 +18,7 @@
  */
 package name.mymiller.lang;
 
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
@@ -659,7 +659,7 @@ public class AdvancedString extends HTMLEditorKit.ParserCallback implements Seri
                 delegator.parse(in, this, Boolean.TRUE);
                 in.close();
             } catch (final IOException e) {
-                LogManager.getLogger(this.getClass()).log(Level.SEVERE, "Failed to remove HTML from: " + original, e);
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to remove HTML from: " + original, e);
             }
         }
     }

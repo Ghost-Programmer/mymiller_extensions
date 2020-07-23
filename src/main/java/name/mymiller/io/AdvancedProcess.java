@@ -15,7 +15,7 @@
  ******************************************************************************/
 package name.mymiller.io;
 
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -89,9 +89,9 @@ public class AdvancedProcess extends Thread {
                 this.setOutput(lines);
             }
         } catch (final InterruptedException e) {
-            LogManager.getLogger(this.getClass()).log(Level.SEVERE, "Advanced Process Interrupted", e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Advanced Process Interrupted", e);
         } catch (final IOException e) {
-            LogManager.getLogger(this.getClass()).log(Level.SEVERE, "Advanced Process I/O Exception", e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Advanced Process I/O Exception", e);
         }
     }
 }

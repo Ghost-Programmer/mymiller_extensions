@@ -22,7 +22,7 @@ import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 import name.mymiller.httpserver.HttpConstants;
 import name.mymiller.httpserver.HttpSystem;
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,12 +52,12 @@ public class CmdHandler extends AbstractContextHandler {
                         + "\nCurrent Task Count: " + HttpSystem.getInstance().getTaskCount()
                         + "\nCompleted Task Count: " + HttpSystem.getInstance().getCompletedTaskCount() + "\n";
 
-                LogManager.getLogger(this.getClass()).info("Response: " + responseBody);
+                Logger.getLogger(this.getClass().getName()).info("Response: " + responseBody);
 
                 this.sendResponse(exchange, HttpConstants.HTTP_OK_STATUS, responseBody);
                 break;
             default:
-                LogManager.getLogger(this.getClass()).severe("Unknown GET Command: " + pathInfo);
+                Logger.getLogger(this.getClass().getName()).severe("Unknown GET Command: " + pathInfo);
 
                 this.sendResponse(exchange, HttpConstants.HTTP_NOT_ACCEPTABLE_STATUS, CmdHandler.UNKOWN_COMMAND);
                 break;
@@ -71,7 +71,7 @@ public class CmdHandler extends AbstractContextHandler {
             case "/stop":
                 final String stopResponse = "Stopping Server on Port:"
                         + HttpSystem.getInstance().getAddress().getPort();
-                LogManager.getLogger(this.getClass()).info("Response: " + stopResponse);
+                Logger.getLogger(this.getClass().getName()).info("Response: " + stopResponse);
                 // Set the response header status and length
 
                 this.sendResponse(exchange, HttpConstants.HTTP_OK_STATUS, stopResponse);
@@ -81,14 +81,14 @@ public class CmdHandler extends AbstractContextHandler {
             case "/restart":
                 final String restartResponse = "Restarting Server on Port:"
                         + HttpSystem.getInstance().getAddress().getPort();
-                LogManager.getLogger(this.getClass()).info("Response: " + restartResponse);
+                Logger.getLogger(this.getClass().getName()).info("Response: " + restartResponse);
 
                 this.sendResponse(exchange, HttpConstants.HTTP_OK_STATUS, restartResponse);
 
                 HttpSystem.getInstance().setRestart(true);
                 break;
             default:
-                LogManager.getLogger(this.getClass()).severe("Unknown POST Command: " + pathInfo);
+                Logger.getLogger(this.getClass().getName()).severe("Unknown POST Command: " + pathInfo);
 
                 this.sendResponse(exchange, HttpConstants.HTTP_NOT_ACCEPTABLE_STATUS, CmdHandler.UNKOWN_COMMAND);
                 break;

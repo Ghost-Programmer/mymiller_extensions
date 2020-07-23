@@ -20,7 +20,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 import java.util.logging.Level;
 
@@ -153,10 +153,10 @@ public abstract class DisplayScreen extends Application implements Runnable {
         if (this.displayStage == null) {
             this.displayStage = new Stage();
             try {
-                LogManager.getLogger(DisplayScreen.class).info("Creating Display Stage");
+                Logger.getLogger(DisplayScreen.class.getName()).info("Creating Display Stage");
                 this.start(this.displayStage);
             } catch (final Exception e) {
-                LogManager.getLogger(DisplayScreen.class).log(Level.SEVERE, "Failed to open Display", e);
+                Logger.getLogger(DisplayScreen.class.getName()).log(Level.SEVERE, "Failed to open Display", e);
             }
         } else {
             this.show();
