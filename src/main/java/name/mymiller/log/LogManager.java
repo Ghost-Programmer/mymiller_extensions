@@ -39,6 +39,7 @@ public class LogManager {
 
     public static void setConfigURL(String configURL) {
         LogManager.configURL = configURL;
+        LogManager.setup();
     }
 
     /**
@@ -87,26 +88,25 @@ public class LogManager {
         final java.util.logging.LogManager logManager = java.util.logging.LogManager.getLogManager();
 
         try {
-            final URL configURL = Class.class.getClass().getResource(LogManager.getConfigURL());
-            if (configURL != null) {
-                try (InputStream is = configURL.openStream()) {
+
+            try (InputStream is = LogManager.class.getClassLoader().getResourceAsStream("log.properties")) {
+                if(is != null) {
                     logManager.readConfiguration(is);
+                    LogManager.setup = true;
+                }else {
+                    // Programmatic configuration
+                    System.setProperty("java.util.logging.SimpleFormatter.format",
+                            "%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS.%1$tL %4$-7s [%3$s] %5$s %6$s%n");
+
+                    final ConsoleHandler consoleHandler = new ConsoleHandler();
+                    consoleHandler.setLevel(Level.FINEST);
+                    consoleHandler.setFormatter(new SimpleFormatter());
+
+                    final Logger app = Logger.getLogger("app");
+                    app.setLevel(Level.FINEST);
+                    app.addHandler(consoleHandler);
                 }
-            } else {
-                // Programmatic configuration
-                System.setProperty("java.util.logging.SimpleFormatter.format",
-                        "%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS.%1$tL %4$-7s [%3$s] %5$s %6$s%n");
-
-                final ConsoleHandler consoleHandler = new ConsoleHandler();
-                consoleHandler.setLevel(Level.FINEST);
-                consoleHandler.setFormatter(new SimpleFormatter());
-
-                final Logger app = Logger.getLogger("app");
-                app.setLevel(Level.FINEST);
-                app.addHandler(consoleHandler);
             }
-
-            LogManager.setup = true;
         } catch (SecurityException | IOException e) {
             e.printStackTrace();
         }
