@@ -89,7 +89,7 @@ public class LogManager {
 
         try {
 
-            try (InputStream is = LogManager.class.getClassLoader().getResourceAsStream("log.properties")) {
+            try (InputStream is = LogManager.class.getClassLoader().getResourceAsStream(LogManager.getConfigURL())) {
                 if(is != null) {
                     logManager.readConfiguration(is);
                     LogManager.setup = true;
