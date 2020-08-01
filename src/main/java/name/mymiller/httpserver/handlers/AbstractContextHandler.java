@@ -18,13 +18,13 @@ package name.mymiller.httpserver.handlers;
 import com.sun.net.httpserver.HttpExchange;
 import name.mymiller.httpserver.HttpConstants;
 import name.mymiller.lang.AdvancedString;
-import name.mymiller.log.LogManager;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * @author jmiller Abstract class to build handlers for URI Requests coming into
@@ -183,7 +183,7 @@ public abstract class AbstractContextHandler implements ContextHandlerInterface 
 	 * @throws IOException Error responding to request
 	 */
 	private void sendBadRequest(final HttpExchange exchange) throws IOException {
-		LogManager.getLogger(this.getClass()).info("HTML found in PathInfo, rejecting");
+		Logger.getLogger(this.getClass().getName()).info("HTML found in PathInfo, rejecting");
 		exchange.sendResponseHeaders(HttpConstants.HTTP_BAD_REQUEST_STATUS, 0);
 		// Write the response string
 		final OutputStream os = exchange.getResponseBody();

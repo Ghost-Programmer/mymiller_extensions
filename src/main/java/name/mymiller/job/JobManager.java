@@ -16,7 +16,7 @@
 package name.mymiller.job;
 
 import name.mymiller.lang.singleton.SingletonInterface;
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,13 +55,13 @@ public class JobManager implements SingletonInterface<JobManager> {
 
         if (reserveProcessors >= processors) {
             processors = processorMultiplier;
-            LogManager.getLogger(this.getClass()).info("Job Manager Processors: " + processors);
-            LogManager.getLogger(this.getClass())
+            Logger.getLogger(this.getClass().getName()).info("Job Manager Processors: " + processors);
+            Logger.getLogger(this.getClass().getName())
                     .info("Job Manager Reserved Processors: " + (Runtime.getRuntime().availableProcessors() - 1));
         } else {
             processors = (processors - reserveProcessors) * processorMultiplier;
-            LogManager.getLogger(this.getClass()).info("Job Manager Processors: " + processors);
-            LogManager.getLogger(this.getClass()).info("Job Manager Reserved Processors: " + reserveProcessors);
+            Logger.getLogger(this.getClass().getName()).info("Job Manager Processors: " + processors);
+            Logger.getLogger(this.getClass().getName()).info("Job Manager Reserved Processors: " + reserveProcessors);
         }
 
         this.pool = Executors.newFixedThreadPool(processors);

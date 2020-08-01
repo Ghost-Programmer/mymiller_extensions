@@ -1,7 +1,7 @@
 package name.mymiller.utils;
 
 import name.mymiller.lang.AdvancedString;
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
@@ -194,7 +194,7 @@ public class StringUtils extends ObjectUtils {
                 delegator.parse(in, callback, Boolean.TRUE);
                 in.close();
             } catch (final IOException e) {
-                LogManager.getLogger(StringUtils.class).log(Level.SEVERE, "Failed to remove HTML from: " + original, e);
+                Logger.getLogger(StringUtils.class.getName()).log(Level.SEVERE, "Failed to remove HTML from: " + original, e);
             }
 
             return cleaned.toString();

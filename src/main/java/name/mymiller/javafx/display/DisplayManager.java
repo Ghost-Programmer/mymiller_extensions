@@ -21,7 +21,7 @@ import name.mymiller.job.AbstractService;
 import name.mymiller.job.JobManager;
 import name.mymiller.lang.singleton.Singleton;
 import name.mymiller.lang.singleton.SingletonInterface;
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 import java.util.logging.Level;
 
@@ -127,11 +127,11 @@ public class DisplayManager extends AbstractService implements SingletonInterfac
      * @param screen  Screen number to display on
      */
     public void display(DisplayScreen display, int screen) {
-        LogManager.getLogger(DisplayManager.class).info("Display: " + display + " Screen: " + screen);
+        Logger.getLogger(DisplayManager.class.getName()).info("Display: " + display + " Screen: " + screen);
         this.waitOnInited();
         this.displayScreens[screen] = display;
         if (display != null) {
-            LogManager.getLogger(DisplayManager.class).info("Running Display Later");
+            Logger.getLogger(DisplayManager.class.getName()).info("Running Display Later");
             this.displayScreens[screen].setDisplay(screen);
             Platform.runLater(display);
         }
@@ -190,7 +190,7 @@ public class DisplayManager extends AbstractService implements SingletonInterfac
 
     @Override
     public void start() {
-        LogManager.getLogger(DisplayManager.class).info("Starting Display Manager");
+        Logger.getLogger(DisplayManager.class.getName()).info("Starting Display Manager");
         this.setShutdown(false);
         JobManager.getInstance().createService("Display Manager", DisplayManager.getInstance());
     }
@@ -206,7 +206,7 @@ public class DisplayManager extends AbstractService implements SingletonInterfac
                 }
                 Platform.exit();
             } catch (final Exception e) {
-                LogManager.getLogger(DisplayManager.class).log(Level.SEVERE, "Failed to stop Display Manager", e);
+                Logger.getLogger(DisplayManager.class.getName()).log(Level.SEVERE, "Failed to stop Display Manager", e);
             }
         });
     }

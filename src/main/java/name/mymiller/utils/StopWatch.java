@@ -50,6 +50,14 @@ public class StopWatch {
         return formatDuration(Duration.between(start, Instant.now()));
     }
 
+    public Long getMillieseconds() {
+        if(this.finish == null) {
+            return Instant.now().toEpochMilli() - this.start.toEpochMilli();
+        }
+
+        return this.finish.toEpochMilli() - this.start.toEpochMilli();
+    }
+
     private String formatDuration(Duration duration) {
         long seconds = duration.getSeconds();
         long absSeconds = Math.abs(seconds);

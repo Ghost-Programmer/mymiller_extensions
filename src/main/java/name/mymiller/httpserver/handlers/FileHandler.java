@@ -19,7 +19,7 @@ import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 import name.mymiller.httpserver.HttpConstants;
 import name.mymiller.httpserver.filters.ParameterFilter;
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,7 +48,7 @@ public class FileHandler extends AbstractContextHandler {
      * file. Also instantiates the logging.
      */
     public FileHandler() {
-        LogManager.getLogger(this.getClass()).info("WWWRoot: " + FileHandler.getWwwRoot());
+        Logger.getLogger(this.getClass().getName()).info("WWWRoot: " + FileHandler.getWwwRoot());
     }
 
     /**
@@ -77,10 +77,10 @@ public class FileHandler extends AbstractContextHandler {
 
         if (inputStream != null) {
             found = true;
-            LogManager.getLogger(this.getClass()).info("Opening resource: " + pathInfo);
+            Logger.getLogger(this.getClass().getName()).info("Opening resource: " + pathInfo);
         } else if (file.exists()) {
             found = true;
-            LogManager.getLogger(this.getClass()).info("Opening file: " + pathInfo);
+            Logger.getLogger(this.getClass().getName()).info("Opening file: " + pathInfo);
             inputStream = new FileInputStream(file);
         }
 
@@ -91,11 +91,11 @@ public class FileHandler extends AbstractContextHandler {
                 success = true;
 
             } catch (final IOException ie) {
-                LogManager.getLogger(this.getClass()).log(Level.SEVERE, "Failed to read file: " + pathInfo, ie);
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to read file: " + pathInfo, ie);
             }
         }
         if (!success) {
-            LogManager.getLogger(this.getClass()).info("File Not Found: " + pathInfo);
+            Logger.getLogger(this.getClass().getName()).info("File Not Found: " + pathInfo);
             this.sendResponse(exchange, HttpConstants.HTTP_NOT_FOUND_STATUS, FileHandler.FILE_NOT_FOUND);
         }
 
@@ -113,16 +113,16 @@ public class FileHandler extends AbstractContextHandler {
 
         if (inputStream != null) {
             found = true;
-            LogManager.getLogger(this.getClass()).info("Opening resource: " + pathInfo);
+            Logger.getLogger(this.getClass().getName()).info("Opening resource: " + pathInfo);
             this.sendResponse(exchange, HttpConstants.HTTP_OK_STATUS, inputStream.available());
         } else if (file.exists()) {
             found = true;
-            LogManager.getLogger(this.getClass()).info("Opening file: " + pathInfo);
+            Logger.getLogger(this.getClass().getName()).info("Opening file: " + pathInfo);
             this.sendResponse(exchange, HttpConstants.HTTP_OK_STATUS, file.length());
         }
 
         if (!found) {
-            LogManager.getLogger(this.getClass()).info("File Not Found: " + pathInfo);
+            Logger.getLogger(this.getClass().getName()).info("File Not Found: " + pathInfo);
             this.sendResponse(exchange, HttpConstants.HTTP_NOT_FOUND_STATUS, FileHandler.FILE_NOT_FOUND);
         }
     }

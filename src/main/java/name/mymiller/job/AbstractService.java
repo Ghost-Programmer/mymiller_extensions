@@ -18,7 +18,7 @@
  */
 package name.mymiller.job;
 
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 /**
  * @author jmiller Basic service functions
@@ -79,11 +79,11 @@ public abstract class AbstractService extends Job {
 
     @Override
     protected void process() {
-        LogManager.getLogger(AbstractService.class).info(this.getClass().getSimpleName() + " Service Running");
+        Logger.getLogger(AbstractService.class.getName()).info(this.getClass().getSimpleName() + " Service Running");
         this.setShutdown(false);
         this.service();
         this.setShutdown(true);
-        LogManager.getLogger(AbstractService.class).info(this.getClass().getSimpleName() + " Service Exiting");
+        Logger.getLogger(AbstractService.class.getName()).info(this.getClass().getSimpleName() + " Service Exiting");
     }
 
     /**
@@ -97,7 +97,7 @@ public abstract class AbstractService extends Job {
      * @param delay ms. to wait before shutting down.
      */
     public void shutdown(int delay) {
-        LogManager.getLogger(AbstractService.class).info(this.getClass().getSimpleName() + " Service Shutdown called");
+        Logger.getLogger(AbstractService.class.getName()).info(this.getClass().getSimpleName() + " Service Shutdown called");
         this.stop(delay);
         this.shutdown = true;
     }

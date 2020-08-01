@@ -19,7 +19,7 @@
 package name.mymiller.io.net;
 
 import name.mymiller.io.AdvancedProcess;
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,7 +57,7 @@ public class AdvancedInetAddress {
         try {
             this.address = InetAddress.getLocalHost();
         } catch (final UnknownHostException e) {
-            LogManager.getLogger(AdvancedInetAddress.class).log(Level.SEVERE, "Failed to get Local Host", e);
+            Logger.getLogger(AdvancedInetAddress.class.getName()).log(Level.SEVERE, "Failed to get Local Host", e);
         }
     }
 
@@ -108,7 +108,7 @@ public class AdvancedInetAddress {
                 }
             }
         } catch (IOException | InterruptedException e) {
-            LogManager.getLogger(this.getClass()).log(Level.SEVERE, "ARP Failed", e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ARP Failed", e);
         }
         return null;
     }
@@ -248,30 +248,42 @@ public class AdvancedInetAddress {
      *
      * @return String containing the vendor name.
      */
-    @Deprecated
     public String getMacVendor() {
         if (this.vendorName == null) {
             this.vendorName = "";
             final String mac = this.getMacAddress();
 
             if ((mac != null) && (mac.length() > 8)) {
-                final String vendorID = this.getMacAddress().substring(0, 8).toUpperCase();
-
-                LogManager.getLogger(AdvancedInetAddress.class).log(Level.INFO, "Looking for Vendor ID: " + vendorID);
-
-                try {
-                    final URL url = new URL("http://api.macvendors.com/" + vendorID);
-                    final BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
-
-                    for (String line; (line = reader.readLine()) != null; ) {
-                        this.vendorName = line;
-                    }
-                } catch (final IOException e) {
-                    LogManager.getLogger(AdvancedInetAddress.class).log(Level.SEVERE, "Failed to Find MAC Address", e);
-                }
+                this.vendorName = lookupMacVendor(mac);
             }
         }
         return this.vendorName;
+    }
+
+    /**
+     * Method to lookup the vendor of a MAC Address
+     * @param mac String containg the MAC Address
+     * @return String containing the vendor name.
+     */
+    public static String lookupMacVendor(String mac) {
+        String vendorName = null;
+        if ((mac != null) && (mac.length() > 8)) {
+            final String vendorID = mac.substring(0, 8).toUpperCase();
+
+            Logger.getLogger(AdvancedInetAddress.class.getName()).log(Level.INFO, "Looking for Vendor ID: " + vendorID);
+
+            try {
+                final URL url = new URL("http://api.macvendors.com/" + vendorID);
+                final BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
+
+                for (String line; (line = reader.readLine()) != null; ) {
+                    vendorName = line;
+                }
+            } catch (final IOException e) {
+                Logger.getLogger(AdvancedInetAddress.class.getName()).log(Level.SEVERE, "Failed to Find MAC Address", e);
+            }
+        }
+        return vendorName;
     }
 
     /*
@@ -449,7 +461,7 @@ public class AdvancedInetAddress {
                 }
             }
         } catch (final InterruptedException e) {
-            LogManager.getLogger(this.getClass()).log(Level.SEVERE, "Ping Failed", e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Ping Failed", e);
         }
 
         return -1;
@@ -498,7 +510,7 @@ public class AdvancedInetAddress {
             }
         } catch (final ConnectException e) {
         } catch (final IOException e) {
-            LogManager.getLogger(this.getClass()).log(Level.WARNING, "Host: " + this.toString() + " Port: " + port, e);
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Host: " + this.toString() + " Port: " + port, e);
         }
         return false;
     }
@@ -545,13 +557,13 @@ public class AdvancedInetAddress {
                         try {
                             list.add(new AdvancedInetAddress(node));
                         } catch (final UnknownHostException e) {
-                            LogManager.getLogger(this.getClass()).log(Level.SEVERE, "TraceRoute Failed adding node", e);
+                            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "TraceRoute Failed adding node", e);
                         }
                     }
                 }
             }
         } catch (final InterruptedException e) {
-            LogManager.getLogger(this.getClass()).log(Level.SEVERE, "TraceRoute Failed", e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "TraceRoute Failed", e);
         }
         return list.toArray(new AdvancedInetAddress[list.size()]);
     }

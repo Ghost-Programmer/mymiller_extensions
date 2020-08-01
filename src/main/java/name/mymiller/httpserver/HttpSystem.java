@@ -21,7 +21,7 @@ import name.mymiller.httpserver.handlers.HttpHandlerAnnotation;
 import name.mymiller.job.AbstractService;
 import name.mymiller.job.JobManager;
 import name.mymiller.lang.singleton.SingletonInterface;
-import name.mymiller.log.LogManager;
+import java.util.logging.Logger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -173,10 +173,10 @@ public class HttpSystem extends AbstractService implements SingletonInterface<Ht
                 try {
                     system.wait(1000);
                 } catch (final InterruptedException e) {
-                    LogManager.getLogger(HttpSystem.class).info("Http System Thread Interupted:" + e.getMessage());
+                    Logger.getLogger(HttpSystem.class.getName()).info("Http System Thread Interupted:" + e.getMessage());
                 }
                 if (system.isRestart()) {
-                    LogManager.getLogger().info("Restarting HTTP Server System");
+                    Logger.getLogger(HttpSystem.class.getName()).info("Restarting HTTP Server System");
                     system.stop(HttpConstants.DELAY_TIME);
                     system.start();
                     system.setRestart(false);
@@ -200,7 +200,7 @@ public class HttpSystem extends AbstractService implements SingletonInterface<Ht
      */
     public void start(ContextHandlerInterface[] handlers) {
         try {
-            LogManager.getLogger().info("Starting HTTP Server System");
+            Logger.getLogger(HttpSystem.class.getName()).info("Starting HTTP Server System");
 
             if (this.threadPool != null) {
                 this.threadPool.shutdown();
@@ -219,25 +219,25 @@ public class HttpSystem extends AbstractService implements SingletonInterface<Ht
             this.httpServer.setExecutor(this.threadPool);
 
             for (final ContextHandlerInterface handler : handlers) {
-                LogManager.getLogger(HttpSystem.class)
+                Logger.getLogger(HttpSystem.class.getName())
                         .info("Loading Handler: " + handler.getClass().getCanonicalName());
 
                 final String context = handler.getClass().getAnnotation(HttpHandlerAnnotation.class).context();
-                LogManager.getLogger(HttpSystem.class).info("Adding Handler: " + handler + " Context: " + context);
+                Logger.getLogger(HttpSystem.class.getName()).info("Adding Handler: " + handler + " Context: " + context);
 
                 this.httpServer.createContext(context, handler);
             }
-            LogManager.getLogger(HttpSystem.class)
+            Logger.getLogger(HttpSystem.class.getName())
                     .info("Server is started and listening on port " + this.httpServer.getAddress().getPort());
             this.httpServer.start();
 
             JobManager.getInstance().createService("HTTP System", HttpSystem.getInstance());
         } catch (final IOException e) {
-            LogManager.getLogger(this.getClass()).log(Level.SEVERE, "IOException Error in starting HTTPSystem", e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "IOException Error in starting HTTPSystem", e);
         } catch (final SecurityException e) {
-            LogManager.getLogger(this.getClass()).log(Level.SEVERE, "SecurityException", e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "SecurityException", e);
         } catch (final IllegalArgumentException e) {
-            LogManager.getLogger(this.getClass()).log(Level.SEVERE, "IllegalArgumentException", e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "IllegalArgumentException", e);
         }
     }
 
@@ -250,6 +250,6 @@ public class HttpSystem extends AbstractService implements SingletonInterface<Ht
     @Override
     protected void stop(final int delay) {
         this.httpServer.stop(delay);
-        LogManager.getLogger(HttpSystem.class).info("Server is stopped.");
+        Logger.getLogger(HttpSystem.class.getName()).info("Server is stopped.");
     }
 }
