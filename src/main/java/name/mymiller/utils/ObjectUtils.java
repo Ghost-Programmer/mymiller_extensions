@@ -54,6 +54,8 @@ public class ObjectUtils {
 				return false;
 			} else if (obj.getClass().isArray() && (((Object[]) obj).length == 0)) {
 				return false;
+			} else if (obj instanceof String && ((String) obj).length() == 0) {
+				return false;
 			}
 		}
 		return true;
