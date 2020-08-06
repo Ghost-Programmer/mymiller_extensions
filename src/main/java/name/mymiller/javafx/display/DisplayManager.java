@@ -93,7 +93,7 @@ public class DisplayManager extends AbstractService implements SingletonInterfac
     public DisplayScreen clearDisplay(int screen) {
         final DisplayScreen displaced = this.getDisplay(screen);
 
-        displaced.hide();
+        Platform.runLater(() ->displaced.hide());
         this.displayScreens[screen] = null;
 
         return displaced;
