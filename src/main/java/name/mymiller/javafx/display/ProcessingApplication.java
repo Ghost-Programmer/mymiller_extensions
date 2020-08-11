@@ -52,7 +52,7 @@ public class ProcessingApplication extends Application {
         final Scene scene = new Scene(root, 10, 10);
         primaryStage.setTitle("ProcessingApplication");
         primaryStage.setScene(scene);
-        // primaryStage.show();
+         primaryStage.show();
     }
 
     /*

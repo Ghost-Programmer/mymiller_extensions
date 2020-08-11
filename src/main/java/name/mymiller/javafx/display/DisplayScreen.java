@@ -40,7 +40,7 @@ public abstract class DisplayScreen extends Application implements Runnable {
     /**
      * Maximize the Display Window
      */
-    private boolean maximized = true;
+    private boolean maximized = false;
 
     /**
      * This instance of the displayStage.
@@ -48,9 +48,14 @@ public abstract class DisplayScreen extends Application implements Runnable {
     private Stage displayStage = null;
 
     /**
+     * This instance is always on top
+     */
+    private boolean onTop = false;
+
+    /**
      * Full Screen for the Display Window
      */
-    private boolean fullScreen = true;
+    private boolean fullScreen = false;
 
     /**
      * Sets the display name;
@@ -126,6 +131,26 @@ public abstract class DisplayScreen extends Application implements Runnable {
     }
 
     /**
+     * Set if the DisplayScreen is Always on Top
+     * @param onTop True if always on top
+     */
+    public void setOnTop(boolean onTop) {
+        this.onTop = onTop;
+
+        if(this.displayStage != null) {
+            this.displayStage.setAlwaysOnTop(onTop);
+        }
+    }
+
+    /**
+     *
+     * @return Boolean indicating if always on top
+     */
+    public boolean isOnTop() {
+        return this.onTop;
+    }
+
+    /**
      * @return the maximized
      */
     public boolean isMaximized() {
@@ -179,6 +204,7 @@ public abstract class DisplayScreen extends Application implements Runnable {
     public void start(Stage stage) throws Exception {
         stage.setMaximized(this.isMaximized());
         stage.setFullScreen(this.isFullScreen());
+        stage.setAlwaysOnTop(this.onTop);
 
         final ObservableList<Screen> screens = Screen.getScreens();
         final Rectangle2D bounds = screens.get(this.getDisplay()).getVisualBounds();

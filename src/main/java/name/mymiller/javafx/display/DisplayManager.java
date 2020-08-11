@@ -17,10 +17,17 @@ package name.mymiller.javafx.display;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.stage.Screen;
 import name.mymiller.job.AbstractService;
 import name.mymiller.job.JobManager;
 import name.mymiller.lang.singleton.Singleton;
 import name.mymiller.lang.singleton.SingletonInterface;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import java.util.logging.Level;
@@ -145,6 +152,25 @@ public class DisplayManager extends AbstractService implements SingletonInterfac
      */
     public DisplayScreen getDisplay(int screen) {
         return this.displayScreens[screen];
+    }
+
+    /**
+     *
+     * @return a map showing screens and the named of displays
+     */
+    public Map<Integer,String> getDisplayList() {
+        Map<Integer,String> map = new HashMap<>();
+        ObservableList<Screen> screens = Screen.getScreens();
+
+        for(int i = 0; i < screens.size(); i++ ) {
+            if(this.displayScreens[i] != null) {
+                map.put(i,this.displayScreens[i].getDisplayName());
+            } else {
+                map.put(i," EMPTY");
+            }
+        }
+
+        return map;
     }
 
     /**
