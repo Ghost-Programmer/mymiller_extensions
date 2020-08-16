@@ -19,6 +19,8 @@
 package name.mymiller.containers;
 
 import java.lang.ref.WeakReference;
+import java.util.Enumeration;
+import java.util.Properties;
 import java.util.WeakHashMap;
 
 /**
@@ -200,5 +202,21 @@ public class StringCache {
      */
     public synchronized int size() {
         return this.cache.size();
+    }
+
+    /**
+     * Return a Properties object with all strings Cached.
+     * @param properties Properties to convert to Cached Strings
+     * @return new Properties object with cached strings.
+     */
+    public Properties cacheProperties(Properties properties) {
+        Properties cacheProperties = new Properties();
+        Enumeration<String> enums = (Enumeration<String>) properties.propertyNames();
+        while(enums.hasMoreElements()) {
+            String key = enums.nextElement();
+            cacheProperties.put(this.cache(key),this.cache(properties.getProperty(key)));
+        }
+
+        return cacheProperties;
     }
 }
