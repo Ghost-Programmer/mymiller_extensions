@@ -27,6 +27,28 @@ public class ListUtils {
     }
 
     /**
+     * Convert a Map of K,V to a List of K
+     * @param map Map to Convert
+     * @param <K> Type for K
+     * @param <V> Type for V
+     * @return List of K
+     */
+    public static <K,V> List<K> mapKeyToList(Map<K,V> map) {
+        return ListUtils.safe(new ArrayList<>(map.keySet()));
+    }
+
+    /**
+     * Convert a Map of K,V to a List of V
+     * @param map Map to Convert
+     * @param <K> Type for K
+     * @param <V> Type for V
+     * @return List of V
+     */
+    public static <K,V> List<V> mapValuesToList(Map<K,V> map) {
+        return ListUtils.safe(new ArrayList<>(map.values()));
+    }
+
+    /**
      * Join two lists together to form a new List
      *
      * @param <E> Type used in lists, which must have overridden equals();
