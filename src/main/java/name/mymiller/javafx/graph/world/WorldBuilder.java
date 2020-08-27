@@ -47,7 +47,7 @@ public class WorldBuilder<B extends WorldBuilder<B>> {
     }
 
     // ******************** Methods *******************************************
-    public static final WorldBuilder create() {
+    public static WorldBuilder create() {
         return new WorldBuilder();
     }
 

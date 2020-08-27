@@ -43,7 +43,7 @@ public class CodeEditor extends StackPane {
             + "  var editor = CodeMirror.fromTextArea(document.getElementById(\"code\"), {" + "    lineNumbers: true,"
             + "    matchBrackets: true," + "    mode: \"text/x-java\"" + "  });" + "</script>" + "</body>" + "</html>";
     /**
-     * a snapshot of the code to be edited kept for easy initilization and reversion
+     * a snapshot of the code to be edited kept for easy initialization and reversion
      * of editable code.
      */
     private String editingCode;

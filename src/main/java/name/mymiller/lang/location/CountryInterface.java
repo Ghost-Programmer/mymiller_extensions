@@ -72,7 +72,7 @@ public interface CountryInterface {
     Optional<String> getPhoneCode();
 
     /**
-     * @return String with the Top Level Internat Domain.
+     * @return String with the Top Level Internet Domain.
      */
     Optional<String> getTopLevelInternetDomain();
 }

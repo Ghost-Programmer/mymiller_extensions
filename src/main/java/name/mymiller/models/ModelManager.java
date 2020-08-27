@@ -62,10 +62,8 @@ public class ModelManager {
     private Optional<Method> getMethodByName(Class<?> cls, String methodName) {
         final List<Method> methods = Arrays.asList(cls.getMethods());
 
-        final Optional<Method> findFirst = methods.stream().filter(method -> method.getName().equals(methodName))
+        return methods.stream().filter(method -> method.getName().equals(methodName))
                 .findFirst();
-
-        return findFirst;
     }
 
     private Object getRow(String className, Long id) throws InstantiationException, IllegalAccessException,

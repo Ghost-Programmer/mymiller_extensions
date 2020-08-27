@@ -241,7 +241,7 @@ public class DisplayManager extends AbstractService implements SingletonInterfac
      * Method to wait on Display Manager to be initilized.
      */
     private void waitOnInited() {
-        while (this.inited == false) {
+        while (!this.inited) {
             try {
                 Thread.sleep(50);
             } catch (final InterruptedException e) {

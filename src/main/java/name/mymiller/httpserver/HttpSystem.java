@@ -38,7 +38,7 @@ public class HttpSystem extends AbstractService implements SingletonInterface<Ht
     /**
      * Thread Pool size for handling requests
      */
-    private static int POOL_SIZE = 10;
+    private static final int POOL_SIZE = 10;
     /**
      * Max Thread Pool size
      */
@@ -46,7 +46,7 @@ public class HttpSystem extends AbstractService implements SingletonInterface<Ht
     /**
      * Thread Keep Alive Time
      */
-    private static int KEEP_ALIVE_TIME = 30;
+    private static final int KEEP_ALIVE_TIME = 30;
 
     /**
      * Global Instance for the HTTP System

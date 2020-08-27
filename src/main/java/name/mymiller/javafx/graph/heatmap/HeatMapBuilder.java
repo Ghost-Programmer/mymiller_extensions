@@ -38,7 +38,7 @@ public class HeatMapBuilder<B extends HeatMapBuilder<B>> {
 	}
 
 	// ******************** Methods *******************************************
-	public final static HeatMapBuilder create() {
+	public static HeatMapBuilder create() {
 		return new HeatMapBuilder();
 	}
 

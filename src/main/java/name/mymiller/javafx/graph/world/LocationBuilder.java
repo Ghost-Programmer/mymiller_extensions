@@ -41,7 +41,7 @@ public class LocationBuilder<B extends LocationBuilder<B>> {
     }
 
     // ******************** Methods *******************************************
-    public static final LocationBuilder create() {
+    public static LocationBuilder create() {
         return new LocationBuilder();
     }
 

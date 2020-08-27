@@ -37,7 +37,7 @@ public class CmdHandler extends AbstractContextHandler {
     /**
      * Error Text for unknown command
      */
-    private static final String UNKOWN_COMMAND = "Unkown Command";
+    private static final String UNKNOWN_COMMAND = "Unkown Command";
 
     @Override
     public void doGet(final HttpExchange exchange, final String pathInfo, final Map<String, Object> parameters)
@@ -59,7 +59,7 @@ public class CmdHandler extends AbstractContextHandler {
             default:
                 Logger.getLogger(this.getClass().getName()).severe("Unknown GET Command: " + pathInfo);
 
-                this.sendResponse(exchange, HttpConstants.HTTP_NOT_ACCEPTABLE_STATUS, CmdHandler.UNKOWN_COMMAND);
+                this.sendResponse(exchange, HttpConstants.HTTP_NOT_ACCEPTABLE_STATUS, CmdHandler.UNKNOWN_COMMAND);
                 break;
         }
     }
@@ -90,7 +90,7 @@ public class CmdHandler extends AbstractContextHandler {
             default:
                 Logger.getLogger(this.getClass().getName()).severe("Unknown POST Command: " + pathInfo);
 
-                this.sendResponse(exchange, HttpConstants.HTTP_NOT_ACCEPTABLE_STATUS, CmdHandler.UNKOWN_COMMAND);
+                this.sendResponse(exchange, HttpConstants.HTTP_NOT_ACCEPTABLE_STATUS, CmdHandler.UNKNOWN_COMMAND);
                 break;
         }
 

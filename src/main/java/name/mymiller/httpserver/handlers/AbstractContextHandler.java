@@ -36,7 +36,7 @@ public abstract class AbstractContextHandler implements ContextHandlerInterface 
 	 *
 	 * @param exchange   HttpExchange containing the URI information
 	 * @param pathInfo   URI Path specified
-	 * @param parameters Parameters parsed fromt he URI Quests
+	 * @param parameters Parameters parsed from the URI Quests
 	 */
 	public void doDelete(final HttpExchange exchange, final String pathInfo, final Map<String, Object> parameters) {
 
@@ -47,7 +47,7 @@ public abstract class AbstractContextHandler implements ContextHandlerInterface 
 	 *
 	 * @param exchange   HttpExchange containing the URI information
 	 * @param pathInfo   URI Path specified
-	 * @param parameters Parameters parsed fromt he URI Quests
+	 * @param parameters Parameters parsed from the URI Quests
 	 * @throws IOException Error responding to request
 	 */
 
@@ -61,7 +61,7 @@ public abstract class AbstractContextHandler implements ContextHandlerInterface 
 	 *
 	 * @param exchange   HttpExchange containing the URI information
 	 * @param pathInfo   URI Path specified
-	 * @param parameters Parameters parsed fromt he URI Quests
+	 * @param parameters Parameters parsed from the URI Quests
 	 * @throws IOException Error responding to request
 	 */
 
@@ -75,7 +75,7 @@ public abstract class AbstractContextHandler implements ContextHandlerInterface 
 	 *
 	 * @param exchange   HttpExchange containing the URI information
 	 * @param pathInfo   URI Path specified
-	 * @param parameters Parameters parsed fromt he URI Quests
+	 * @param parameters Parameters parsed from the URI Quests
 	 * @throws IOException Error responding to request
 	 */
 
@@ -89,7 +89,7 @@ public abstract class AbstractContextHandler implements ContextHandlerInterface 
 	 *
 	 * @param exchange   HttpExchange containing the URI information
 	 * @param pathInfo   URI Path specified
-	 * @param parameters Parameters parsed fromt he URI Quests
+	 * @param parameters Parameters parsed from the URI Quests
 	 */
 
 	public void doPut(final HttpExchange exchange, final String pathInfo, final Map<String, Object> parameters) {

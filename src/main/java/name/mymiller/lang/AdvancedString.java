@@ -57,7 +57,7 @@ public class AdvancedString extends HTMLEditorKit.ParserCallback implements Seri
     private final static String HTML_TAG_SELF_CLOSING = "\\<\\w+((\\s+\\w+(\\s*\\=\\s*(?:\".*?\"|'.*?'|[^'\"\\>\\s]+))?)+\\s*|\\s*)/\\>";
 
     /**
-     * Regext to match HTML Entity
+     * Regex to match HTML Entity
      */
     private final static String HTML_ENTITY = "&[a-zA-Z][a-zA-Z0-9]+;";
 
@@ -125,7 +125,7 @@ public class AdvancedString extends HTMLEditorKit.ParserCallback implements Seri
     }
 
     /**
-     * Formatable string to append to existing string
+     * Formattable string to append to existing string
      *
      * @param format Format of string to append
      * @return reference to this AdvancedString
@@ -429,7 +429,7 @@ public class AdvancedString extends HTMLEditorKit.ParserCallback implements Seri
 
     /**
      *
-     * @return List of hastags contained in the string.
+     * @return List of hashtags contained in the string.
      */
     public List<AdvancedString> hashTags() {
         final String[] split = this.string.split(" ");

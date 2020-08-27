@@ -150,9 +150,7 @@ public class Location {
                 * Math.sin(DELTA_LON_RADIANS * 0.5));
         final double C = 2 * Math.atan2(Math.sqrt(A), Math.sqrt(1 - A));
 
-        final double DISTANCE = Location.EARTH_RADIUS * C;
-
-        return DISTANCE;
+        return Location.EARTH_RADIUS * C;
     }
 
     public double calcDistanceInMeter(final Location P1, final Location P2) {

@@ -24,7 +24,7 @@ public class OperatingSystemCheck {
     /**
      * os.name propery value.
      */
-    private static String OS = System.getProperty("os.name").toLowerCase();
+    private static final String OS = System.getProperty("os.name").toLowerCase();
 
     /**
      * @return String indicating the OS type

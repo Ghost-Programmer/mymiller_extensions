@@ -16,7 +16,7 @@ public class CalUtils {
      * @param startDate LocalDate that is the start of the range;
      * @param endDate  LocalDate that is the end of the range.
      * @param function BiFunction<AdvancedCalendar,AdvancedCalendar,R> taking in a start and end AdvancedCalendar for the
-     *                 begining of the month and end of month. R the return type from the BiFunction
+     *                 beginning of the month and end of month. R the return type from the BiFunction
      * @param <R>      R the return type from the BiFunction
      * @return List<R> containing the results from the BiFunction
      */
@@ -57,7 +57,7 @@ public class CalUtils {
      * @param startDate LocalDate that is the start of the range;
      * @param endDate  LocalDate that is the end of the range.
      * @param function     BiFunction<AdvancedCalendar,AdvancedCalendar,R> taking in a start and end AdvancedCalendar for the
-     *                     begining of the month and end of month. R the return type from the BiFunction
+     *                     beginning of the month and end of month. R the return type from the BiFunction
      * @param endDayOfWeek int representing the day to use as end of the week.
      * @param <R>          R the return type from the BiFunction
      * @return List<R> containing the results from the BiFunction
@@ -125,12 +125,8 @@ public class CalUtils {
     }
 
     public static boolean sameDay(Calendar dateA, Calendar dateB) {
-        if ((dateB != null) && (dateA != null) &&(dateA.get(Calendar.YEAR) == dateB.get(Calendar.YEAR))
+        return (dateB != null) && (dateA != null) && (dateA.get(Calendar.YEAR) == dateB.get(Calendar.YEAR))
                 && (dateA.get(Calendar.MONTH) == dateB.get(Calendar.MONTH))
-                && (dateA.get(Calendar.DAY_OF_MONTH) == dateB.get(Calendar.DAY_OF_MONTH)))
-        {
-            return true;
-        }
-        return false;
+                && (dateA.get(Calendar.DAY_OF_MONTH) == dateB.get(Calendar.DAY_OF_MONTH));
     }
 }

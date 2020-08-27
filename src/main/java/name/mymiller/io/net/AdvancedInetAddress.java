@@ -84,7 +84,7 @@ public class AdvancedInetAddress {
      * Internal call to use ARP tables to look up a MAC Address, only works for IPs
      * on the same subnet.
      *
-     * @param timeout the time in millieseconds before aborting the call
+     * @param timeout the time in milliseconds before aborting the call
      * @return String contain the MAC Address.
      */
     private String arp(final int timeout) {
@@ -262,7 +262,7 @@ public class AdvancedInetAddress {
 
     /**
      * Method to lookup the vendor of a MAC Address
-     * @param mac String containg the MAC Address
+     * @param mac String containing the MAC Address
      * @return String containing the vendor name.
      */
     public static String lookupMacVendor(String mac) {
@@ -300,7 +300,7 @@ public class AdvancedInetAddress {
     }
 
     /**
-     * @return a boolean indicating if the Inetaddress is a wildcard address.
+     * @return a boolean indicating if the InetAddress is a wildcard address.
      * @see InetAddress#isAnyLocalAddress()
      */
     public boolean isAnyLocalAddress() {
@@ -395,7 +395,7 @@ public class AdvancedInetAddress {
     }
 
     /**
-     * @param netif   the NetworkInterface through which the test will be done, or
+     * @param networkInterface   the NetworkInterface through which the test will be done, or
      *                null for any interface
      * @param ttl     the maximum numbers of hops to try or 0 for the default
      * @param timeout the time, in milliseconds, before the call aborts
@@ -403,8 +403,8 @@ public class AdvancedInetAddress {
      * @throws IOException Error trying to reach the host.
      * @see InetAddress#isReachable(NetworkInterface, int, int)
      */
-    public boolean isReachable(final NetworkInterface netif, final int ttl, final int timeout) throws IOException {
-        return this.address.isReachable(netif, ttl, timeout);
+    public boolean isReachable(final NetworkInterface networkInterface, final int ttl, final int timeout) throws IOException {
+        return this.address.isReachable(networkInterface, ttl, timeout);
     }
 
     /**
@@ -532,6 +532,7 @@ public class AdvancedInetAddress {
 
         try {
             final AdvancedProcess traceRoute = new AdvancedProcess();
+            //noinspection SpellCheckingInspection
             traceRoute.setArgs(new String[]{"tracert", this.getHostName()});
             traceRoute.start();
             traceRoute.join();

@@ -31,11 +31,11 @@ import javafx.geometry.Point2D;
 public class Helper {
     private static final double EPSILON = 1E-6;
 
-    public static final boolean biggerThan(final double A, final double B) {
+    public static boolean biggerThan(final double A, final double B) {
         return (A - B) > Helper.EPSILON;
     }
 
-    public static final boolean equals(final double A, final double B) {
+    public static boolean equals(final double A, final double B) {
         return A == B || Math.abs(A - B) < Helper.EPSILON;
     }
 
@@ -83,7 +83,7 @@ public class Helper {
         return new Point2D(X, Y);
     }
 
-    public static final boolean lessThan(final double A, final double B) {
+    public static boolean lessThan(final double A, final double B) {
         return (B - A) > Helper.EPSILON;
     }
 }

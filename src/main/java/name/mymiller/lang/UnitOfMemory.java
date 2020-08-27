@@ -49,11 +49,11 @@ public enum UnitOfMemory implements Serializable {
     /**
      * Label to use for this UnitOfMemory
      */
-    private String label;
+    private final String label;
     /**
      * Number of Bytes in each UnitOfMemory
      */
-    private long totalBytes;
+    private final long totalBytes;
 
     /**
      * Constructor for the ENUM

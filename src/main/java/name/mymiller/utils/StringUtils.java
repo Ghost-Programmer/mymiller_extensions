@@ -177,8 +177,7 @@ public class StringUtils extends ObjectUtils {
     public static String removeHTML(String string) {
         String cleanString = "";
         if (StringUtils.containsHtml(string)) {
-            final String original = string;
-            final Reader in = new StringReader(original);
+            final Reader in = new StringReader(string);
             final StringBuilder cleaned = new StringBuilder();
 
             HTMLEditorKit.ParserCallback callback = new HTMLEditorKit.ParserCallback()
@@ -194,7 +193,7 @@ public class StringUtils extends ObjectUtils {
                 delegator.parse(in, callback, Boolean.TRUE);
                 in.close();
             } catch (final IOException e) {
-                Logger.getLogger(StringUtils.class.getName()).log(Level.SEVERE, "Failed to remove HTML from: " + original, e);
+                Logger.getLogger(StringUtils.class.getName()).log(Level.SEVERE, "Failed to remove HTML from: " + string, e);
             }
 
             return cleaned.toString();

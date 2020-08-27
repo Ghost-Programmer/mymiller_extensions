@@ -36,11 +36,11 @@ public class CreditCard {
     /**
      * Diners Club Pattern for Validation
      */
-    private static final String DINERS_CLUB_PATTERN = " ^3(?:0[0-5]|[68][0-9])[0-9]{11}$";
+    private static final String DINERS_CLUB_PATTERN = "^3(?:0[0-5]|[68][0-9])[0-9]{11}$";
     /**
      * American Express Pattern for Validation
      */
-    private static final String AMEX_PATTERN = " ^3[47][0-9]{13}$";
+    private static final String AMEX_PATTERN = "^3[47][0-9]{13}$";
     /**
      * Discover Pattern for Validation
      */

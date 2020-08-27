@@ -88,8 +88,8 @@ public class World extends Region {
 			.createColorCssMetaData("-selected-color", s -> s.selectedColor, Color.web("#9dff78"), false);
 	private static final CssMetaData<World, Color> LOCATION_COLOR = World.FACTORY
 			.createColorCssMetaData("-location-color", s -> s.locationColor, Color.web("#ff0000"), false);
-	private static double MAP_OFFSET_X = -World.PREFERRED_WIDTH * 0.0285;
-	private static double MAP_OFFSET_Y = World.PREFERRED_HEIGHT * 0.195;
+	private static final double MAP_OFFSET_X = -World.PREFERRED_WIDTH * 0.0285;
+	private static final double MAP_OFFSET_Y = World.PREFERRED_HEIGHT * 0.195;
 	private final StyleableProperty<Color> backgroundColor;
 	private final StyleableProperty<Color> fillColor;
 	private final StyleableProperty<Color> strokeColor;

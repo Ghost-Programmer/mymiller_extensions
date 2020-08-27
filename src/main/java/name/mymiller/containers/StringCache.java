@@ -32,16 +32,16 @@ public class StringCache {
     /**
      * Initial capacity of the cache.
      */
-    private static int globalInitialCapacity = 65535;
+    private static final int globalInitialCapacity = 65535;
     /**
      * Initial Load factor to grow the map.
      */
-    private static float globalLoadFactor = (float) 0.75;
+    private static final float globalLoadFactor = (float) 0.75;
 
     /**
      * Global static instance of the cache.
      */
-    private static StringCache globalInstance = new StringCache();
+    private static final StringCache globalInstance = new StringCache();
     /**
      * Number of collisions the cache has saved.
      */

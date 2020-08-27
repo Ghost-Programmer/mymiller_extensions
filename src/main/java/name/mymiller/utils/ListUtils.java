@@ -84,9 +84,7 @@ public class ListUtils {
      */
     public static <E> boolean isEmpty( List<E> list) {
         if (list != null) {
-            if (list.size() > 0) {
-                return false;
-            }
+            return list.size() <= 0;
         }
 
         return true;

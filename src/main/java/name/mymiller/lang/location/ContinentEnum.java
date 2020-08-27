@@ -18,10 +18,10 @@ package name.mymiller.lang.location;
 import java.io.Serializable;
 
 /**
- * Enum to reprense the Continents on Eart
+ * Enum to represent the Continents
  *
  * @author jmiller
  */
 public enum ContinentEnum implements Serializable {
-    Africa, Antartica, Asia, Europe, NorthAmerica, Oceania, SouthAmerica
+    Africa, Antarctica, Asia, Europe, NorthAmerica, Oceania, SouthAmerica
 }

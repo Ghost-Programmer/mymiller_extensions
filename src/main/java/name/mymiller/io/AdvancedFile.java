@@ -196,7 +196,7 @@ public class AdvancedFile extends File {
      * @param count     Lines to split on.
      * @param prefix    Prefix for the split files
      * @param postfix   Postfix for the split files.
-     * @param directory Directory to splut into
+     * @param directory Directory to split into
      * @throws IOException Error reading files.
      */
     public void splitByLines(final int count, final String prefix, final String postfix, final String directory)
