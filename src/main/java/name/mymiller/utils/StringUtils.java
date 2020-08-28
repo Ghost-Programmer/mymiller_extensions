@@ -1,6 +1,5 @@
 package name.mymiller.utils;
 
-import name.mymiller.lang.AdvancedString;
 import java.util.logging.Logger;
 
 import javax.swing.text.html.HTMLEditorKit;

@@ -25,6 +25,7 @@ package name.mymiller.javafx.graph.world;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,9 +39,7 @@ public class CountryRegion implements CRegion {
     public CountryRegion(final String NAME, final Country... COUNTRIES) {
         this.name = NAME;
         this.countries = new ArrayList<>(COUNTRIES.length);
-        for (final Country country : COUNTRIES) {
-            this.countries.add(country);
-        }
+        this.countries.addAll(Arrays.asList(COUNTRIES));
     }
 
     @Override

@@ -143,7 +143,7 @@ public class ListUtils {
             int startIndex = pageSize * (page - 1);
             int endIndex = startIndex + pageSize;
             if(startIndex > safe.size()) {
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
 
             if(endIndex > safe.size()) {
@@ -153,7 +153,7 @@ public class ListUtils {
             return safe.subList(startIndex,endIndex);
         }
 
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     public static <E> int pages(List<E> list, int pageSize) {
@@ -184,11 +184,7 @@ public class ListUtils {
      * @return List with value set or an empty list.
      */
     public static <E,R> List<E> setValue( List<E> list, R value, BiConsumer<E, R> setter) {
-        return ListUtils.safe(list).parallelStream().map(item -> {
-            setter.accept(item,value);
-
-            return item;
-        }).collect(Collectors.toList());
+        return ListUtils.safe(list).parallelStream().peek(item -> setter.accept(item,value)).collect(Collectors.toList());
     }
 
     /**
@@ -200,7 +196,7 @@ public class ListUtils {
      * @return List of type R from all objects in list.
      */
     public static <E, R> List<R> getValue( List<E> list, Function<? super E,? extends R> getter) {
-        return ListUtils.safe(list).parallelStream().map(item -> getter.apply(item)).collect(Collectors.toList());
+        return ListUtils.safe(list).parallelStream().map(getter).collect(Collectors.toList());
     }
 
     /**

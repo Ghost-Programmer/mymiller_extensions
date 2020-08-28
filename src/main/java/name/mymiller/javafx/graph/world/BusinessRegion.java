@@ -25,6 +25,7 @@ package name.mymiller.javafx.graph.world;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static name.mymiller.javafx.graph.world.Country.*;
@@ -49,14 +50,12 @@ public enum BusinessRegion implements CRegion {
     EU(BE, GR, LT, PT, BG, ES, LU, RO, CZ, FR, HU, SI, DK, HR, MT, SK, DE, IT, NL, FI, EE, CY, AT, SE, IE, LV, PL, GB),
     NORAM(US, CA, MX, GT, BZ, CU, DO, HT, HN, SV, NI, CR, PA);
 
-    private List<Country> countries;
+    private final List<Country> countries;
 
     // ******************** Constructors **************************************
     BusinessRegion(final Country... COUNTRIES) {
         this.countries = new ArrayList<>(COUNTRIES.length);
-        for (final Country country : COUNTRIES) {
-            this.countries.add(country);
-        }
+        this.countries.addAll(Arrays.asList(COUNTRIES));
     }
 
     // ******************** Methods *******************************************

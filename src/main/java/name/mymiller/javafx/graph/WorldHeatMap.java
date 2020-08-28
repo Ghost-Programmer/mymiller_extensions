@@ -14,7 +14,6 @@ import name.mymiller.javafx.graph.world.WorldBuilder;
 public class WorldHeatMap extends DisplayScreen {
 
     private static WorldHeatMap global_instance;
-    private StackPane pane;
     private World worldMap;
 
     public WorldHeatMap() {
@@ -43,9 +42,9 @@ public class WorldHeatMap extends DisplayScreen {
                 .selectionEnabled(false).colorMapping(ColorMapping.BLUE_YELLOW_RED).fadeColors(true).eventRadius(3)
                 .heatMapOpacity(0.75).opacityDistribution(OpacityDistribution.LINEAR).build();
 
-        this.pane = new StackPane(this.worldMap);
+        StackPane pane = new StackPane(this.worldMap);
 
-        final Scene scene = new Scene(this.pane);
+        final Scene scene = new Scene(pane);
 
         stage.setTitle("World Cities");
         stage.setScene(scene);

@@ -1,22 +1,24 @@
-/**
- * Copyright 2018 MyMiller Consulting LLC.
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License.  You may obtain a copy
- * of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
- * License for the specific language governing permissions and limitations under
- * the License.
+/*
+  Copyright 2018 MyMiller Consulting LLC.
+  <p>
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+  use this file except in compliance with the License.  You may obtain a copy
+  of the License at
+  <p>
+  http://www.apache.org/licenses/LICENSE-2.0
+  <p>
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+  License for the specific language governing permissions and limitations under
+  the License.
  */
-/**
- *
+/*
+
  */
 package name.mymiller.lang;
+
+import name.mymiller.utils.StringUtils;
 
 import java.util.logging.Logger;
 
@@ -24,7 +26,6 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 import java.io.*;
 import java.nio.charset.Charset;
-import java.text.ParseException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
@@ -587,32 +588,7 @@ public class AdvancedString extends HTMLEditorKit.ParserCallback implements Seri
      * @return Formatted String with \n
      */
     public AdvancedString paragraphFormat(final int maxWidth) {
-        String formatted = "";
-
-        if (this.string.length() < maxWidth) {
-            formatted = this.string;
-        } else {
-            final String work = this.string.trim();
-            int charCount = 0;
-
-            for (final char c : work.toCharArray()) {
-                if (c != '\n') {
-                    if (charCount < maxWidth) {
-                        formatted += c;
-                        charCount++;
-                    } else {
-                        formatted += '\n';
-                        formatted += c;
-                        charCount = 0;
-                    }
-                } else {
-                    formatted += c;
-                    charCount = 0;
-                }
-            }
-        }
-
-        return AdvancedString.create(formatted);
+        return AdvancedString.create(StringUtils.paragraphFormat(this.string,maxWidth));
     }
 
     /**

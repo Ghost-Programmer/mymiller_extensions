@@ -57,6 +57,8 @@ import org.kordamp.ikonli.materialdesign.MaterialDesign;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by hansolo on 22.11.16.
@@ -102,30 +104,30 @@ public class World extends Region {
 	protected EventHandler<MouseEvent> _mousePressHandler;
 	protected EventHandler<MouseEvent> _mouseReleaseHandler;
 	protected EventHandler<MouseEvent> _mouseExitHandler;
-	private BooleanProperty hoverEnabled;
-	private BooleanProperty selectionEnabled;
-	private ObjectProperty<Country> selectedCountry;
-	private BooleanProperty zoomEnabled;
-	private DoubleProperty scaleFactor;
-	private Properties resolutionProperties;
+	private final BooleanProperty hoverEnabled;
+	private final BooleanProperty selectionEnabled;
+	private final ObjectProperty<Country> selectedCountry;
+	private final BooleanProperty zoomEnabled;
+	private final DoubleProperty scaleFactor;
+	private final Properties resolutionProperties;
 	private Country formerSelectedCountry;
 	private double zoomSceneX;
 	private double zoomSceneY;
 	private double width;
 	private double height;
 	private Ikon locationIconCode;
-	private Pane pane;
-	private Group group;
+	private final Pane pane;
+	private final Group group;
 	private HeatMap heatMap;
-	private Map<String, List<CountryPath>> countryPaths;
-	private ObservableMap<Location, Shape> locations;
-	private ColorMapping colorMapping;
-	private double eventRadius;
-	private boolean fadeColors;
-	private OpacityDistribution opacityDistribution;
-	private double heatMapOpacity;
-	private BooleanProperty heatMapVisible;
-	private EventHandler<ScrollEvent> _scrollEventHandler;
+	private final Map<String, List<CountryPath>> countryPaths;
+	private final ObservableMap<Location, Shape> locations;
+	private final ColorMapping colorMapping;
+	private final double eventRadius;
+	private final boolean fadeColors;
+	private final OpacityDistribution opacityDistribution;
+	private final double heatMapOpacity;
+	private final BooleanProperty heatMapVisible;
+	private final EventHandler<ScrollEvent> _scrollEventHandler;
 	// exposed event handlers
 	private EventHandler<MouseEvent> mouseEnterHandler;
 	private EventHandler<MouseEvent> mousePressHandler;
@@ -1036,7 +1038,7 @@ public class World extends Region {
 		try (InputStream resourceStream = LOADER.getResourceAsStream(FILE_NAME)) {
 			PROPERTIES.load(resourceStream);
 		} catch (final IOException exception) {
-			System.out.println(exception);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"Error Reading Properties",exception);
 		}
 		return PROPERTIES;
 	}

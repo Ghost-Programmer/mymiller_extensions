@@ -1,5 +1,5 @@
-/**
- *
+/*
+
  */
 package name.mymiller.lang.concurrent;
 
