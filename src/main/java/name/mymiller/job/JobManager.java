@@ -268,4 +268,20 @@ public class JobManager implements SingletonInterface<JobManager> {
     public Future<?> submit(Runnable runnable) {
         return this.pool.submit(runnable);
     }
+
+    /**
+     *
+     * @return Pool Executor
+     */
+    public ExecutorService getPool() {
+        return pool;
+    }
+
+    /**
+     *
+     * @return ScheduledExecuteService
+     */
+    public ScheduledExecutorService getScheduledPool() {
+        return scheduledPool;
+    }
 }
