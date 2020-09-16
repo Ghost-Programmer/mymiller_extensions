@@ -1,6 +1,7 @@
 package name.mymiller.query;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Used to "Xor a list of queries together.  Only one filter may return true for this one to return true.
@@ -42,7 +43,13 @@ public class Xor<T> implements QueryFilter<T>{
     }
 
     @Override
-    public Boolean process(T object) {
-        return this.list.parallelStream().filter(Objects::nonNull).map(filter -> filter.process(object)).filter(Boolean::booleanValue).count() == 1L;
+    public Double process(T object) {
+        List<Double> values = this.list.parallelStream().filter(Objects::nonNull).map(filter -> filter.process(object)).collect(Collectors.toList());
+        values = values.stream().filter(value -> value != 0D).collect(Collectors.toList());
+        if(values.size()== 1) {
+            return values.get(0);
+        }
+
+        return 0D;
     }
 }

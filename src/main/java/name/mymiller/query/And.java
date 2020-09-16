@@ -43,7 +43,10 @@ public class And<T> implements QueryFilter<T>{
     }
 
     @Override
-    public Boolean process(T object) {
-        return this.list.parallelStream().filter(Objects::nonNull).allMatch(filter -> filter.process(object));
+    public Double process(T object) {
+        if(this.list.parallelStream().filter(Objects::nonNull).allMatch(filter -> filter.process(object) > 0)) {
+            return this.list.parallelStream().filter(Objects::nonNull).mapToDouble(filter -> filter.process(object)).sum();
+        }
+        return 0D;
     }
 }

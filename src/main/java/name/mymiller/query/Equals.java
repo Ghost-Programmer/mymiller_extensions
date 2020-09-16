@@ -5,12 +5,13 @@ import java.util.function.Function;
 /**
  * Compares the toString() value of an object the value in the field.
  */
-public class Equals<T,R> implements QueryFilter<T>{
+public class Equals<T,R> extends AbstractQuery<T>{
 
     private final T value;
     private Function<T, R> getter;
 
     public Equals(T value) {
+        super(.1D);
         if(value == null) {
             throw new NullPointerException("value may not be null");
         }
@@ -19,16 +20,36 @@ public class Equals<T,R> implements QueryFilter<T>{
     }
 
     public Equals(T value, Function<T,R> getter) {
+        super(.1D);
+        this.value = value;
+        this.getter = getter;
+    }
+
+    public Equals(T value, Double weight) {
+        super(weight);
+        if(value == null) {
+            throw new NullPointerException("value may not be null");
+        }
+        this.value = value;
+        this.getter = null;
+    }
+
+    public Equals(T value, Function<T,R> getter, Double weight) {
+        super(weight);
         this.value = value;
         this.getter = getter;
     }
 
     @Override
-    public Boolean process(T object) {
+    public Double process(T object) {
         if(getter == null) {
-            return value.equals(object);
+            if(value.equals(object)) {
+                return this.getWeight();
+            }
+        } else if(value.equals(this.getter.apply(object))) {
+            return this.getWeight();
         }
 
-        return value.equals(this.getter.apply(object));
+        return 0D;
     }
 }

@@ -1,6 +1,7 @@
 package name.mymiller.query;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Used to "Or" a list of queries together.  Any filter returning true for this one to return true.
@@ -42,7 +43,7 @@ public class Or<T> implements QueryFilter<T>{
     }
 
     @Override
-    public Boolean process(T object) {
-        return this.list.parallelStream().filter(Objects::nonNull).anyMatch(filter -> filter.process(object));
+    public Double process(T object) {
+        return this.list.parallelStream().filter(Objects::nonNull).map(filter -> filter.process(object)).filter(value -> value > 0).mapToDouble(value -> value).sum();
     }
 }

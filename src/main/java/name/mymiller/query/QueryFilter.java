@@ -7,7 +7,7 @@ public interface QueryFilter<T> {
     /**
      * Must return true in order for this filter to agree to inclusion.
      * @param object Object the filter should check
-     * @return Boolean indicating if agree to inclusion.
+     * @return Double indicating 0 if not include, of Double > 0 indicating weight.
      */
-    Boolean process(T object);
+    Double process(T object);
 }

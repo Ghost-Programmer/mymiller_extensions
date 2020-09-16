@@ -15,7 +15,7 @@ public class Between<T> implements QueryFilter<T> {
      * @return Boolean indicating if agree to inclusion.
      */
     @Override
-    public Boolean process(T object) {
+    public Double process(T object) {
         return and.process(object);
     }
 }
