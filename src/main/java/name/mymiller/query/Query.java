@@ -24,7 +24,11 @@ public class Query {
          */
         @Override
         public boolean test(T t) {
-            return filter.process(t);
+            if(filter.process(t) > 0D) {
+                return true;
+            }
+
+            return false;
         }
     }
 

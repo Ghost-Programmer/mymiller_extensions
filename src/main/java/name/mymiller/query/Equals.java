@@ -11,7 +11,7 @@ public class Equals<T,R> extends AbstractQuery<T>{
     private Function<T, R> getter;
 
     public Equals(T value) {
-        super(.1D);
+        super(1D);
         if(value == null) {
             throw new NullPointerException("value may not be null");
         }
@@ -19,8 +19,8 @@ public class Equals<T,R> extends AbstractQuery<T>{
         this.getter = null;
     }
 
-    public Equals(T value, Function<T,R> getter) {
-        super(.1D);
+    public Equals(Function<T, R> getter,T value) {
+        super(1D);
         this.value = value;
         this.getter = getter;
     }
@@ -34,7 +34,7 @@ public class Equals<T,R> extends AbstractQuery<T>{
         this.getter = null;
     }
 
-    public Equals(T value, Function<T,R> getter, Double weight) {
+    public Equals(Function<T, R> getter, T value, Double weight) {
         super(weight);
         this.value = value;
         this.getter = getter;

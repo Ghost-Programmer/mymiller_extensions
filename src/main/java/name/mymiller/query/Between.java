@@ -1,11 +1,15 @@
 package name.mymiller.query;
 
-public class Between<T> implements QueryFilter<T> {
+import java.util.function.Function;
 
+public class Between<T,R> implements QueryFilter<T> {
     private And and;
 
     public Between(T low, T max) {
         this.and = new And(new LessThan(max), new GreaterThan(low));
+    }
+    public Between(Function<T, R> getter, T low, T max) {
+        this.and = new And(new LessThan(getter,max), new GreaterThan(getter,low));
     }
 
     /**
