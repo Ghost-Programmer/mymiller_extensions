@@ -31,6 +31,30 @@ public class ObjectUtils {
 		ObjectUtils.toArray(objects).forEach(consumer);
 	}
 
+	static public void throwIfNull(Object obj,String message) {
+		if(obj == null) {
+			throw new NullPointerException(message);
+		}
+	}
+
+	static public void throwIfNull(Object obj) {
+		if(obj == null) {
+			throw new NullPointerException();
+		}
+	}
+
+	static public void throwIfNotInstance(Class classType, Object obj) {
+		if(!classType.isInstance(obj)) {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	static public void throwIfNotInstance(Class classType, Object obj, String message) {
+		if(!classType.isInstance(obj)) {
+			throw new IllegalArgumentException(message);
+		}
+	}
+
 	static public boolean isNotNull(Object obj) {
 		return !ObjectUtils.isNull(obj);
 	}
