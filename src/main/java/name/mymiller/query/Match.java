@@ -5,12 +5,12 @@ import java.util.function.Function;
 /**
  * Compares the toString() value of an object the value in the field.
  */
-public class Equals<T,R> extends AbstractQuery<T>{
+public class Match<T,R> extends AbstractQuery<T>{
 
     private final T value;
     private Function<T, R> getter;
 
-    public Equals(T value) {
+    public Match(T value) {
         super(1D);
         if(value == null) {
             throw new NullPointerException("value may not be null");
@@ -19,13 +19,13 @@ public class Equals<T,R> extends AbstractQuery<T>{
         this.getter = null;
     }
 
-    public Equals(Function<T, R> getter,T value) {
+    public Match(Function<T, R> getter, T value) {
         super(1D);
         this.value = value;
         this.getter = getter;
     }
 
-    public Equals(T value, Double weight) {
+    public Match(T value, Double weight) {
         super(weight);
         if(value == null) {
             throw new NullPointerException("value may not be null");
@@ -34,7 +34,7 @@ public class Equals<T,R> extends AbstractQuery<T>{
         this.getter = null;
     }
 
-    public Equals(Function<T, R> getter, T value, Double weight) {
+    public Match(Function<T, R> getter, T value, Double weight) {
         super(weight);
         this.value = value;
         this.getter = getter;
