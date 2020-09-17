@@ -1,8 +1,14 @@
 package name.mymiller.query;
 
+import name.mymiller.utils.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 
 /**
@@ -34,6 +40,640 @@ public class Query {
             return false;
         }
     }
+
+    /**
+     * Used to "And" a list of queries together.  All filters must pass in order for this one to return true.
+     * Any Filter added that is "null" will be ignored.
+     */
+    public static class And<T> implements QueryFilter<T>{
+
+        private final List<QueryFilter<T>> list;
+
+        /**
+         * Generate an And Filter with a list.
+         * @param list List of QueryFilter to require to be true.
+         */
+        public And(List<QueryFilter<T>> list) {
+            this.list = list;
+        }
+
+        /**
+         * Variable list of filters to require to be true.
+         * @param filters Variable argument list of filters to process
+         */
+        public And(QueryFilter<T> ... filters) {
+            this.list = Arrays.asList(filters);
+        }
+
+        /**
+         * Create a blank And Filter
+         */
+        public And() {
+            this.list =  new ArrayList<>();
+        }
+
+        /**
+         * Add a QueryFilter to the AndFilter
+         * @param queryFilter QueryFilter to add
+         * @return boolean indicating if successfully added
+         */
+        public boolean add(QueryFilter<T> queryFilter) {
+            return list.add(queryFilter);
+        }
+
+        @Override
+        public Double process(T object) {
+            if(this.list.parallelStream().filter(Objects::nonNull).allMatch(filter -> filter.process(object) > 0)) {
+                return this.list.parallelStream().filter(Objects::nonNull).mapToDouble(filter -> filter.process(object)).sum();
+            }
+            return 0D;
+        }
+    }
+
+    public static class Between<T,R> implements QueryFilter<T> {
+        private And and;
+
+        public Between(T low, T max) {
+            this.and = new And(new LessThan(max), new GreaterThan(low));
+        }
+        public Between(Function<T, R> getter, T low, T max) {
+            this.and = new And(new LessThan(getter,max), new GreaterThan(getter,low));
+        }
+
+        /**
+         * Must return true in order for this filter to agree to inclusion.
+         *
+         * @param object Object the filter should check
+         * @return Boolean indicating if agree to inclusion.
+         */
+        @Override
+        public Double process(T object) {
+            return and.process(object);
+        }
+    }
+    public static class BetweenOrEqual<T,R> implements QueryFilter<T> {
+
+        private Or or;
+
+        public BetweenOrEqual(T low, T max) {
+            this.or = new Or(new And(new LessThan(max), new GreaterThan(low)), new Match(low),new Match(max));
+        }
+        public BetweenOrEqual(Function<T, R> getter, T low, T max) {
+            this.or = new Or(new And(new LessThan(getter,max), new GreaterThan(getter,low)), new Match(getter,low),new Match(getter,max));
+        }
+
+        /**
+         * Must return true in order for this filter to agree to inclusion.
+         *
+         * @param object Object the filter should check
+         * @return Boolean indicating if agree to inclusion.
+         */
+        @Override
+        public Double process(T object) {
+            return or.process(object);
+        }
+    }
+
+    /**
+     * Check if the values associated with key contains the text in the value.
+     */
+    public static class Contains<T> extends AbstractQuery<T>{
+
+        private final String value;
+        private final Integer multiplier;
+        private Function<T, String> getter;
+
+        public Contains(String value) {
+            super(1D);
+            this.multiplier = 2;
+            this.value = value;
+            this.getter = null;
+        }
+
+        public Contains(String value, Function<T, String> getter) {
+            super(1D);
+            this.multiplier = 2;
+            this.value = value;
+            this.getter = getter;
+        }
+
+        public Contains(String value, Double weigth, Integer multiplier) {
+            super(weigth);
+            this.multiplier = multiplier;
+            this.value = value;
+            this.getter = null;
+        }
+
+        public Contains(String value, Function<T, String> getter, Double weight, Integer multiplier) {
+            super(weight);
+            this.multiplier = multiplier;
+            this.value = value;
+            this.getter = getter;
+        }
+
+
+        /**
+         * Must return true in order for this filter to agree to inclusion.
+         *
+         * @param object String the filter should check
+         * @return Boolean indicating if agree to inclusion.
+         */
+        @Override
+        public Double process(T object) {
+            if(object != null && value != null) {
+                if(getter == null) {
+                    if(object.toString().contains(value)) {
+                        if(object.toString().equals(value)) {
+                            return this.getWeight() * multiplier;
+                        }
+                        return this.getWeight();
+                    }
+                } else if(getter != null) {
+                    String content = this.getter.apply(object);
+                    if(content != null) {
+                        if(content.contains(value)); {
+                            if(content.equals(value)) {
+                                return this.getWeight() * multiplier;
+                            }
+                            return this.getWeight();
+                        }
+                    }
+                }
+            }
+            if(object == null && value == null) {
+                return this.getWeight();
+            }
+            return 0D;
+        }
+    }
+
+    public static class GreaterThan<T,R> extends AbstractQuery<T> {
+        private Function<T, R> getter;
+
+        private T value;
+
+        public GreaterThan(T value) {
+            super(.1D);
+            if(value != null) {
+                ObjectUtils.throwIfNotInstance(Comparable.class, value,"Object must be Comparable.");
+            }
+            this.value = value;
+        }
+
+        public GreaterThan(T value, Double weight) {
+            super(weight);
+            if(value != null) {
+                ObjectUtils.throwIfNotInstance(Comparable.class, value,"Object must be Comparable.");
+            }
+            this.value = value;
+        }
+        public GreaterThan(Function<T, R> getter, T value) {
+            super(.1D);
+            if(value != null) {
+                ObjectUtils.throwIfNotInstance(Comparable.class, value,"Object must be Comparable.");
+            }
+            this.getter = getter;
+            this.value = value;
+        }
+
+        public GreaterThan(Function<T, R> getter, T value, Double weight) {
+            super(weight);
+            if(value != null) {
+                ObjectUtils.throwIfNotInstance(Comparable.class, value,"Object must be Comparable.");
+            }
+            this.getter = getter;
+            this.value = value;
+        }
+
+        /**
+         * Must return true in order for this filter to agree to inclusion.
+         *
+         * @param object Object the filter should check
+         * @return Boolean indicating if agree to inclusion.
+         */
+        @Override
+        public Double process(T object) {
+            if(object != null && this.value != null) {
+                if(this.getter == null) {
+                    ObjectUtils.throwIfNotInstance(Comparable.class, object, "Object must be Comparable.");
+                    if (((Comparable<T>) object).compareTo(this.value) > 0) {
+                        return this.getWeight();
+                    }
+                } else {
+                    Object obj = this.getter.apply(object);
+                    ObjectUtils.throwIfNotInstance(Comparable.class, obj, "Value from getter must be Comparable.");
+                    if (((Comparable<T>) obj).compareTo(this.value) > 0) {
+                        return this.getWeight();
+                    }
+                }
+            }
+
+            return 0D;
+        }
+    }
+    public static class IsEmpty<T,R> extends AbstractQuery<T> {
+
+        private Function<T, R> getter;
+
+        public IsEmpty() {
+            super(.1D);
+        }
+
+        public IsEmpty(Double weight) {
+            super(weight);
+        }
+
+        public IsEmpty(Function<T, R> getter) {
+            super(.1D);
+            this.getter = getter;
+        }
+
+        public IsEmpty(Function<T, R> getter,Double weight) {
+            super(weight);
+            this.getter = getter;
+        }
+
+        /**
+         * Must return true in order for this filter to agree to inclusion.
+         *
+         * @param object Object the filter should check
+         * @return Double indicating 0 if not include, of Double > 0 indicating weight.
+         */
+        @Override
+        public Double process(T object) {
+            if(object != null) {
+                if(this.getter != null) {
+                    Object obj = this.getter.apply(object);
+                    ObjectUtils.throwIfNotInstance(String.class,obj,"Value from getter must be of type String");
+                    if(object.toString().isEmpty()) {
+                        return this.getWeight();
+                    }
+                } else {
+                    ObjectUtils.throwIfNotInstance(String.class,object,"Object must be of type String");
+                    if(object.toString().isEmpty()) {
+                        return this.getWeight();
+                    }
+                }
+            }
+
+            return 0D;
+        }
+    }
+
+    public static class IsNull<T, R> extends AbstractQuery<T>  {
+        private Function<T, R> getter;
+
+        public IsNull() {
+            super(.1D);
+        }
+
+        public IsNull(Double weight) {
+            super(weight);
+        }
+
+        public IsNull(Function<T, R> getter) {
+            super(.1D);
+            this.getter = getter;
+        }
+
+        public IsNull(Function<T, R> getter,Double weight) {
+            super(weight);
+            this.getter = getter;
+        }
+
+        /**
+         * Must return true in order for this filter to agree to inclusion.
+         *
+         * @param object Object the filter should check
+         * @return Double indicating 0 if not include, of Double > 0 indicating weight.
+         */
+        @Override
+        public Double process(T object) {
+            if(this.getter != null) {
+                Object obj = this.getter.apply(object);
+                if(object == null) {
+                    return this.getWeight();
+                }
+            } else if(object == null) {
+                return this.getWeight();
+            }
+            return 0D;
+        }
+    }
+
+    public static class LessThan<T,R> extends AbstractQuery<T> {
+
+        private T value;
+        private Function<T, R> getter;
+
+        public LessThan(T value) {
+            super(.1D);
+            if(value != null) {
+                ObjectUtils.throwIfNotInstance(Comparable.class, value,"Object must be Comparable.");
+            }
+            this.value = value;
+        }
+
+        public LessThan(T value, Double weight) {
+            super(weight);
+            if(value != null) {
+                ObjectUtils.throwIfNotInstance(Comparable.class, value,"Object must be Comparable.");
+            }
+            this.value = value;
+        }
+
+        public LessThan(Function<T, R> getter,T value) {
+            super(.1D);
+            if(value != null) {
+                ObjectUtils.throwIfNotInstance(Comparable.class, value,"Object must be Comparable.");
+            }
+            this.getter = getter;
+            this.value = value;
+        }
+
+        public LessThan(Function<T, R> getter,T value, Double weight) {
+            super(weight);
+            if(value != null) {
+                ObjectUtils.throwIfNotInstance(Comparable.class, value,"Object must be Comparable.");
+            }
+            this.getter = getter;
+            this.value = value;
+        }
+
+        /**
+         * Must return true in order for this filter to agree to inclusion.
+         *
+         * @param object Object the filter should check
+         * @return Boolean indicating if agree to inclusion.
+         */
+        @Override
+        public Double process(T object) {
+            if(object != null && this.value != null) {
+                if(this.getter == null) {
+                    ObjectUtils.throwIfNotInstance(Comparable.class, object, "Object must be Comparable.");
+                    if (((Comparable<T>) object).compareTo(this.value) < 0) {
+                        return this.getWeight();
+                    }
+                } else {
+                    Object obj = this.getter.apply(object);
+                    ObjectUtils.throwIfNotInstance(Comparable.class, obj, "Value from getter must be Comparable.");
+                    if (((Comparable<T>) obj).compareTo(this.value) < 0) {
+                        return this.getWeight();
+                    }
+                }
+            }
+
+            return 0D;
+        }
+    }
+
+    /**
+     * Compares the toString() value of an object the value in the field.
+     */
+    public static class Match<T,R> extends AbstractQuery<T>{
+
+        private final T value;
+        private Function<T, R> getter;
+
+        public Match(T value) {
+            super(1D);
+            if(value == null) {
+                throw new NullPointerException("value may not be null");
+            }
+            this.value = value;
+            this.getter = null;
+        }
+
+        public Match(Function<T, R> getter, T value) {
+            super(1D);
+            this.value = value;
+            this.getter = getter;
+        }
+
+        public Match(T value, Double weight) {
+            super(weight);
+            if(value == null) {
+                throw new NullPointerException("value may not be null");
+            }
+            this.value = value;
+            this.getter = null;
+        }
+
+        public Match(Function<T, R> getter, T value, Double weight) {
+            super(weight);
+            this.value = value;
+            this.getter = getter;
+        }
+
+        @Override
+        public Double process(T object) {
+            if(getter == null) {
+                if(value.equals(object)) {
+                    return this.getWeight();
+                }
+            } else if(value.equals(this.getter.apply(object))) {
+                return this.getWeight();
+            }
+
+            return 0D;
+        }
+    }
+
+    /**
+     * Used to flip the value of a filter.
+     */
+    public static class Not<T> extends AbstractQuery<T>{
+
+        private final QueryFilter<T> filter;
+
+        /**
+         * Create a NotFilter to flip the value of a filter
+         * @param filter filter to flip the value on.
+         */
+        public Not(QueryFilter<T> filter) {
+            super(.1D);
+            if(filter == null) {
+                throw new NullPointerException("Filter may not be null");
+            }
+            this.filter = filter;
+        }
+
+        public Not(QueryFilter<T> filter, Double weight) {
+            super(weight);
+            if(filter == null) {
+                throw new NullPointerException("Filter may not be null");
+            }
+            this.filter = filter;
+        }
+
+        @Override
+        public Double process(T object) {
+            if(this.filter.process(object) == 0D) {
+                return this.getWeight();
+            }
+
+            return 0D;
+        }
+    }
+
+    public static class NotEmpty<T,R> implements QueryFilter<T> {
+        private Not not;
+
+        public NotEmpty() {
+            this.not = new Not(new IsEmpty());
+        }
+
+        public NotEmpty(Double weight) {
+            this.not = new Not(new IsEmpty(weight));
+        }
+
+        public NotEmpty(Function<T, R> getter) {
+            this.not = new Not(new IsEmpty(getter));
+        }
+
+        public NotEmpty(Function<T, R> getter, Double weight) {
+            this.not = new Not(new IsEmpty(getter,weight));
+        }
+
+        /**
+         * Must return true in order for this filter to agree to inclusion.
+         *
+         * @param object Object the filter should check
+         * @return Double indicating 0 if not include, of Double > 0 indicating weight.
+         */
+        @Override
+        public Double process(T object) {
+            return this.not.process(object);
+        }
+    }
+
+    public static class NotNull<T,R> implements QueryFilter<T> {
+        private Not not;
+
+        public NotNull() {
+            this.not = new Not(new IsNull());
+        }
+
+        public NotNull(Double weight) {
+            this.not = new Not(new IsNull(weight));
+        }
+
+        public NotNull(Function<T, R> getter) {
+            this.not = new Not(new IsNull(getter));
+        }
+
+        public NotNull(Function<T, R> getter, Double weight) {
+            this.not = new Not(new IsNull(getter,weight));
+        }
+
+        /**
+         * Must return true in order for this filter to agree to inclusion.
+         *
+         * @param object Object the filter should check
+         * @return Double indicating 0 if not include, of Double > 0 indicating weight.
+         */
+        @Override
+        public Double process(T object) {
+            return this.not.process(object);
+        }
+    }
+
+    /**
+     * Used to "Or" a list of queries together.  Any filter returning true for this one to return true.
+     * Any Filter added that is "null" will be ignored.
+     */
+    public static class Or<T> implements QueryFilter<T>{
+        private final List<QueryFilter<T>> list;
+
+        /**
+         * Generate an Or Filter with a list.
+         * @param list List of QueryFilter to require to be true.
+         */
+        public Or(List<QueryFilter<T>> list) {
+            this.list = list;
+        }
+
+        /**
+         * Variable list of filters to check if one is true.
+         * @param filters Variable argument list of filters to process
+         */
+        public Or(QueryFilter<T> ... filters) {
+            this.list = Arrays.asList(filters);
+        }
+
+        /**
+         * Create a blank Or Filter
+         */
+        public Or() {
+            this.list =  new ArrayList<>();
+        }
+
+        /**
+         * Add a QueryFilter to the OrFilter
+         * @param queryFilter QueryFilter to add
+         * @return boolean indicating if successfully added
+         */
+        public boolean add(QueryFilter<T> queryFilter) {
+            return list.add(queryFilter);
+        }
+
+        @Override
+        public Double process(T object) {
+            return this.list.parallelStream().filter(Objects::nonNull).map(filter -> filter.process(object)).filter(value -> value > 0).mapToDouble(value -> value).sum();
+        }
+    }
+
+    /**
+     * Used to "Xor a list of queries together.  Only one filter may return true for this one to return true.
+     * Any Filter added that is "null" will be ignored.
+     */
+    public static class Xor<T> implements QueryFilter<T>{
+        private final List<QueryFilter<T>> list;
+
+        /**
+         * Generate an Or Filter with a list.
+         * @param list List of QueryFilter to process.
+         */
+        public Xor(List<QueryFilter<T>> list) {
+            this.list = list;
+        }
+
+        /**
+         * Variable list of filters to check if one is true.
+         * @param filters Variable argument list of filters to process
+         */
+        public Xor(QueryFilter<T> ... filters) {
+            this.list = Arrays.asList(filters);
+        }
+
+        /**
+         * Create a blank Or Filter
+         */
+        public Xor() {
+            this.list =  new ArrayList<>();
+        }
+
+        /**
+         * Add a QueryFilter to the OrFilter
+         * @param queryFilter QueryFilter to add
+         * @return boolean indicating if successfully added
+         */
+        public boolean add(QueryFilter<T> queryFilter) {
+            return list.add(queryFilter);
+        }
+
+        @Override
+        public Double process(T object) {
+            List<Double> values = this.list.parallelStream().filter(Objects::nonNull).map(filter -> filter.process(object)).collect(Collectors.toList());
+            values = values.stream().filter(value -> value != 0D).collect(Collectors.toList());
+            if(values.size()== 1) {
+                return values.get(0);
+            }
+
+            return 0D;
+        }
+    }
+
 
     /**
      * Given a QueryFilter to use, returns a Predicate suited for a Java Stream, or Pipeline filter() call.
