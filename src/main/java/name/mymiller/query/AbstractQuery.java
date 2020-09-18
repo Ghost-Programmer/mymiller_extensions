@@ -1,17 +1,28 @@
 package name.mymiller.query;
 
+/**
+ *
+ * @param <T>
+ */
 public abstract class AbstractQuery<T> implements QueryFilter<T> {
+    /**
+     *
+     */
     private Double weight;
 
+    /**
+     *
+     * @param weight
+     */
     public AbstractQuery(Double weight) {
         this.weight = weight;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getWeight() {
         return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
     }
 }
