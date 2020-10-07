@@ -2,10 +2,7 @@ package name.mymiller.query;
 
 import name.mymiller.utils.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -27,10 +24,18 @@ public class Query {
     }
 
     /**
+     * Returns a comparator that will act be based on the how well the objects match the query.
+     * @param filter Query to use to compare the objects
+     * @param <T> Type of data that will be passed in.
+     * @return Comparator suitable for a sort() or sorted() call.
+     */
+    public static <T> Comparator<T> comparator(QueryFilter<T> filter) { return new QueryComparator<>(filter);}
+
+    /**
      * Wraps a number of queries in an And filter.  All queries must return a weight > 0 in order of this to pass.
      * @param filters Array of filters to be wrapped in the And.
      * @param <T> Type of object to filter
-     * @return double that is the weight of this item.  Higher the weight the better the match.
+     * @return And QueryFilter with the filters added to it
      */
     public static <T> And<T> and(QueryFilter<T>... filters) {
         return new And<>(filters);
@@ -40,7 +45,7 @@ public class Query {
      *
      * @param list
      * @param <T> Type of object to filter
-     * @return
+     * @return And QueryFilter with the list of filters added to it
      */
     public static <T> And<T> and(List<QueryFilter<T>> list) {
         return new And<>(list);
@@ -49,7 +54,7 @@ public class Query {
     /**
      *
      * @param <T> Type of object to filter
-     * @return
+     * @return And QueryFilter ready to add queries to.
      */
     public static <T> And<T> and() {
         return new And<>();
@@ -61,7 +66,7 @@ public class Query {
      * @param max
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return Between QueryFilter to check if the value is between low/max
      */
     public static <T, R> Between<T, R> between(T low, T max) {
         return new Between<>(low, max);
@@ -74,7 +79,7 @@ public class Query {
      * @param max
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return Between QueryFilter to check if the value is between low/max
      */
     public static <T, R> Between<T, R> between(Function<T, R> getter, T low, T max) {
         return new Between<>(getter, low, max);
@@ -86,7 +91,7 @@ public class Query {
      * @param max
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return BetweenOrEuals QueryFilter to check if the value is between low/max or equal
      */
     public static <T, R> BetweenOrEqual<T, R> betweenOrEqual(T low, T max) {
         return new BetweenOrEqual<>(low, max);
@@ -99,7 +104,7 @@ public class Query {
      * @param max
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return BetweenOrEuals QueryFilter to check if the value is between low/max or equal
      */
     public static <T, R> BetweenOrEqual<T, R> betweenOrEqual(Function<T, R> getter, T low, T max) {
         return new BetweenOrEqual<>(getter, low, max);
@@ -109,7 +114,7 @@ public class Query {
      *
      * @param value
      * @param <T> Type of object to filter
-     * @return
+     * @return Contains QueryFilter to check if the object contains the value.
      */
     public static <T> Contains<T> contains(String value) {
         return new Contains<T>(value);
@@ -120,7 +125,7 @@ public class Query {
      * @param value
      * @param getter
      * @param <T> Type of object to filter
-     * @return
+     * @return Contains QueryFilter to check if the object contains the value.
      */
     public static <T> Contains<T> contains(String value, Function<T, String> getter) {
         return new Contains<T>(value, getter);
@@ -132,7 +137,7 @@ public class Query {
      * @param weigth
      * @param multiplier
      * @param <T> Type of object to filter
-     * @return
+     * @return Contains QueryFilter to check if the object contains the value.
      */
     public static <T> Contains<T> contains(String value, Double weigth, Integer multiplier) {
         return new Contains<T>(value, weigth, multiplier);
@@ -145,7 +150,7 @@ public class Query {
      * @param weight
      * @param multiplier
      * @param <T> Type of object to filter
-     * @return
+     * @return Contains QueryFilter to check if the object contains the value.
      */
     public static <T> Contains<T> contains(String value, Function<T, String> getter, Double weight, Integer multiplier) {
         return new Contains<T>(value, getter, weight, multiplier);
@@ -156,7 +161,7 @@ public class Query {
      * @param value
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return Match QueryFilter to check if the object equalss the value.
      */
     public static <T, R> Match<T, R> match(T value) {
         return new Match<>(value);
@@ -168,7 +173,7 @@ public class Query {
      * @param value
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return Match QueryFilter to check if the object equalss the value.
      */
     public static <T, R> Match<T, R> match(Function<T, R> getter, T value) {
         return new Match<>(getter, value);
@@ -180,7 +185,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return Match QueryFilter to check if the object equalss the value.
      */
     public static <T, R> Match<T, R> match(T value, Double weight) {
         return new Match<>(value, weight);
@@ -193,7 +198,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return Match QueryFilter to check if the object equalss the value.
      */
     public static <T, R> Match<T, R> match(Function<T, R> getter, T value, Double weight) {
         return new Match<>(getter, value, weight);
@@ -204,7 +209,7 @@ public class Query {
      * @param value
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return GreaterThan QueryFilter to check if the object is greater than the value when compared.
      */
     public static <T, R> GreaterThan<T, R> greaterThan(T value) {
         return new GreaterThan<>(value);
@@ -216,7 +221,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return GreaterThan QueryFilter to check if the object is greater than the value when compared.
      */
     public static <T, R> GreaterThan<T, R> greaterThan(T value, Double weight) {
         return new GreaterThan<>(value, weight);
@@ -228,7 +233,7 @@ public class Query {
      * @param value
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return GreaterThan QueryFilter to check if the object is greater than the value when compared.
      */
     public static <T, R> GreaterThan<T, R> greaterThan(Function<T, R> getter, T value) {
         return new GreaterThan<>(getter, value);
@@ -241,7 +246,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return GreaterThan QueryFilter to check if the object is greater than the value when compared.
      */
     public static <T, R> GreaterThan<T, R> greaterThan(Function<T, R> getter, T value, Double weight) {
         return new GreaterThan<>(getter, value, weight);
@@ -251,7 +256,7 @@ public class Query {
      *
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return IsEmpty QueryFilter to check if the object is empty
      */
     public static <T, R> IsEmpty<T, R> isEmpty() {
         return new IsEmpty<>();
@@ -262,7 +267,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return IsEmpty QueryFilter to check if the object is empty
      */
     public static <T, R> IsEmpty<T, R> isEmpty(Double weight) {
         return new IsEmpty<>(weight);
@@ -273,7 +278,7 @@ public class Query {
      * @param getter
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return IsEmpty QueryFilter to check if the object is empty
      */
     public static <T, R> IsEmpty<T, R> isEmpty(Function<T, R> getter) {
         return new IsEmpty<>(getter);
@@ -285,7 +290,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return IsEmpty QueryFilter to check if the object is empty
      */
     public static <T, R> IsEmpty<T, R> isEmpty(Function<T, R> getter, Double weight) {
         return new IsEmpty<>(getter, weight);
@@ -295,7 +300,7 @@ public class Query {
      *
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return IsNull QueryFilter to check if the object is null
      */
     public static <T, R> IsNull<T, R> isNull() {
         return new IsNull<>();
@@ -306,7 +311,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return IsNull QueryFilter to check if the object is null
      */
     public static <T, R> IsNull<T, R> isNull(Double weight) {
         return new IsNull<>(weight);
@@ -317,7 +322,7 @@ public class Query {
      * @param getter
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return IsNull QueryFilter to check if the object is null
      */
     public static <T, R> IsNull<T, R> isNull(Function<T, R> getter) {
         return new IsNull<>(getter);
@@ -329,7 +334,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return IsNull QueryFilter to check if the object is null
      */
     public static <T, R> IsNull<T, R> isNull(Function<T, R> getter, Double weight) {
         return new IsNull<>(getter, weight);
@@ -340,7 +345,7 @@ public class Query {
      * @param value
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return LessThan QueryFilter to check if the object is less than the value when compared.
      */
     public static <T, R> LessThan<T, R> lessThan(T value) {
         return new LessThan<>(value);
@@ -352,7 +357,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return LessThan QueryFilter to check if the object is less than the value when compared.
      */
     public static <T, R> LessThan<T, R> lessThan(T value, Double weight) {
         return new LessThan<>(value, weight);
@@ -364,7 +369,7 @@ public class Query {
      * @param value
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return LessThan QueryFilter to check if the object is less than the value when compared.
      */
     public static <T, R> LessThan<T, R> lessThan(Function<T, R> getter, T value) {
         return new LessThan<>(getter, value);
@@ -377,7 +382,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return LessThan QueryFilter to check if the object is less than the value when compared.
      */
     public static <T, R> LessThan<T, R> lessThan(Function<T, R> getter, T value, Double weight) {
         return new LessThan<>(getter, value, weight);
@@ -387,7 +392,7 @@ public class Query {
      *
      * @param filter
      * @param <T> Type of object to filter
-     * @return
+     * @return Not QueryFilter flips the value of QueryFilter
      */
     public static <T> Not<T> not(QueryFilter<T> filter) {
         return new Not<>(filter);
@@ -398,7 +403,7 @@ public class Query {
      * @param filter
      * @param weight
      * @param <T> Type of object to filter
-     * @return
+     * @return Not QueryFilter flips the value of QueryFilter
      */
     public static <T> Not<T> not(QueryFilter<T> filter, Double weight) {
         return new Not<>(filter, weight);
@@ -408,7 +413,7 @@ public class Query {
      *
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return NotEmpty QueryFilter to check if the object is not empty
      */
     public static <T, R> NotEmpty<T, R> notEmpty() {
         return new NotEmpty<>();
@@ -419,7 +424,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return NotEmpty QueryFilter to check if the object is not empty
      */
     public static <T, R> NotEmpty<T, R> notEmpty(Double weight) {
         return new NotEmpty<>(weight);
@@ -430,7 +435,7 @@ public class Query {
      * @param getter
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return NotEmpty QueryFilter to check if the object is not empty
      */
     public static <T, R> NotEmpty<T, R> notEmpty(Function<T, R> getter) {
         return new NotEmpty<>(getter);
@@ -442,7 +447,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return NotEmpty QueryFilter to check if the object is not empty
      */
      public static <T, R> NotEmpty<T, R> notEmpty(Function<T, R> getter, Double weight) {
      return new NotEmpty<>(getter, weight);
@@ -452,7 +457,7 @@ public class Query {
      *
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return NotNull QueryFilter to check if the object is not null
      */
     public static <T, R> NotNull<T, R> notNull() {
         return new NotNull<>();
@@ -463,7 +468,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return NotNull QueryFilter to check if the object is not null
      */
     public static <T, R> NotNull<T, R> notNull(Double weight) {
         return new NotNull<>(weight);
@@ -474,7 +479,7 @@ public class Query {
      * @param getter
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return NotNull QueryFilter to check if the object is not null
      */
     public static <T, R> NotNull<T, R> notNull(Function<T, R> getter) {
         return new NotNull<>(getter);
@@ -486,7 +491,7 @@ public class Query {
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
-     * @return
+     * @return NotNull QueryFilter to check if the object is not null
      */
     public static <T, R> NotNull<T, R> notNull(Function<T, R> getter, Double weight) {
         return new NotNull<>(getter, weight);
@@ -548,6 +553,65 @@ public class Query {
      */
     public static <T> Xor<T> xor(QueryFilter<T>... filters) {
         return new Xor<>(filters);
+    }
+
+    public static class QueryComparator<T> implements Comparator<T> {
+        /**
+         *
+         */
+        private QueryFilter<T> filter;
+
+        public QueryComparator(QueryFilter<T> filter) {
+            this.filter = filter;
+        }
+
+        /**
+         * Compares its two arguments for order.  Returns a negative integer,
+         * zero, or a positive integer as the first argument is less than, equal
+         * to, or greater than the second.<p>
+         * <p>
+         * The implementor must ensure that {@code sgn(compare(x, y)) ==
+         * -sgn(compare(y, x))} for all {@code x} and {@code y}.  (This
+         * implies that {@code compare(x, y)} must throw an exception if and only
+         * if {@code compare(y, x)} throws an exception.)<p>
+         * <p>
+         * The implementor must also ensure that the relation is transitive:
+         * {@code ((compare(x, y)>0) && (compare(y, z)>0))} implies
+         * {@code compare(x, z)>0}.<p>
+         * <p>
+         * Finally, the implementor must ensure that {@code compare(x, y)==0}
+         * implies that {@code sgn(compare(x, z))==sgn(compare(y, z))} for all
+         * {@code z}.<p>
+         * <p>
+         * It is generally the case, but <i>not</i> strictly required that
+         * {@code (compare(x, y)==0) == (x.equals(y))}.  Generally speaking,
+         * any comparator that violates this condition should clearly indicate
+         * this fact.  The recommended language is "Note: this comparator
+         * imposes orderings that are inconsistent with equals."<p>
+         * <p>
+         * In the foregoing description, the notation
+         * {@code sgn(}<i>expression</i>{@code )} designates the mathematical
+         * <i>signum</i> function, which is defined to return one of {@code -1},
+         * {@code 0}, or {@code 1} according to whether the value of
+         * <i>expression</i> is negative, zero, or positive, respectively.
+         *
+         * @param o1 the first object to be compared.
+         * @param o2 the second object to be compared.
+         * @return a negative integer, zero, or a positive integer as the
+         * first argument is less than, equal to, or greater than the
+         * second.
+         * @throws NullPointerException if an argument is null and this
+         *                              comparator does not permit null arguments
+         * @throws ClassCastException   if the arguments' types prevent them from
+         *                              being compared by this comparator.
+         */
+        @Override
+        public int compare(T o1, T o2) {
+            Double value1 = this.filter.process(o1);
+            Double value2 = this.filter.process(o2);
+
+            return value1.compareTo(value2);
+        }
     }
 
     /**
