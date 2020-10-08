@@ -42,8 +42,8 @@ public class Query {
     }
 
     /**
-     *
-     * @param list
+     * Wraps a number of queries in an And filter.  All queries must return a weight > 0 in order of this to pass.
+     * @param list List of QueryFilters for this And.
      * @param <T> Type of object to filter
      * @return And QueryFilter with the list of filters added to it
      */
@@ -52,7 +52,7 @@ public class Query {
     }
 
     /**
-     *
+     * Wraps a number of queries in an And filter.  All queries must return a weight > 0 in order of this to pass.
      * @param <T> Type of object to filter
      * @return And QueryFilter ready to add queries to.
      */
@@ -61,7 +61,7 @@ public class Query {
     }
 
     /**
-     *
+     * Creates a QueryFilter that will pass the filter if the object is between low and max.
      * @param low
      * @param max
      * @param <T> Type of object to filter
@@ -73,8 +73,8 @@ public class Query {
     }
 
     /**
-     *
-     * @param getter
+     * Creates a QueryFilter that will pass the filter if the object is between low and max.
+     * @param getter the function used to extract the Comparable sort key
      * @param low
      * @param max
      * @param <T> Type of object to filter
@@ -99,7 +99,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param low
      * @param max
      * @param <T> Type of object to filter
@@ -123,7 +123,7 @@ public class Query {
     /**
      *
      * @param value
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param <T> Type of object to filter
      * @return Contains QueryFilter to check if the object contains the value.
      */
@@ -146,7 +146,7 @@ public class Query {
     /**
      *
      * @param value
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param weight
      * @param multiplier
      * @param <T> Type of object to filter
@@ -169,7 +169,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param value
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -193,7 +193,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param value
      * @param weight
      * @param <T> Type of object to filter
@@ -229,7 +229,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param value
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -241,7 +241,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param value
      * @param weight
      * @param <T> Type of object to filter
@@ -275,7 +275,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return IsEmpty QueryFilter to check if the object is empty
@@ -286,7 +286,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -319,7 +319,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return IsNull QueryFilter to check if the object is null
@@ -330,7 +330,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -365,7 +365,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param value
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -377,7 +377,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param value
      * @param weight
      * @param <T> Type of object to filter
@@ -432,7 +432,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return NotEmpty QueryFilter to check if the object is not empty
@@ -443,7 +443,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -476,7 +476,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return NotNull QueryFilter to check if the object is not null
@@ -487,7 +487,7 @@ public class Query {
 
     /**
      *
-     * @param getter
+     * @param getter the function used to extract the Comparable sort key
      * @param weight
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -726,7 +726,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param low
          * @param max
          */
@@ -768,7 +768,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param low
          * @param max
          */
@@ -820,7 +820,7 @@ public class Query {
         /**
          *
          * @param value
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          */
         public Contains(String value, Function<T, String> getter) {
             super(1D);
@@ -845,7 +845,7 @@ public class Query {
         /**
          *
          * @param value
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param weight
          * @param multiplier
          */
@@ -936,7 +936,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param value
          */
         public GreaterThan(Function<T, R> getter, T value) {
@@ -950,7 +950,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param value
          * @param weight
          */
@@ -1019,7 +1019,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          */
         public IsEmpty(Function<T, R> getter) {
             super(.1D);
@@ -1028,7 +1028,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param weight
          */
         public IsEmpty(Function<T, R> getter, Double weight) {
@@ -1091,7 +1091,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          */
         public IsNull(Function<T, R> getter) {
             super(.1D);
@@ -1100,7 +1100,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param weight
          */
         public IsNull(Function<T, R> getter, Double weight) {
@@ -1171,7 +1171,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param value
          */
         public LessThan(Function<T, R> getter, T value) {
@@ -1185,7 +1185,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param value
          * @param weight
          */
@@ -1254,7 +1254,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param value
          */
         public Match(Function<T, R> getter, T value) {
@@ -1279,7 +1279,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param value
          * @param weight
          */
@@ -1376,7 +1376,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          */
         public NotEmpty(Function<T, R> getter) {
             this.not = new Not(new IsEmpty(getter));
@@ -1384,7 +1384,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param weight
          */
         public NotEmpty(Function<T, R> getter, Double weight) {
@@ -1431,7 +1431,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          */
         public NotNull(Function<T, R> getter) {
             this.not = new Not(new IsNull(getter));
@@ -1439,7 +1439,7 @@ public class Query {
 
         /**
          *
-         * @param getter
+         * @param getter the function used to extract the Comparable sort key
          * @param weight
          */
         public NotNull(Function<T, R> getter, Double weight) {
