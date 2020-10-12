@@ -62,8 +62,8 @@ public class Query {
 
     /**
      * Creates a QueryFilter that will pass the filter if the object is between low and max.
-     * @param low
-     * @param max
+     * @param low the low value to compare on.
+     * @param max the hight value to compare on.
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return Between QueryFilter to check if the value is between low/max
@@ -75,8 +75,8 @@ public class Query {
     /**
      * Creates a QueryFilter that will pass the filter if the object is between low and max.
      * @param getter the function used to extract the Comparable sort key
-     * @param low
-     * @param max
+     * @param low the low value to compare on.
+     * @param max the hight value to compare on.
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return Between QueryFilter to check if the value is between low/max
@@ -87,8 +87,8 @@ public class Query {
 
     /**
      *
-     * @param low
-     * @param max
+     * @param low the low value to compare on.
+     * @param max the hight value to compare on.
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return BetweenOrEuals QueryFilter to check if the value is between low/max or equal
@@ -100,8 +100,8 @@ public class Query {
     /**
      *
      * @param getter the function used to extract the Comparable sort key
-     * @param low
-     * @param max
+     * @param low the low value to compare on.
+     * @param max the hight value to compare on.
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return BetweenOrEuals QueryFilter to check if the value is between low/max or equal
@@ -112,7 +112,7 @@ public class Query {
 
     /**
      *
-     * @param value
+     * @param value  the value to compe on the value to compare on.
      * @param <T> Type of object to filter
      * @return Contains QueryFilter to check if the object contains the value.
      */
@@ -122,7 +122,7 @@ public class Query {
 
     /**
      *
-     * @param value
+     * @param value  the value to compe on
      * @param getter the function used to extract the Comparable sort key
      * @param <T> Type of object to filter
      * @return Contains QueryFilter to check if the object contains the value.
@@ -133,7 +133,7 @@ public class Query {
 
     /**
      *
-     * @param value
+     * @param value  the value to compe on
      * @param weigth the weight this should return if QueryFilter return matches.
      * @param multiplier In the case of an exact match, this is applied to the weight
      * @param <T> Type of object to filter
@@ -145,7 +145,7 @@ public class Query {
 
     /**
      *
-     * @param value
+     * @param value  the value to compe on
      * @param getter the function used to extract the Comparable sort key
      * @param weight the weight this should return if QueryFilter return matches.
      * @param multiplier In the case of an exact match, this is applied to the weight
@@ -158,7 +158,7 @@ public class Query {
 
     /**
      *
-     * @param value
+     * @param value  the value to compe on
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return Match QueryFilter to check if the object equalss the value.
@@ -170,7 +170,7 @@ public class Query {
     /**
      *
      * @param getter the function used to extract the Comparable sort key
-     * @param value
+     * @param value  the value to compe on
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return Match QueryFilter to check if the object equalss the value.
@@ -181,7 +181,7 @@ public class Query {
 
     /**
      *
-     * @param value
+     * @param value  the value to compe on
      * @param weight the weight this should return if QueryFilter return matches.
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -194,7 +194,7 @@ public class Query {
     /**
      *
      * @param getter the function used to extract the Comparable sort key
-     * @param value
+     * @param value  the value to compe on
      * @param weight the weight this should return if QueryFilter return matches.
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -206,7 +206,7 @@ public class Query {
 
     /**
      *
-     * @param value
+     * @param value  the value to compe on
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return GreaterThan QueryFilter to check if the object is greater than the value when compared.
@@ -217,7 +217,7 @@ public class Query {
 
     /**
      *
-     * @param value
+     * @param value  the value to compe on
      * @param weight the weight this should return if QueryFilter return matches.
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -230,7 +230,7 @@ public class Query {
     /**
      *
      * @param getter the function used to extract the Comparable sort key
-     * @param value
+     * @param value  the value to compe on
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return GreaterThan QueryFilter to check if the object is greater than the value when compared.
@@ -242,7 +242,7 @@ public class Query {
     /**
      *
      * @param getter the function used to extract the Comparable sort key
-     * @param value
+     * @param value  the value to compe on
      * @param weight the weight this should return if QueryFilter return matches.
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -342,7 +342,7 @@ public class Query {
 
     /**
      *
-     * @param value
+     * @param value  the value to compe on
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return LessThan QueryFilter to check if the object is less than the value when compared.
@@ -353,7 +353,7 @@ public class Query {
 
     /**
      *
-     * @param value
+     * @param value  the value to compe on
      * @param weight the weight this should return if QueryFilter return matches.
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -366,7 +366,7 @@ public class Query {
     /**
      *
      * @param getter the function used to extract the Comparable sort key
-     * @param value
+     * @param value  the value to compe on
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      * @return LessThan QueryFilter to check if the object is less than the value when compared.
@@ -378,7 +378,7 @@ public class Query {
     /**
      *
      * @param getter the function used to extract the Comparable sort key
-     * @param value
+     * @param value  the value to compe on
      * @param weight the weight this should return if QueryFilter return matches.
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
@@ -390,7 +390,7 @@ public class Query {
 
     /**
      *
-     * @param filter
+     * @param filter QueryFilter to flip the value on
      * @param <T> Type of object to filter
      * @return Not QueryFilter flips the value of QueryFilter
      */
@@ -400,7 +400,7 @@ public class Query {
 
     /**
      *
-     * @param filter
+     * @param filter QueryFilter to flip the value on
      * @param weight the weight this should return if QueryFilter return matches.
      * @param <T> Type of object to filter
      * @return Not QueryFilter flips the value of QueryFilter
@@ -499,9 +499,9 @@ public class Query {
 
     /**
      *
-     * @param list
+     * @param list List of QueryFilters to include in the Or
      * @param <T> Type of object to filter
-     * @return
+     * @return Or queryFilter to check if at least one QueryFilter in the Or is positive.
      */
     public static <T> Or<T> or(List<QueryFilter<T>> list) {
         return new Or<>(list);
@@ -509,9 +509,9 @@ public class Query {
 
     /**
      *
-     * @param filters
+     * @param filters Array of QueryFilters to include in the Or
      * @param <T> Type of object to filter
-     * @return
+     * @return Or queryFilter to check if at least one QueryFilter in the Or is positive.
      */
     public static <T> Or<T> or(QueryFilter<T>... filters) {
         return new Or<>(filters);
@@ -520,7 +520,7 @@ public class Query {
     /**
      *
      * @param <T> Type of object to filter
-     * @return
+     * @return Or queryFilter to check if at least one QueryFilter in the Or is positive.
      */
     public static <T> Or<T> or() {
         return new Or<>();
@@ -529,7 +529,7 @@ public class Query {
     /**
      *
      * @param <T> Type of object to filter
-     * @return
+     * @return Or queryFilter to check if only one QueryFilter in the Or is positive.
      */
     public static <T> Xor<T> xor() {
         return new Xor<>();
@@ -537,9 +537,9 @@ public class Query {
 
     /**
      *
-     * @param list
+     * @param list List of QueryFilters to include in the Xor
      * @param <T> Type of object to filter
-     * @return
+     * @return Or queryFilter to check if only one QueryFilter in the Or is positive.
      */
     public static <T> Xor<T> xor(List<QueryFilter<T>> list) {
         return new Xor<>(list);
@@ -547,20 +547,28 @@ public class Query {
 
     /**
      *
-     * @param filters
+     * @param filters Array of QueryFilters to include in the Xor
      * @param <T> Type of object to filter
-     * @return
+     * @return Or queryFilter to check if only one QueryFilter in the Or is positive.
      */
     public static <T> Xor<T> xor(QueryFilter<T>... filters) {
         return new Xor<>(filters);
     }
 
+    /**
+     * Comparator that accepts a QueryFilter for processing weights to determine order.
+     * @param <T> Type of object in filter
+     */
     public static class QueryComparator<T> implements Comparator<T> {
         /**
          *
          */
         private QueryFilter<T> filter;
 
+        /**
+         * Constructor taking in the QueryFilter to use for processing
+         * @param filter QueryFilter to use for processing.
+         */
         public QueryComparator(QueryFilter<T> filter) {
             this.filter = filter;
         }
@@ -615,18 +623,18 @@ public class Query {
     }
 
     /**
-     *
+     * QueryFilter Predicate to use in a filter method for determining whether to filter the item.
      * @param <T> Type of object to filter
      */
     public static class QueryFilterStream<T> implements Predicate<T> {
         /**
-         *
+         * QueryFilter to use in the processing
          */
         private QueryFilter<T> filter;
 
         /**
-         *
-         * @param filter
+         * Constructor for creating the QueryFilter for filter processing
+         * @param filter QueryFilter to use for processing.
          */
         public QueryFilterStream(QueryFilter<T> filter) {
             this.filter = filter;
@@ -808,7 +816,7 @@ public class Query {
 
         /**
          *
-         * @param value
+         * @param value  the value to compe on
          */
         public Contains(String value) {
             super(1D);
@@ -819,7 +827,7 @@ public class Query {
 
         /**
          *
-         * @param value
+         * @param value  the value to compe on
          * @param getter the function used to extract the Comparable sort key
          */
         public Contains(String value, Function<T, String> getter) {
@@ -831,7 +839,7 @@ public class Query {
 
         /**
          *
-         * @param value
+         * @param value  the value to compe on
          * @param weigth the weight this should return if QueryFilter return matches.
          * @param multiplier In the case of an exact match, this is applied to the weight
          */
@@ -844,7 +852,7 @@ public class Query {
 
         /**
          *
-         * @param value
+         * @param value  the value to compe on
          * @param getter the function used to extract the Comparable sort key
          * @param weight the weight this should return if QueryFilter return matches.
          * @param multiplier In the case of an exact match, this is applied to the weight
@@ -911,7 +919,7 @@ public class Query {
 
         /**
          *
-         * @param value
+         * @param value  the value to compe on
          */
         public GreaterThan(T value) {
             super(.1D);
@@ -923,7 +931,7 @@ public class Query {
 
         /**
          *
-         * @param value
+         * @param value  the value to compe on
          * @param weight the weight this should return if QueryFilter return matches.
          */
         public GreaterThan(T value, Double weight) {
@@ -937,7 +945,7 @@ public class Query {
         /**
          *
          * @param getter the function used to extract the Comparable sort key
-         * @param value
+         * @param value  the value to compe on
          */
         public GreaterThan(Function<T, R> getter, T value) {
             super(.1D);
@@ -951,7 +959,7 @@ public class Query {
         /**
          *
          * @param getter the function used to extract the Comparable sort key
-         * @param value
+         * @param value  the value to compe on
          * @param weight the weight this should return if QueryFilter return matches.
          */
         public GreaterThan(Function<T, R> getter, T value, Double weight) {
@@ -1146,7 +1154,7 @@ public class Query {
 
         /**
          *
-         * @param value
+         * @param value  the value to compe on
          */
         public LessThan(T value) {
             super(.1D);
@@ -1158,7 +1166,7 @@ public class Query {
 
         /**
          *
-         * @param value
+         * @param value  the value to compe on
          * @param weight the weight this should return if QueryFilter return matches.
          */
         public LessThan(T value, Double weight) {
@@ -1172,7 +1180,7 @@ public class Query {
         /**
          *
          * @param getter the function used to extract the Comparable sort key
-         * @param value
+         * @param value  the value to compe on
          */
         public LessThan(Function<T, R> getter, T value) {
             super(.1D);
@@ -1186,7 +1194,7 @@ public class Query {
         /**
          *
          * @param getter the function used to extract the Comparable sort key
-         * @param value
+         * @param value  the value to compe on
          * @param weight the weight this should return if QueryFilter return matches.
          */
         public LessThan(Function<T, R> getter, T value, Double weight) {
@@ -1241,7 +1249,7 @@ public class Query {
 
         /**
          *
-         * @param value
+         * @param value  the value to compe on
          */
         public Match(T value) {
             super(1D);
@@ -1255,7 +1263,7 @@ public class Query {
         /**
          *
          * @param getter the function used to extract the Comparable sort key
-         * @param value
+         * @param value  the value to compe on
          */
         public Match(Function<T, R> getter, T value) {
             super(1D);
@@ -1265,7 +1273,7 @@ public class Query {
 
         /**
          *
-         * @param value
+         * @param value  the value to compe on
          * @param weight the weight this should return if QueryFilter return matches.
          */
         public Match(T value, Double weight) {
@@ -1280,7 +1288,7 @@ public class Query {
         /**
          *
          * @param getter the function used to extract the Comparable sort key
-         * @param value
+         * @param value  the value to compe on
          * @param weight the weight this should return if QueryFilter return matches.
          */
         public Match(Function<T, R> getter, T value, Double weight) {
