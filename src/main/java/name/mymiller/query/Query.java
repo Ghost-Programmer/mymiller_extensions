@@ -664,7 +664,7 @@ public class Query {
     public static class And<T> implements QueryFilter<T> {
 
         /**
-         *
+         * LIst of QueryFilters to check if all pass
          */
         private final List<QueryFilter<T>> list;
 
@@ -713,30 +713,30 @@ public class Query {
     }
 
     /**
-     *
+     * QueryFilter to check if a value is between a low and max.  Must be a comparable type
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      */
     public static class Between<T, R> implements QueryFilter<T> {
         /**
-         *
+         * Internal Add, to use in combination with a GreaterThan and LessThan
          */
         private And and;
 
         /**
-         *
-         * @param low
-         * @param max
+         * Check if value falls between two values
+         * @param low low value
+         * @param max max value
          */
         public Between(T low, T max) {
             this.and = new And(new LessThan(max), new GreaterThan(low));
         }
 
         /**
-         *
+         * Check if value falls between two values on the value of a getter
          * @param getter the function used to extract the Comparable sort key
-         * @param low
-         * @param max
+         * @param low low value
+         * @param max max value
          */
         public Between(Function<T, R> getter, T low, T max) {
             this.and = new And(new LessThan(getter, max), new GreaterThan(getter, low));
@@ -755,18 +755,18 @@ public class Query {
     }
 
     /**
-     *
+     *QueryFilter to check if a value is between a low and max or equal.  Must be a comparable type
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      */
     public static class BetweenOrEqual<T, R> implements QueryFilter<T> {
         /**
-         *
+         * Internal Or filter
          */
         private Or or;
 
         /**
-         *
+         * Check if value falls between min/max or equal
          * @param low
          * @param max
          */
@@ -775,7 +775,7 @@ public class Query {
         }
 
         /**
-         *
+         * Check if value falls between min/max or equal on the value of the getter
          * @param getter the function used to extract the Comparable sort key
          * @param low
          * @param max
@@ -802,20 +802,20 @@ public class Query {
     public static class Contains<T> extends AbstractQuery<T> {
 
         /**
-         *
+         * Value to see if is in contains
          */
         private final String value;
         /**
-         *
+         * Value to muliple weight if an exact match
          */
         private final Integer multiplier;
         /**
-         *
+         * Getter function
          */
         private Function<T, String> getter;
 
         /**
-         *
+         * Constructor to check if value is contained in the object
          * @param value  the value to compe on
          */
         public Contains(String value) {
@@ -826,7 +826,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor to check if value is contained in the getter
          * @param value  the value to compe on
          * @param getter the function used to extract the Comparable sort key
          */
@@ -838,7 +838,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor to check if value is contained in the object
          * @param value  the value to compe on
          * @param weigth the weight this should return if QueryFilter return matches.
          * @param multiplier In the case of an exact match, this is applied to the weight
@@ -851,7 +851,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor to check if value is contained in the object on the getter
          * @param value  the value to compe on
          * @param getter the function used to extract the Comparable sort key
          * @param weight the weight this should return if QueryFilter return matches.
