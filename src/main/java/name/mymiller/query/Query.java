@@ -3,8 +3,10 @@ package name.mymiller.query;
 import name.mymiller.utils.ObjectUtils;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -63,6 +65,52 @@ public class Query {
      */
     public static <T> And<T> and(QueryFilter<T>... filters) {
         return new And<>(filters);
+    }
+
+    /**
+     * Returns a collection with the elements filtered based on the provided query
+     * @param list List of elements to filter and generate stream.
+     * @param query Query to apply to List.
+     * @param <T> Type of data that will be passed in.
+     * @param <R> Type of data that will be returned.
+     * @return stream returns a collection of elements based on the query.
+     */
+    public static <T,A,R> R collect(List<T> list, QueryFilter<T> query, Collector<? super T,A,R> collector) {
+        return Query.stream(list,query).collect(collector);
+    }
+
+    /**
+     * Returns a collection with the elements filtered based on the provided query
+     * @param array List of elements to filter and generate stream.
+     * @param query Query to apply to List.
+     * @param <T> Type of data that will be passed in.
+     * @param <R> Type of data that will be returned.
+     * @return stream returns a collection of elements based on the query.
+     */
+    public static <T,A,R> R collect(T[] array, QueryFilter<T> query, Collector<? super T,A,R> collector) {
+        return Query.stream(array,query).collect(collector);
+    }
+
+    /**
+     * Processes each matching element filtered based on the provided query
+     * @param list List of elements to filter and generate stream.
+     * @param query Query to apply to List.
+     * @param <T> Type of data that will be passed in.
+     * @return stream returns a collection of elements based on the query.
+     */
+    public static <T> void forEach(List<T> list, QueryFilter<T> query, Consumer<? super T> action) {
+        Query.stream(list,query).forEach(action);
+    }
+
+    /**
+     * Processes each matching element filtered based on the provided query
+     * @param array Array of elements to filter and generate stream.
+     * @param query Query to apply to List.
+     * @param <T> Type of data that will be passed in.
+     * @return stream returns a collection of elements based on the query.
+     */
+    public static <T> void forEach(T[]array, QueryFilter<T> query, Consumer<? super T> action) {
+        Query.stream(array,query).forEach(action);
     }
 
     /**
