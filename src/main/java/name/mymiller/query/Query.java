@@ -902,24 +902,24 @@ public class Query {
     }
 
     /**
-     *
-     * @param <T> Type of object to filter
-     * @param <R> Type returned from the Getter
+     * Check if the value is greater than the indicate value.  Object must be comparable.
+     * @param <T> Type of object to filter.  Must be of Comparable Type
+     * @param <R> Type returned from the Getter. Must be of Comparable Type
      */
     public static class GreaterThan<T, R> extends AbstractQuery<T> {
         /**
-         *
+         * Getter function
          */
         private Function<T, R> getter;
 
         /**
-         *
+         * Value to compare against
          */
         private T value;
 
         /**
-         *
-         * @param value  the value to compe on
+         * Constructor to check if the object is greater than
+         * @param value  the value to compare on.
          */
         public GreaterThan(T value) {
             super(.1D);
@@ -930,8 +930,8 @@ public class Query {
         }
 
         /**
-         *
-         * @param value  the value to compe on
+         * Constructor to check if the object is greather than, with the specified weight.
+         * @param value  the value to compare on
          * @param weight the weight this should return if QueryFilter return matches.
          */
         public GreaterThan(T value, Double weight) {
@@ -943,7 +943,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor to use a Getter to compare aginst the value.
          * @param getter the function used to extract the Comparable sort key
          * @param value  the value to compe on
          */
@@ -957,7 +957,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor use a getter to compare against the value, and use the spedified weight.
          * @param getter the function used to extract the Comparable sort key
          * @param value  the value to compe on
          * @param weight the weight this should return if QueryFilter return matches.
@@ -999,26 +999,26 @@ public class Query {
     }
 
     /**
-     *
+     * Check if the value of the string is empty.  Null will return 0.
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      */
     public static class IsEmpty<T, R> extends AbstractQuery<T> {
 
         /**
-         *
+         * Getter Function
          */
         private Function<T, R> getter;
 
         /**
-         *
+         * Constructor with default weight
          */
         public IsEmpty() {
             super(.1D);
         }
 
         /**
-         *
+         * Constructor with specified weight.
          * @param weight the weight this should return if QueryFilter return matches.
          */
         public IsEmpty(Double weight) {
@@ -1026,7 +1026,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor to use Getter
          * @param getter the function used to extract the Comparable sort key
          */
         public IsEmpty(Function<T, R> getter) {
@@ -1035,7 +1035,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor to use Getter and specified Weigth.
          * @param getter the function used to extract the Comparable sort key
          * @param weight the weight this should return if QueryFilter return matches.
          */
@@ -1072,25 +1072,25 @@ public class Query {
     }
 
     /**
-     *
+     * Query Filter to check for Null
      * @param <T> Type of object to filter
-     * @param <R>
+     * @param <R> Type returned from the Getter
      */
     public static class IsNull<T, R> extends AbstractQuery<T> {
         /**
-         *
+         * Getter Function
          */
         private Function<T, R> getter;
 
         /**
-         *
+         * Constructor for with default weight.
          */
         public IsNull() {
             super(.1D);
         }
 
         /**
-         *
+         * Constructor with specified weight.
          * @param weight the weight this should return if QueryFilter return matches.
          */
         public IsNull(Double weight) {
@@ -1098,7 +1098,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor with Getter
          * @param getter the function used to extract the Comparable sort key
          */
         public IsNull(Function<T, R> getter) {
@@ -1107,7 +1107,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor with Getter and Weight
          * @param getter the function used to extract the Comparable sort key
          * @param weight the weight this should return if QueryFilter return matches.
          */
@@ -1137,23 +1137,23 @@ public class Query {
     }
 
     /**
-     *
+     * Query Filter to check if value is less than indicate value.
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      */
     public static class LessThan<T, R> extends AbstractQuery<T> {
 
         /**
-         *
+         * Value to compare
          */
         private T value;
         /**
-         *
+         * Getter Function
          */
         private Function<T, R> getter;
 
         /**
-         *
+         * Constructor with value
          * @param value  the value to compe on
          */
         public LessThan(T value) {
@@ -1165,7 +1165,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor with value and weight.
          * @param value  the value to compe on
          * @param weight the weight this should return if QueryFilter return matches.
          */
@@ -1178,7 +1178,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor with Getter and Valued
          * @param getter the function used to extract the Comparable sort key
          * @param value  the value to compe on
          */
@@ -1192,7 +1192,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor with Getter, Value and Weight
          * @param getter the function used to extract the Comparable sort key
          * @param value  the value to compe on
          * @param weight the weight this should return if QueryFilter return matches.
@@ -1234,21 +1234,21 @@ public class Query {
     }
 
     /**
-     * Compares the toString() value of an object the value in the field.
+     * Compares an object to see if they are Equal.
      */
     public static class Match<T, R> extends AbstractQuery<T> {
 
         /**
-         *
+         * Value to compare
          */
         private final T value;
         /**
-         *
+         * Getter Function
          */
         private Function<T, R> getter;
 
         /**
-         *
+         * Constrctor with value to compare.
          * @param value  the value to compe on
          */
         public Match(T value) {
@@ -1261,7 +1261,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor with Getter and value to compare.
          * @param getter the function used to extract the Comparable sort key
          * @param value  the value to compe on
          */
@@ -1272,7 +1272,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor with value to compare and weight.
          * @param value  the value to compe on
          * @param weight the weight this should return if QueryFilter return matches.
          */
@@ -1286,7 +1286,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor with getter, value to compare and weight.
          * @param getter the function used to extract the Comparable sort key
          * @param value  the value to compe on
          * @param weight the weight this should return if QueryFilter return matches.
@@ -1316,7 +1316,7 @@ public class Query {
      */
     public static class Not<T> extends AbstractQuery<T> {
         /**
-         *
+         * Filter to flip the value on.
          */
         private final QueryFilter<T> filter;
 
@@ -1334,8 +1334,8 @@ public class Query {
         }
 
         /**
-         *
-         * @param filter
+         * Creatre NotFilter to flip the value on, with specified weight.
+         * @param filter Filter to flip value on.
          * @param weight the weight this should return if QueryFilter return matches.
          */
         public Not(QueryFilter<T> filter, Double weight) {
@@ -1357,25 +1357,25 @@ public class Query {
     }
 
     /**
-     *
+     * Query Filter to check if string is not empty
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Getter
      */
     public static class NotEmpty<T, R> implements QueryFilter<T> {
         /**
-         *
+         * Not filter to use internally to flip IsEmpty.
          */
         private Not not;
 
         /**
-         *
+         * Constructor with default weight.
          */
         public NotEmpty() {
             this.not = new Not(new IsEmpty());
         }
 
         /**
-         *
+         * Constructor with specified weight.
          * @param weight the weight this should return if QueryFilter return matches.
          */
         public NotEmpty(Double weight) {
@@ -1383,7 +1383,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor with getter
          * @param getter the function used to extract the Comparable sort key
          */
         public NotEmpty(Function<T, R> getter) {
@@ -1391,7 +1391,7 @@ public class Query {
         }
 
         /**
-         *
+         * Constructor with getter and weight specified
          * @param getter the function used to extract the Comparable sort key
          * @param weight the weight this should return if QueryFilter return matches.
          */
@@ -1412,18 +1412,18 @@ public class Query {
     }
 
     /**
-     *
+     * Query Filter to check if value is not null
      * @param <T> Type of object to filter
      * @param <R> Type returned from the Gettervvv
      */
     public static class NotNull<T, R> implements QueryFilter<T> {
         /**
-         *
+         * Not query filter to flip
           */
         private Not not;
 
         /**
-         *
+         * Constructor with default weight.
          */
         public NotNull() {
             this.not = new Not(new IsNull());
