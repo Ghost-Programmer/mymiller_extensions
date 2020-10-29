@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Query builder for creating queries to be used in Stream filters, or other uses. Calculates a weight on each passed item.
@@ -30,6 +31,29 @@ public class Query {
      * @return Comparator suitable for a sort() or sorted() call.
      */
     public static <T> Comparator<T> comparator(QueryFilter<T> filter) { return new QueryComparator<>(filter);}
+
+
+    /**
+     * Returns a stream with the elements filtered based on the provided query
+     * @param list List of elements to filter and generate stream.
+     * @param query Query to apply to List.
+     * @param <T> Type of data that will be passed in.
+     * @return stream returns a stream of elements based on the query.
+     */
+    public static <T> Stream<T> stream(List<T> list, QueryFilter<T> query) {
+        return list.stream().filter(Query.filter(query)).sorted(Query.comparator(query));
+    }
+
+    /**
+     * Returns a stream with the elements filtered based on the provided query
+     * @param array Array of elements to filter and generate stream.
+     * @param query Query to apply to List.
+     * @param <T> Type of data that will be passed in.
+     * @return stream returns a stream of elements based on the query.
+     */
+    public static <T> Stream<T> stream(T[] array, QueryFilter<T> query) {
+        return Stream.of(array).filter(Query.filter(query)).sorted(Query.comparator(query));
+    }
 
     /**
      * Wraps a number of queries in an And filter.  All queries must return a weight > 0 in order of this to pass.
