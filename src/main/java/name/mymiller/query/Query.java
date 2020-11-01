@@ -58,16 +58,6 @@ public class Query {
     }
 
     /**
-     * Wraps a number of queries in an And filter.  All queries must return a weight > 0 in order of this to pass.
-     * @param filters Array of filters to be wrapped in the And.
-     * @param <T> Type of object to filter
-     * @return And QueryFilter with the filters added to it
-     */
-    public static <T> And<T> and(QueryFilter<T>... filters) {
-        return new And<>(filters);
-    }
-
-    /**
      * Returns a collection with the elements filtered based on the provided query
      * @param list List of elements to filter and generate stream.
      * @param query Query to apply to List.
@@ -111,6 +101,16 @@ public class Query {
      */
     public static <T> void forEach(T[]array, QueryFilter<T> query, Consumer<? super T> action) {
         Query.stream(array,query).forEach(action);
+    }
+
+    /**
+     * Wraps a number of queries in an And filter.  All queries must return a weight > 0 in order of this to pass.
+     * @param filters Array of filters to be wrapped in the And.
+     * @param <T> Type of object to filter
+     * @return And QueryFilter with the filters added to it
+     */
+    public static <T> And<T> and(QueryFilter<T>... filters) {
+        return new And<>(filters);
     }
 
     /**
