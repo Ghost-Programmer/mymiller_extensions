@@ -16,22 +16,22 @@
 package name.mymiller.javafx.job;
 
 import javafx.application.Platform;
-import name.mymiller.job.Job;
-import name.mymiller.job.JobManager;
+import name.mymiller.task.Action;
+import name.mymiller.task.TaskManager;
 
 /**
  * Class to wrap a JavaFX Job
  *
  * @author jmiller
  */
-public abstract class JobFx extends Job {
+public abstract class JobFx extends Action {
     @Override
     public void run() {
         Platform.runLater(() -> {
             JobFx.this.preProcess();
             JobFx.this.process();
-            for (final Job job : JobFx.this.subJobs) {
-                JobManager.getInstance().submit(job);
+            for (final Action job : JobFx.this.subJobs) {
+                TaskManager.getInstance().submit(job);
             }
             JobFx.this.postProcess();
         });

@@ -16,14 +16,14 @@
 /*
 
  */
-package name.mymiller.job;
+package name.mymiller.task;
 
 import java.util.logging.Logger;
 
 /**
  * @author jmiller Basic service functions
  */
-public abstract class AbstractService extends Job {
+public abstract class AbstractService implements Runnable {
 
     /**
      * Boolean indicating if the Service should shutdown
@@ -78,7 +78,7 @@ public abstract class AbstractService extends Job {
     }
 
     @Override
-    protected void process() {
+    public void run() {
         Logger.getLogger(AbstractService.class.getName()).info(this.getClass().getSimpleName() + " Service Running");
         this.setShutdown(false);
         this.service();

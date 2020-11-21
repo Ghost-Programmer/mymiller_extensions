@@ -15,8 +15,6 @@
  */
 package name.mymiller.lang.validation;
 
-import name.mymiller.lang.AdvancedString;
-
 import java.util.regex.Pattern;
 
 /**
@@ -42,7 +40,7 @@ public class EmailAddress {
      *                     be validated
      * @return true if the string is an email address
      */
-    public static boolean isEmailAddres(final AdvancedString emailAddress) {
-        return EmailAddress.emailPattern.matcher(emailAddress.toString()).matches();
+    public static boolean isEmailAddres(final String emailAddress) {
+        return EmailAddress.emailPattern.matcher(emailAddress).matches();
     }
 }

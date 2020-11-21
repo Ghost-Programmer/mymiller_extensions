@@ -27,7 +27,7 @@ import java.util.logging.Level;
  *
  * @author jmiller
  */
-public class AdvancedProcess extends Thread {
+public class Process extends Thread {
     /**
      * Internal list of the arguments.
      */
@@ -73,7 +73,7 @@ public class AdvancedProcess extends Thread {
         try {
             if (this.args != null) {
                 final StringBuilder processOutput = new StringBuilder();
-                final Process process = Runtime.getRuntime().exec(this.args);
+                final java.lang.Process process = Runtime.getRuntime().exec(this.args);
 
                 try (BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                     String inputLine = null;

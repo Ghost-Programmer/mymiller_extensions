@@ -18,7 +18,7 @@ package name.mymiller.httpserver.filters;
 import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 import name.mymiller.httpserver.HttpConstants;
-import name.mymiller.lang.AdvancedString;
+import name.mymiller.utils.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,10 +59,10 @@ public class ParameterFilter extends Filter {
 	private void addParameter(final HttpExchange exchange, final String key, final String value) {
 		final Map<String, Object> parameters = ParameterFilter.getParametersFromExchange(exchange);
 
-		final AdvancedString advKey = new AdvancedString(key);
-		final AdvancedString advValue = new AdvancedString(value);
+		final String advKey = new String(key);
+		final String advValue = new String(value);
 
-		if (!advKey.containsHtml() && !advValue.containsHtml()) {
+		if (!StringUtils.containsHtml(advKey) && !StringUtils.containsHtml(advValue)) {
 			if (parameters.containsKey(key)) {
 				final Object obj = parameters.get(key);
 				if (obj instanceof List<?>) {

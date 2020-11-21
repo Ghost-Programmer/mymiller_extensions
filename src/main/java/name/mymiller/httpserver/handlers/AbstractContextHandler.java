@@ -17,7 +17,7 @@ package name.mymiller.httpserver.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import name.mymiller.httpserver.HttpConstants;
-import name.mymiller.lang.AdvancedString;
+import name.mymiller.utils.StringUtils;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -107,8 +107,8 @@ public abstract class AbstractContextHandler implements ContextHandlerInterface 
 	public void handle(final HttpExchange exchange) throws IOException {
 		final String context = exchange.getHttpContext().getPath();
 		final String pathInfo = exchange.getRequestURI().getRawPath().substring(context.length());
-		final AdvancedString advPathInfo = new AdvancedString(pathInfo);
-		if (advPathInfo.containsHtml()) {
+		final String advPathInfo = new String(pathInfo);
+		if (StringUtils.containsHtml(advPathInfo)) {
 			this.sendBadRequest(exchange);
 		} else {
 			Map<String, Object> parameters = null;

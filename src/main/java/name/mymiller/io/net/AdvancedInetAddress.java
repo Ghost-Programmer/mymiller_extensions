@@ -18,7 +18,7 @@
  */
 package name.mymiller.io.net;
 
-import name.mymiller.io.AdvancedProcess;
+import name.mymiller.io.Process;
 import java.util.logging.Logger;
 
 import java.io.BufferedReader;
@@ -91,7 +91,7 @@ public class AdvancedInetAddress {
         try {
             this.isReachable(timeout);
 
-            final AdvancedProcess arp = new AdvancedProcess();
+            final Process arp = new Process();
             arp.setArgs(new String[]{"arp", "-a"});
 
             arp.start();
@@ -446,7 +446,7 @@ public class AdvancedInetAddress {
      */
     public int ping() {
         try {
-            final AdvancedProcess ping = new AdvancedProcess();
+            final Process ping = new Process();
             ping.setArgs(new String[]{"ping", this.getHostName()});
             ping.start();
             ping.join();
@@ -531,7 +531,7 @@ public class AdvancedInetAddress {
         final ArrayList<AdvancedInetAddress> list = new ArrayList<>();
 
         try {
-            final AdvancedProcess traceRoute = new AdvancedProcess();
+            final Process traceRoute = new Process();
             //noinspection SpellCheckingInspection
             traceRoute.setArgs(new String[]{"tracert", this.getHostName()});
             traceRoute.start();

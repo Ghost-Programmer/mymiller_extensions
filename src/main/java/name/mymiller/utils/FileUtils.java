@@ -13,7 +13,7 @@
  License for the specific language governing permissions and limitations under
  the License.
  */
-package name.mymiller.io;
+package name.mymiller.utils;
 
 import java.io.*;
 import java.net.URI;
@@ -22,7 +22,7 @@ import java.nio.channels.FileChannel;
 /**
  * @author jmiller Implement advanced features onto the existing File object
  */
-public class AdvancedFile extends File {
+public class FileUtils extends File {
 
     /**
      * Serial Version UID
@@ -47,7 +47,7 @@ public class AdvancedFile extends File {
      * @param parent The parent abstract pathname
      * @param child  The child pathname string
      */
-    public AdvancedFile(final File parent, final String child) {
+    public FileUtils(final File parent, final String child) {
         super(parent, child);
     }
 
@@ -58,7 +58,7 @@ public class AdvancedFile extends File {
      *
      * @param pathname A pathname string
      */
-    public AdvancedFile(final String pathname) {
+    public FileUtils(final String pathname) {
         super(pathname);
     }
 
@@ -80,7 +80,7 @@ public class AdvancedFile extends File {
      * @param parent The parent abstract pathname
      * @param child  The child pathname string
      */
-    public AdvancedFile(final String parent, final String child) {
+    public FileUtils(final String parent, final String child) {
         super(parent, child);
     }
 
@@ -102,7 +102,7 @@ public class AdvancedFile extends File {
      *            non-empty path component, and undefined authority, query, and
      *            fragment components Throws:
      */
-    public AdvancedFile(final URI uri) {
+    public FileUtils(final URI uri) {
         super(uri);
     }
 

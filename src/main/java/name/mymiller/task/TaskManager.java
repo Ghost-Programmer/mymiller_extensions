@@ -13,9 +13,10 @@
  License for the specific language governing permissions and limitations under
  the License.
  */
-package name.mymiller.job;
+package name.mymiller.task;
 
 import name.mymiller.lang.singleton.SingletonInterface;
+
 import java.util.logging.Logger;
 
 import java.util.HashMap;
@@ -27,12 +28,12 @@ import java.util.concurrent.*;
  *
  * @author jmiller
  */
-public class JobManager implements SingletonInterface<JobManager> {
+public class TaskManager implements SingletonInterface<TaskManager> {
 
     /**
-     * Job Manager Global Instance
+     * Action Manager Global Instance
      */
-    private static JobManager global_instance = null;
+    private static TaskManager global_instance = null;
     /**
      * Thread pool to perform the processing
      */
@@ -46,44 +47,49 @@ public class JobManager implements SingletonInterface<JobManager> {
      */
     private HashMap<String, Thread> namedThreads = null;
 
+    private ForkJoinPool forkJoinPool = null;
+
+
     /**
      * Constructor protected to limit instantiation.
      */
-    protected JobManager(int reserveProcessors, int processorMultiplier) {
+    protected TaskManager(int reserveProcessors, int processorMultiplier) {
         this.namedThreads = new HashMap<>();
         int processors = Runtime.getRuntime().availableProcessors();
 
         if (reserveProcessors >= processors) {
             processors = processorMultiplier;
-            Logger.getLogger(this.getClass().getName()).info("Job Manager Processors: " + processors);
+            Logger.getLogger(this.getClass().getName()).info("Action Manager Processors: " + processors);
             Logger.getLogger(this.getClass().getName())
-                    .info("Job Manager Reserved Processors: " + (Runtime.getRuntime().availableProcessors() - 1));
+                    .info("Action Manager Reserved Processors: " + (Runtime.getRuntime().availableProcessors() - 1));
         } else {
             processors = (processors - reserveProcessors) * processorMultiplier;
-            Logger.getLogger(this.getClass().getName()).info("Job Manager Processors: " + processors);
-            Logger.getLogger(this.getClass().getName()).info("Job Manager Reserved Processors: " + reserveProcessors);
+            Logger.getLogger(this.getClass().getName()).info("Action Manager Processors: " + processors);
+            Logger.getLogger(this.getClass().getName()).info("Action Manager Reserved Processors: " + reserveProcessors);
         }
 
         this.pool = Executors.newFixedThreadPool(processors);
+
+        this.forkJoinPool = ForkJoinPool.commonPool();
 
         this.scheduledPool = Executors.newScheduledThreadPool(1);
     }
 
     /**
-     * @return Global Instance of the Job Manager
+     * @return Global Instance of the Action Manager
      */
-    public static JobManager getInstance() {
-        if (JobManager.global_instance == null) {
-            JobManager.global_instance = new JobManager(1, 2);
+    public static TaskManager getInstance() {
+        if (TaskManager.global_instance == null) {
+            TaskManager.global_instance = new TaskManager(1, 2);
         }
-        return JobManager.global_instance;
+        return TaskManager.global_instance;
     }
 
-    public static JobManager getInstance(int reserveProcessors, int processorMultiplier) {
-        if (JobManager.global_instance == null) {
-            JobManager.global_instance = new JobManager(reserveProcessors, processorMultiplier);
+    public static TaskManager getInstance(int reserveProcessors, int processorMultiplier) {
+        if (TaskManager.global_instance == null) {
+            TaskManager.global_instance = new TaskManager(reserveProcessors, processorMultiplier);
         }
-        return JobManager.global_instance;
+        return TaskManager.global_instance;
     }
 
     /**
@@ -103,10 +109,10 @@ public class JobManager implements SingletonInterface<JobManager> {
     }
 
     /**
-     * Create a new thread to execute the name.mymiller.job.
+     * Create a new thread to execute the name.mymiller.action.
      *
-     * @param name    Name of the thread to execute the name.mymiller.job
-     * @param service Job to execute.
+     * @param name    Name of the thread to execute the name.mymiller.action
+     * @param service Action to execute.
      */
     public void createService(final String name, final AbstractService service) {
         final Thread thread = new Thread(service, name);
@@ -117,12 +123,12 @@ public class JobManager implements SingletonInterface<JobManager> {
     }
 
     /**
-     * Executes the name.mymiller.job asynchronously.
+     * Executes the name.mymiller.action asynchronously.
      *
-     * @param job Job to process
+     * @param action Action to process
      */
-    public void executeJob(final Job job) {
-        this.pool.execute(job);
+    public void executeJob(final Action action) {
+        this.pool.execute(action);
     }
 
     /**
@@ -148,31 +154,31 @@ public class JobManager implements SingletonInterface<JobManager> {
     }
 
     /**
-     * Creates and executes a one-shot name.mymiller.job that becomes
+     * Creates and executes a one-shot name.mymiller.action that becomes
      * enabled after the given delay.
      *
-     * @param job   the task to execute
+     * @param action   the task to execute
      * @param delay the time from now to delay execution
      * @param unit  the time unit of the delay parameter
      * @return a ScheduledFuture that can be used to extract result or cancel
      * @see ScheduledExecutorService#schedule(Runnable, long, TimeUnit)
      */
-    public ScheduledFuture<?> schedule(Job job, long delay, TimeUnit unit) {
-        return this.scheduledPool.schedule(job, delay, unit);
+    public ScheduledFuture<?> schedule(Action action, long delay, TimeUnit unit) {
+        return this.scheduledPool.schedule(action, delay, unit);
     }
 
     /**
-     * Creates and executes a periodic name.mymiller.job that becomes
+     * Creates and executes a periodic name.mymiller.action that becomes
      * enabled first after the given initial delay, and subsequently with the given
      * period; that is executions will commence after initialDelay then
      * initialDelay+period, then initialDelay + 2 * period, and so on. If any
-     * execution of the name.mymiller.job encounters an exception,
+     * execution of the name.mymiller.action encounters an exception,
      * subsequent executions are suppressed. Otherwise, the task will only terminate
      * via cancellation or termination of the executor. If any execution of this
      * task takes longer than its period, then subsequent executions may start late,
      * but will not concurrently execute.
      *
-     * @param job          the task to execute
+     * @param action          the task to execute
      * @param initialDelay the time to delay first execution
      * @param period       the period between successive executions
      * @param unit         the time unit of the initialDelay and period parameters
@@ -181,8 +187,8 @@ public class JobManager implements SingletonInterface<JobManager> {
      * @see ScheduledExecutorService#scheduleAtFixedRate(Runnable, long, long,
      * TimeUnit)
      */
-    public ScheduledFuture<?> scheduleAtFixedRate(Job job, long initialDelay, long period, TimeUnit unit) {
-        return this.scheduledPool.scheduleAtFixedRate(job, initialDelay, period, unit);
+    public ScheduledFuture<?> scheduleAtFixedRate(Action action, long initialDelay, long period, TimeUnit unit) {
+        return this.scheduledPool.scheduleAtFixedRate(action, initialDelay, period, unit);
     }
 
     public <T> Future<T> scheduleWithFixedDelay(Callable<T> callable, long delay, TimeUnit unit) {
@@ -190,14 +196,14 @@ public class JobManager implements SingletonInterface<JobManager> {
     }
 
     /**
-     * Creates and executes a periodic name.mymiller.job that becomes
+     * Creates and executes a periodic name.mymiller.action that becomes
      * enabled first after the given initial delay, and subsequently with the given
      * delay between the termination of one execution and the commencement of the
-     * next. If any execution of the name.mymiller.job encounters an
+     * next. If any execution of the name.mymiller.action encounters an
      * exception, subsequent executions are suppressed. Otherwise, the task will
      * only terminate via cancellation or termination of the executor.
      *
-     * @param job          the task to execute
+     * @param action          the task to execute
      * @param initialDelay the time to delay first execution
      * @param delay        the delay between the termination of one execution and
      *                     the commencement of the next
@@ -207,8 +213,8 @@ public class JobManager implements SingletonInterface<JobManager> {
      * @see ScheduledExecutorService#scheduleWithFixedDelay(Runnable, long, long,
      * TimeUnit)
      */
-    public ScheduledFuture<?> scheduleWithFixedDelay(Job job, long initialDelay, long delay, TimeUnit unit) {
-        return this.scheduledPool.scheduleWithFixedDelay(job, initialDelay, delay, unit);
+    public ScheduledFuture<?> scheduleWithFixedDelay(Action action, long initialDelay, long delay, TimeUnit unit) {
+        return this.scheduledPool.scheduleWithFixedDelay(action, initialDelay, delay, unit);
     }
 
     /**
@@ -249,14 +255,14 @@ public class JobManager implements SingletonInterface<JobManager> {
     }
 
     /**
-     * Submits a name.mymiller.job for execution
+     * Submits a name.mymiller.action for execution
      *
-     * @param job Job to process
+     * @param action Action to process
      * @return Future representing the completion of the
-     * name.mymiller.job.
+     * name.mymiller.action.
      */
-    public Future<?> submit(final Job job) {
-        return this.pool.submit(job);
+    public Future<?> submit(final Action action) {
+        return this.pool.submit(action);
     }
 
     /**
@@ -283,5 +289,82 @@ public class JobManager implements SingletonInterface<JobManager> {
      */
     public ScheduledExecutorService getScheduledPool() {
         return scheduledPool;
+    }
+
+    /**
+     * Performs the given task, returning its result upon completion.
+     * If the computation encounters an unchecked Exception or Error,
+     * it is rethrown as the outcome of this invocation.  Rethrown
+     * exceptions behave in the same way as regular exceptions, but,
+     * when possible, contain stack traces (as displayed for example
+     * using {@code ex.printStackTrace()}) of both the current thread
+     * as well as the thread actually encountering the exception;
+     * minimally only the latter.
+     *
+     * @param action the action
+     * @return the task's result
+     * @throws NullPointerException if the task is null
+     * @throws java.util.concurrent.RejectedExecutionException if the task cannot be
+     *         scheduled for execution
+     */
+    public void invoke(Action action) {
+        forkJoinPool.invoke(action);
+    }
+
+    /**
+     * Arranges for (asynchronous) execution of the given task.
+     *
+     * @param action the task
+     * @throws NullPointerException if the task is null
+     * @throws java.util.concurrent.RejectedExecutionException if the task cannot be
+     *         scheduled for execution
+     */
+    public void execute(RecursiveAction action) {
+        forkJoinPool.execute(action);
+    }
+
+    /**
+     * Arranges for (asynchronous) execution of the given task.
+     *
+     * @param task the task
+     * @throws NullPointerException if the task is null
+     * @throws java.util.concurrent.RejectedExecutionException if the task cannot be
+     *         scheduled for execution
+     */
+    public void execute(ForkJoinTask<?> task) {
+        forkJoinPool.execute(task);
+    }
+
+    /**
+     * Performs the given task, returning its result upon completion.
+     * If the computation encounters an unchecked Exception or Error,
+     * it is rethrown as the outcome of this invocation.  Rethrown
+     * exceptions behave in the same way as regular exceptions, but,
+     * when possible, contain stack traces (as displayed for example
+     * using {@code ex.printStackTrace()}) of both the current thread
+     * as well as the thread actually encountering the exception;
+     * minimally only the latter.
+     *
+     * @param task the task
+     * @return the task's result
+     * @throws NullPointerException if the task is null
+     * @throws java.util.concurrent.RejectedExecutionException if the task cannot be
+     *         scheduled for execution
+     */
+    public <T> T invoke(ForkJoinTask<T> task) {
+        return forkJoinPool.invoke(task);
+    }
+
+    /**
+     * Submits a ForkJoinTask for execution.
+     *
+     * @param task the task to submit
+     * @return the task
+     * @throws NullPointerException if the task is null
+     * @throws java.util.concurrent.RejectedExecutionException if the task cannot be
+     *         scheduled for execution
+     */
+    public <T> ForkJoinTask<T> submit(ForkJoinTask<T> task) {
+        return forkJoinPool.submit(task);
     }
 }

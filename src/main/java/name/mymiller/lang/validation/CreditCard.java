@@ -15,8 +15,6 @@
  */
 package name.mymiller.lang.validation;
 
-import name.mymiller.lang.AdvancedString;
-
 import java.util.regex.Pattern;
 
 /**
@@ -87,60 +85,60 @@ public class CreditCard {
     /**
      * Is the String a valid American Express Card
      *
-     * @param cardNumber AdvancedString with the card number
+     * @param cardNumber String with the card number
      * @return true if it is valid.
      */
-    public static boolean isAmericanExpress(final AdvancedString cardNumber) {
+    public static boolean isAmericanExpress(final String cardNumber) {
         return CreditCard.amexPattern.matcher(cardNumber.replaceAll("[^0-9]+", "").trim().toString()).matches();
     }
 
     /**
      * Is the String a valid Diners Club Card
      *
-     * @param cardNumber AdvancedString with the card number
+     * @param cardNumber String with the card number
      * @return true if it is valid.
      */
-    public static boolean isDinersClub(final AdvancedString cardNumber) {
+    public static boolean isDinersClub(final String cardNumber) {
         return CreditCard.dinersCludPattern.matcher(cardNumber.replaceAll("[^0-9]+", "").trim().toString()).matches();
     }
 
     /**
      * Is the String a valid Discover Card
      *
-     * @param cardNumber AdvancedString with the card number
+     * @param cardNumber String with the card number
      * @return true if it is valid.
      */
-    public static boolean isDiscover(final AdvancedString cardNumber) {
+    public static boolean isDiscover(final String cardNumber) {
         return CreditCard.discoverPattern.matcher(cardNumber.replaceAll("[^0-9]+", "").trim().toString()).matches();
     }
 
     /**
      * Is the String a valid JCB Card
      *
-     * @param cardNumber AdvancedString with the card number
+     * @param cardNumber String with the card number
      * @return true if it is valid.
      */
-    public static boolean isJCB(final AdvancedString cardNumber) {
+    public static boolean isJCB(final String cardNumber) {
         return CreditCard.jcbPattern.matcher(cardNumber.replaceAll("[^0-9]+", "").trim().toString()).matches();
     }
 
     /**
      * Is the String a valid MasterCard Card
      *
-     * @param cardNumber AdvancedString with the card number
+     * @param cardNumber String with the card number
      * @return true if it is valid.
      */
-    public static boolean isMasterCard(final AdvancedString cardNumber) {
+    public static boolean isMasterCard(final String cardNumber) {
         return CreditCard.masterCardPattern.matcher(cardNumber.replaceAll("[^0-9]+", "").trim().toString()).matches();
     }
 
     /**
      * Is the String a valid credit card
      *
-     * @param cardNumber AdvancedString with the card number
+     * @param cardNumber String with the card number
      * @return true if it is valid.
      */
-    public static boolean isValidCreditCard(final AdvancedString cardNumber) {
+    public static boolean isValidCreditCard(final String cardNumber) {
         return CreditCard.validCreditCardPattern.matcher(cardNumber.replaceAll("[^0-9]+", "").trim().toString())
                 .matches();
     }
@@ -148,10 +146,10 @@ public class CreditCard {
     /**
      * Is the String a valid VISA Card
      *
-     * @param cardNumber AdvancedString with the card number
+     * @param cardNumber String with the card number
      * @return true if it is valid.
      */
-    public static boolean isVisa(final AdvancedString cardNumber) {
+    public static boolean isVisa(final String cardNumber) {
         return CreditCard.visaPattern.matcher(cardNumber.replaceAll("[^0-9]+", "").trim().toString()).matches();
     }
 }

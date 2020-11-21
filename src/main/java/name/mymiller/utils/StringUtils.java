@@ -1,5 +1,6 @@
 package name.mymiller.utils;
 
+import java.util.*;
 import java.util.logging.Logger;
 
 import javax.swing.text.html.HTMLEditorKit;
@@ -8,10 +9,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -168,6 +165,24 @@ public class StringUtils extends ObjectUtils {
         }
 
         return formatted;
+    }
+
+    /**
+     * Split the string into paragraphs based on blank lines between paragraphs.
+     *
+     * @return Array of AdvancedString containing each paragraph.
+     */
+    public static List<String> getParagraphs(String string) {
+        final ArrayList<String> list = new ArrayList<>();
+
+        try (Scanner scanner = new Scanner(string)) {
+            scanner.useDelimiter("(?m:^$)");
+            while (scanner.hasNext()) {
+                list.add(scanner.next());
+            }
+        }
+
+        return list;
     }
 
     /**

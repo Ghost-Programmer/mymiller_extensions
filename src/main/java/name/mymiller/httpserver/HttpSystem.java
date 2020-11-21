@@ -18,8 +18,8 @@ package name.mymiller.httpserver;
 import com.sun.net.httpserver.HttpServer;
 import name.mymiller.httpserver.handlers.ContextHandlerInterface;
 import name.mymiller.httpserver.handlers.HttpHandlerAnnotation;
-import name.mymiller.job.AbstractService;
-import name.mymiller.job.JobManager;
+import name.mymiller.task.AbstractService;
+import name.mymiller.task.TaskManager;
 import name.mymiller.lang.singleton.SingletonInterface;
 import java.util.logging.Logger;
 
@@ -231,7 +231,7 @@ public class HttpSystem extends AbstractService implements SingletonInterface<Ht
                     .info("Server is started and listening on port " + this.httpServer.getAddress().getPort());
             this.httpServer.start();
 
-            JobManager.getInstance().createService("HTTP System", HttpSystem.getInstance());
+            TaskManager.getInstance().createService("HTTP System", HttpSystem.getInstance());
         } catch (final IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "IOException Error in starting HTTPSystem", e);
         } catch (final SecurityException e) {

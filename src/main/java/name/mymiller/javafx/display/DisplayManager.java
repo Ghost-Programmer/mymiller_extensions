@@ -19,8 +19,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.stage.Screen;
-import name.mymiller.job.AbstractService;
-import name.mymiller.job.JobManager;
+import name.mymiller.task.AbstractService;
+import name.mymiller.task.TaskManager;
 import name.mymiller.lang.singleton.Singleton;
 import name.mymiller.lang.singleton.SingletonInterface;
 
@@ -210,7 +210,7 @@ public class DisplayManager extends AbstractService implements SingletonInterfac
     public void start() {
         Logger.getLogger(DisplayManager.class.getName()).info("Starting Display Manager");
         this.setShutdown(false);
-        JobManager.getInstance().createService("Display Manager", DisplayManager.getInstance());
+        TaskManager.getInstance().createService("Display Manager", DisplayManager.getInstance());
     }
 
     @Override

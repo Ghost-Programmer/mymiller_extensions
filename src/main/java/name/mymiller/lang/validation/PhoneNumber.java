@@ -15,8 +15,6 @@
  */
 package name.mymiller.lang.validation;
 
-import name.mymiller.lang.AdvancedString;
-
 import java.util.regex.Pattern;
 
 /**
@@ -40,8 +38,8 @@ public class PhoneNumber {
      * @param phoneNumber AdvancedString containing the phone number to validate
      * @return true if the string is a phone number
      */
-    public static boolean isPhoneNumber(final AdvancedString phoneNumber) {
-        return PhoneNumber.phonePattern.matcher(phoneNumber.toString()).matches();
+    public static boolean isPhoneNumber(final String phoneNumber) {
+        return PhoneNumber.phonePattern.matcher(phoneNumber).matches();
     }
 
 }
