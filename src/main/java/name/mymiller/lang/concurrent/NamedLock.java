@@ -216,7 +216,7 @@ public class NamedLock {
                 try {
                     return TaskManager.getInstance().invoke(recursiveFutureAction);
                 } finally {
-                    internalUnlock(name);
+                    internalUnlock();
                 }
             }
         }
@@ -251,7 +251,7 @@ public class NamedLock {
             try {
                 invokeAll(this.recursiveAction);
             } finally {
-                internalUnlock(name);
+                internalUnlock();
             }
         }
     }
@@ -293,7 +293,7 @@ public class NamedLock {
             try {
                 procedure.action();
             } finally {
-                internalUnlock(name);
+                internalUnlock();
             }
         }
     }
@@ -331,7 +331,7 @@ public class NamedLock {
             try {
                 return function.action();
             } finally {
-                internalUnlock(name);
+                internalUnlock();
             }
         }
     }
