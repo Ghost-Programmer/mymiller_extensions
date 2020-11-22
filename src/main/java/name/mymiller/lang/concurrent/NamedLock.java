@@ -75,21 +75,37 @@ public class NamedLock {
         this.maxWait = 1000L;
     }
 
+    /**
+     * Once the lock is achieved will execute the Procedure and then release the lock.
+     * @param name String contain the name of this instance
+     * @param procedure Procedure interface to execute once locked.
+     */
     public void lock(String name, Procedure procedure) {
         this.internalLock(name);
         procedure.action();
-        this.internalUnlock(name);
+        this.internalUnlock();
     }
 
+    /**
+     * Once the lock is achieved will execute the Function, release the lock, and return the value
+     * @param name String containing the name of this instance.
+     * @param function Function interface to execute once locked.
+     * @param <T> Type of return
+     * @return Value returned from the Function.
+     */
     public <T> T lock(String name, Function<T> function) {
         this.internalLock(name);
         try {
             return function.action();
         } finally {
-            this.internalUnlock(name);
+            this.internalUnlock();
         }
     }
 
+    /**
+     * Internal locking method to lock on the instance
+     * @param name Name of instance to lock
+     */
     private void internalLock(String name) {
         do {
             synchronized (syncObject) {
@@ -116,7 +132,10 @@ public class NamedLock {
         } while(true);
     }
 
-    public void internalUnlock(String name) {
+    /**
+     * Internal unlock method
+     */
+    public void internalUnlock() {
         synchronized (syncObject) {
             this.count--;
             if(this.count <= 0) {
@@ -125,28 +144,61 @@ public class NamedLock {
             }
         }
     }
-
+    /**
+     * Continue process but process this Procedure in the future, results can be checked with a Future that is returned
+     * @param name String containing the instance to lock
+     * @param procedure Procedure interface to execute once locked
+     * @return Future returned to check status
+     */
     public Future lockFuture(String name, Procedure procedure) {
         return TaskManager.getInstance().submit(new NamedLockRunnableProcedure(name, procedure));
     }
-
+    /**
+     * Continue processing but process this Function in the future, results can be check with a Future that is returned.
+     * @param name String containing the instance to lock
+     * @param function Function interface to execute once locked.
+     * @param <T> Type of return
+     * @return Future returned to check status and value
+     */
     public <T> Future<T> lockFuture(String name, Function<T> function) {
         return TaskManager.getInstance().submit(new NamedLockRunnableFunction(name, function));
     }
-
+    /**
+     * Using the ForkJoinPool of the TaskManager, execute this task one acquire lock.
+     * @param name String containing the instance to lock
+     * @param recursiveAction RecursiveAction to execute once locked.
+     */
     public void lockRecursiveAction(String name, RecursiveAction recursiveAction) {
         TaskManager.getInstance().execute(new NamedLockRecursiveAction(name, recursiveAction));
     }
-
+    /**
+     * Using the ForkJoinPoool of the TaskManager, execute this task once the acquire is locked.
+     * @param name String containing the instance to lock
+     * @param recursiveFutureAction RecursiveFutureAction to execute once locked.
+     * @param <T> Type of return
+     * @return Future returned to check status and value
+     */
     public <T> Stream<T> lockRecursiveFutureAction(String name, RecursiveFutureAction<T> recursiveFutureAction) {
         return TaskManager.getInstance().invoke(new NamedLockRecurseFutureAction<T>(name, recursiveFutureAction));
     }
 
-
+    /**
+     * Internal class used for the RecursiveFutureAction
+     * @param <T> Type of Return
+     */
     private class NamedLockRecurseFutureAction<T> extends java.util.concurrent.RecursiveTask<Stream<T>> {
+        /**
+         * name of instance to lock
+         */
         private String name;
+        /**
+         * RecursiveFutureAction to execute
+         */
         private RecursiveFutureAction<T> recursiveFutureAction;
-
+        /**
+         * Constructor to generate internal RecursiveTask for processing
+         * @param recursiveFutureAction
+         */
         public NamedLockRecurseFutureAction(String name, RecursiveFutureAction<T> recursiveFutureAction) {
             this.name = name;
             this.recursiveFutureAction = recursiveFutureAction;
@@ -169,11 +221,22 @@ public class NamedLock {
             }
         }
     }
-
+    /**
+     * Internal class used for RecursiveAction
+     */
     private class NamedLockRecursiveAction extends java.util.concurrent.RecursiveAction {
+        /**
+         * name of instance to lock
+         */
         private String name;
+        /**
+         * RecursiveAction to execute
+         */
         private RecursiveAction recursiveAction;
-
+        /**
+         * Constructor to generate internal Recursive Task for processing
+         * @param recursiveAction
+         */
         public NamedLockRecursiveAction(String name, RecursiveAction recursiveAction) {
             this.name = name;
             this.recursiveAction = recursiveAction;
@@ -192,11 +255,22 @@ public class NamedLock {
             }
         }
     }
-
+    /**
+     * Internal Class used to schedule a Procedure
+     */
     private class NamedLockRunnableProcedure  implements Runnable{
+        /**
+         * name of instance to lock
+         */
         private String name;
+        /**
+         * Procedure to run
+         */
         private Procedure procedure;
-
+        /**
+         * Constructor with Procedure to run
+         * @param procedure Procedure to run
+         */
         public NamedLockRunnableProcedure(String name, Procedure procedure) {
             this.name = name;
             this.procedure = procedure;
@@ -223,11 +297,23 @@ public class NamedLock {
             }
         }
     }
-
+    /**
+     * Internal Class used to schedule a Function
+     * @param <T> Type of Return
+     */
     private class NamedLockRunnableFunction<T>  implements Callable {
+        /**
+         * name of instance to lock
+         */
         private String name;
+        /**
+         * Function to run
+         */
         private Function<T> function;
-
+        /**
+         * Constructor with Function to run
+         * @param function Function to run
+         */
         public NamedLockRunnableFunction(String name, Function<T> function) {
             this.name = name;
             this.function = function;
