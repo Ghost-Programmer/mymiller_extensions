@@ -81,9 +81,9 @@ public class NamedLock {
      * @param procedure Procedure interface to execute once locked.
      */
     public void lock(String name, Procedure procedure) {
-        this.internalLock(name);
+        this.lock(name);
         procedure.action();
-        this.internalUnlock();
+        this.unlock();
     }
 
     /**
@@ -94,19 +94,19 @@ public class NamedLock {
      * @return Value returned from the Function.
      */
     public <T> T lock(String name, Function<T> function) {
-        this.internalLock(name);
+        this.lock(name);
         try {
             return function.action();
         } finally {
-            this.internalUnlock();
+            this.unlock();
         }
     }
 
     /**
-     * Internal locking method to lock on the instance
+     * Lock based on the name instance.
      * @param name Name of instance to lock
      */
-    private void internalLock(String name) {
+    public void lock(String name) {
         do {
             synchronized (syncObject) {
                 if(this.currentLock == null) {
@@ -133,9 +133,9 @@ public class NamedLock {
     }
 
     /**
-     * Internal unlock method
+     * Call to unlock for a previous call to lock()
      */
-    public void internalUnlock() {
+    public void unlock() {
         synchronized (syncObject) {
             this.count--;
             if(this.count <= 0) {
@@ -212,11 +212,11 @@ public class NamedLock {
         @Override
         protected Stream<T> compute() {
             synchronized (syncObject) {
-                internalLock(name);
+                lock(name);
                 try {
                     return TaskManager.getInstance().invoke(recursiveFutureAction);
                 } finally {
-                    internalUnlock();
+                    unlock();
                 }
             }
         }
@@ -247,11 +247,11 @@ public class NamedLock {
          */
         @Override
         protected void compute() {
-            internalLock(name);
+            lock(name);
             try {
                 invokeAll(this.recursiveAction);
             } finally {
-                internalUnlock();
+                unlock();
             }
         }
     }
@@ -289,11 +289,11 @@ public class NamedLock {
          */
         @Override
         public void run() {
-            internalLock(name);
+            lock(name);
             try {
                 procedure.action();
             } finally {
-                internalUnlock();
+                unlock();
             }
         }
     }
@@ -327,11 +327,11 @@ public class NamedLock {
          */
         @Override
         public T call() throws Exception {
-            internalLock(name);
+            lock(name);
             try {
                 return function.action();
             } finally {
-                internalUnlock();
+                unlock();
             }
         }
     }
