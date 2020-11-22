@@ -19,7 +19,6 @@
 package name.mymiller.io.net;
 
 import name.mymiller.io.Process;
-import java.util.logging.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author jmiller

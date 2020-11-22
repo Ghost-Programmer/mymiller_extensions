@@ -19,16 +19,15 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.stage.Screen;
-import name.mymiller.task.AbstractService;
-import name.mymiller.task.TaskManager;
 import name.mymiller.lang.singleton.Singleton;
 import name.mymiller.lang.singleton.SingletonInterface;
+import name.mymiller.task.AbstractService;
+import name.mymiller.task.TaskManager;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
-
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Manages the the JavaFX Displays.

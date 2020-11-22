@@ -20,9 +20,9 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import java.util.logging.Logger;
 
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Abstract class to aid in the creation of Displays on monitors

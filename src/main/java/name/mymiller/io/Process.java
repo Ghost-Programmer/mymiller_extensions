@@ -15,12 +15,11 @@
  */
 package name.mymiller.io;
 
-import java.util.logging.Logger;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that executes a process and captures the output, runs as a thread.

@@ -17,11 +17,10 @@ package name.mymiller.task;
 
 import name.mymiller.lang.singleton.SingletonInterface;
 
-import java.util.logging.Logger;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.logging.Logger;
 
 /**
  * Manager to handle processing of Jobs

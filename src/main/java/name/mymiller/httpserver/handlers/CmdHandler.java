@@ -22,11 +22,11 @@ import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 import name.mymiller.httpserver.HttpConstants;
 import name.mymiller.httpserver.HttpSystem;
-import java.util.logging.Logger;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * @author jmiller

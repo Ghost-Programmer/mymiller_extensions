@@ -25,6 +25,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import name.mymiller.javafx.display.DisplayScreen;
+
 import java.util.logging.Logger;
 
 /**

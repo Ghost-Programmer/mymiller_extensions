@@ -1,6 +1,5 @@
 package name.mymiller.math;
 
-import com.google.common.math.IntMath;
 import com.google.common.math.LongMath;
 
 import java.math.RoundingMode;

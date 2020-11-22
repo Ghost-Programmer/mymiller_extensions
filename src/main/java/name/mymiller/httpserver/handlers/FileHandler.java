@@ -19,7 +19,6 @@ import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 import name.mymiller.httpserver.HttpConstants;
 import name.mymiller.httpserver.filters.ParameterFilter;
-import java.util.logging.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author jmiller File handler for requesting files from the file system. Also

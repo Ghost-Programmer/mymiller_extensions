@@ -1,12 +1,10 @@
 package name.mymiller.lang.concurrent;
 
-import javafx.concurrent.Task;
 import name.mymiller.task.RecursiveAction;
 import name.mymiller.task.RecursiveFutureAction;
 import name.mymiller.task.TaskManager;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.Future;
 import java.util.stream.Stream;
 

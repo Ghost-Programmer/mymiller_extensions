@@ -18,10 +18,9 @@ package name.mymiller.httpserver;
 import com.sun.net.httpserver.HttpServer;
 import name.mymiller.httpserver.handlers.ContextHandlerInterface;
 import name.mymiller.httpserver.handlers.HttpHandlerAnnotation;
+import name.mymiller.lang.singleton.SingletonInterface;
 import name.mymiller.task.AbstractService;
 import name.mymiller.task.TaskManager;
-import name.mymiller.lang.singleton.SingletonInterface;
-import java.util.logging.Logger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -29,6 +28,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author jmiller HTTP System to start an HTTP Server and load handlers
