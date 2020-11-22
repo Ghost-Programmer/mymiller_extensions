@@ -10,16 +10,54 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
+/**
+ * NamedLock provides locking access not on a thread, but on a String.  This string may be based on any value desired.
+ * When Lock is called if the lock is not assigned it will be assigned to the name, and processing will continue.  If the
+ * lock is assigned, the name is checked if the value matches, processing will immediately continue, unless a different value
+ * has been waiting longer than maxWait, then this request will enter the queue.  If it does not match then the it will sleep
+ * for waitTime and check the lock again.
+ */
 public class NamedLock {
 
+    /**
+     * Syncrhonization Object
+     */
     private Object syncObject = new Object();
+
+    /**
+     * String containing the current lock
+     */
     private String currentLock = null;
+
+    /**
+     * the number of threads currently processing
+     */
     private Integer count ;
+
+    /**
+     * The number of milliseconds to wait before checking the lock again.
+     */
     private Long waitTime;
+    /**
+     * The number of milliseconds to wait before forcing a relase of the lock.
+     */
     private Long maxWait;
+
+    /**
+     * Map tracking the time a thread has waited.
+     */
     private Map<Thread, Long> threadWait;
+
+    /**
+     * Indicates that a forceRelease is required.
+     */
     private Boolean forceRelease = false;
 
+    /**
+     * Construct a NamedLock with the waitTime and maxWait values
+     * @param waitTime maximum number of millieseconds to wait before checking the lock.
+     * @param maxWait maximum number of milliseconds to wait before forcing a release.
+     */
     public NamedLock(Long waitTime, Long maxWait) {
         this.count = 0;
         this.waitTime = waitTime;
@@ -27,6 +65,9 @@ public class NamedLock {
         this.maxWait = maxWait;
     }
 
+    /**
+     * Default constructor that generates a NamedLock with 100ms waitTime and 1000ms maxWait.
+     */
     public NamedLock() {
         this.count = 0;
         this.waitTime = 100L;
