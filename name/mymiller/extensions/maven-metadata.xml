@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>name.mymiller</groupId>
+  <artifactId>extensions</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.1-BETA-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20201126034818</lastUpdated>
+  </versioning>
+</metadata>
