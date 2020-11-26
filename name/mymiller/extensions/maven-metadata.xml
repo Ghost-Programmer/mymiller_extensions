@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
   <groupId>name.mymiller</groupId>
-  <artifactId>nadia</artifactId>
+  <artifactId>extensions</artifactId>
   <versioning>
     <versions>
       <version>0.0.1-BETA-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20201126183339</lastUpdated>
+    <lastUpdated>20201126183512</lastUpdated>
   </versioning>
 </metadata>
