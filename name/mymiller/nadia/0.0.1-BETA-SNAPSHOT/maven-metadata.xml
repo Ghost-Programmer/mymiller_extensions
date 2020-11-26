@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata modelVersion="1.1.0">
   <groupId>name.mymiller</groupId>
-  <artifactId>extensions</artifactId>
+  <artifactId>nadia</artifactId>
   <version>0.0.1-BETA-SNAPSHOT</version>
   <versioning>
     <snapshot>
-      <timestamp>20201126.143226</timestamp>
+      <timestamp>20201126.183339</timestamp>
       <buildNumber>1</buildNumber>
     </snapshot>
-    <lastUpdated>20201126143226</lastUpdated>
+    <lastUpdated>20201126183339</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>0.0.1-BETA-20201126.143226-1</value>
-        <updated>20201126143226</updated>
+        <value>0.0.1-BETA-20201126.183339-1</value>
+        <updated>20201126183339</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>0.0.1-BETA-20201126.143226-1</value>
-        <updated>20201126143226</updated>
+        <value>0.0.1-BETA-20201126.183339-1</value>
+        <updated>20201126183339</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
