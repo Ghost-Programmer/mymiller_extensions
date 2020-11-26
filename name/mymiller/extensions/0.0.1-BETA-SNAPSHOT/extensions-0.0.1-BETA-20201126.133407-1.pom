@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Java extensions to base Java</description>
-    <url>https://www.mymiller.name/wordpress/portfolio/java-extensions/</url>
+    <url>https://www.mymiller.name/wordpress/portfolio/mymiller-libs/</url>
 
     <licenses>
         <license>
