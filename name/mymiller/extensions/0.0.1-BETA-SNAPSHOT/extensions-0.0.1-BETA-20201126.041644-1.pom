@@ -51,7 +51,6 @@
     </distributionManagement>
 
     <build>
-        <finalName>name.mymiller</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
