@@ -44,9 +44,9 @@
 
     <distributionManagement>
         <repository>
-            <id>internal.repo</id>
-            <name>Temporary Staging Repository</name>
-            <url>file://${project.build.directory}/mvn-repo</url>
+            <id>github</id>
+            <name>GitHub Ghost-Programmer Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/Ghost-Programmer/mymiller-libs</url>
         </repository>
     </distributionManagement>
 
