@@ -20,6 +20,14 @@
         </license>
     </licenses>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Ghost-Programmer Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/Ghost-Programmer/mymiller_extensions</url>
+        </repository>
+    </distributionManagement>
+
     <developers>
         <developer>
             <name>Jeffery Miller</name>
