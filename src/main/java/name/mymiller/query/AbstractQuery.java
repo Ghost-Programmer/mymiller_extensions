@@ -8,7 +8,7 @@ public abstract class AbstractQuery<T> implements QueryFilter<T> {
     /**
      *
      */
-    private Double weight;
+    private final Double weight;
 
     /**
      *

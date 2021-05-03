@@ -89,7 +89,7 @@ public class Pipeline<S, T> {
         if (this.pipes.isEmpty()) {
             return (Pipeline<S, V>) this.connectFirstPipe(new ActionPipe<T, V>(action));
         }
-        return this.connectInternalPipe(new ActionPipe<T, V>(action));
+        return this.connectInternalPipe(new ActionPipe<>(action));
     }
 
     /**
@@ -170,7 +170,7 @@ public class Pipeline<S, T> {
         if (this.pipes.isEmpty()) {
             return (Pipeline<S, T>) this.connectFirstPipe(new DistinctPipe<T>());
         }
-        return this.connectInternalPipe(new DistinctPipe<T>());
+        return this.connectInternalPipe(new DistinctPipe<>());
     }
 
     /**
@@ -185,7 +185,7 @@ public class Pipeline<S, T> {
         if (this.pipes.isEmpty()) {
             return (Pipeline<S, T>) this.connectFirstPipe(new DistinctByPipe<T>(keyExtractor));
         }
-        return this.connectInternalPipe(new DistinctByPipe<T>(keyExtractor));
+        return this.connectInternalPipe(new DistinctByPipe<>(keyExtractor));
     }
 
     /**
@@ -200,7 +200,7 @@ public class Pipeline<S, T> {
         if (this.pipes.isEmpty()) {
             return (Pipeline<S, T>) this.connectFirstPipe(new DistinctPipe<T>(false));
         }
-        return this.connectInternalPipe(new DistinctPipe<T>(false));
+        return this.connectInternalPipe(new DistinctPipe<>(false));
     }
 
     /**
@@ -215,7 +215,7 @@ public class Pipeline<S, T> {
         if (this.pipes.isEmpty()) {
             return (Pipeline<S, T>) this.connectFirstPipe(new DistinctByPipe<T>(keyExtractor, false));
         }
-        return this.connectInternalPipe(new DistinctByPipe<T>(keyExtractor, false));
+        return this.connectInternalPipe(new DistinctByPipe<>(keyExtractor, false));
     }
 
     /**
@@ -229,7 +229,7 @@ public class Pipeline<S, T> {
         if (this.pipes.isEmpty()) {
             return (Pipeline<S, T>) this.connectFirstPipe(new FilterPipe<T>(predicate));
         }
-        return this.connectInternalPipe(new FilterPipe<T>(predicate));
+        return this.connectInternalPipe(new FilterPipe<>(predicate));
     }
 
     /**
@@ -346,7 +346,7 @@ public class Pipeline<S, T> {
         if (this.pipes.isEmpty()) {
             return (Pipeline<S, T>) this.connectFirstPipe(new PeekPipe<T>(consumer));
         }
-        return this.connectInternalPipe(new PeekPipe<T>(consumer));
+        return this.connectInternalPipe(new PeekPipe<>(consumer));
     }
 
     /**
@@ -439,10 +439,8 @@ public class Pipeline<S, T> {
      *
      * @param futures List of futures to watch.
      * @return PipeFuture that has completed.
-     * @throws InterruptedException
-     * @throws ExecutionException
      */
-    public PipeFuture<?> waitForOne(List<PipeFuture<?>> futures) throws InterruptedException, ExecutionException {
+    public PipeFuture<?> waitForOne(List<PipeFuture<?>> futures) {
         while (true) {
             for (final PipeFuture<?> future : futures) {
                 if (future.isDone()) {
@@ -485,8 +483,7 @@ public class Pipeline<S, T> {
          * Object)
          */
         @Override
-        public B process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel)
-                throws Throwable {
+        public B process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
             return this.action.apply(data);
         }
     }
@@ -543,8 +540,7 @@ public class Pipeline<S, T> {
         }
 
         @Override
-        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel)
-                throws Throwable {
+        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
             if (this.seen.putIfAbsent(this.keyExtractor.apply(data), Boolean.TRUE) == null) {
                 if (this.onDistinct) {
                     return data;
@@ -592,8 +588,7 @@ public class Pipeline<S, T> {
         }
 
         @Override
-        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel)
-                throws Throwable {
+        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
             if (!this.distinctList.contains(data)) {
                 this.distinctList.add(data);
                 if (this.onDistinct) {
@@ -635,8 +630,7 @@ public class Pipeline<S, T> {
         }
 
         @Override
-        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel)
-                throws Throwable {
+        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
             if (this.predicate.test(data)) {
                 return data;
             }
@@ -686,8 +680,7 @@ public class Pipeline<S, T> {
         }
 
         @Override
-        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel)
-                throws Throwable {
+        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
             for (final Pipeline<A, ?> pipeline : this.pipelines) {
                 if (isParallel) {
                     pipeline.internalParallel(data, futures);
@@ -731,8 +724,7 @@ public class Pipeline<S, T> {
         }
 
         @Override
-        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel)
-                throws Throwable {
+        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
             if (this.comparator.compare(data, this.max) <= 0) {
                 return data;
             }
@@ -772,8 +764,7 @@ public class Pipeline<S, T> {
         }
 
         @Override
-        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel)
-                throws Throwable {
+        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
             if (this.comparator.compare(this.min, data) >= 0) {
                 return data;
             }
@@ -807,8 +798,7 @@ public class Pipeline<S, T> {
         }
 
         @Override
-        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel)
-                throws Throwable {
+        public A process(final A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
             this.action.accept(data);
             return data;
         }
@@ -944,8 +934,7 @@ public class Pipeline<S, T> {
         }
 
         @Override
-        public A process(A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel)
-                throws Throwable {
+        public A process(A data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
             if (this.predicate.test(data)) {
                 if (isParallel) {
                     this.pipeline.internalParallel(data, futures);

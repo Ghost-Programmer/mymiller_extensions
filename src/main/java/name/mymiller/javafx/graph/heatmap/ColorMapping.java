@@ -71,7 +71,7 @@ public enum ColorMapping {
     BLACK_WHITE(new Stop(0.0, Color.BLACK), new Stop(1.0, Color.WHITE)),
     WHITE_BLACK(new Stop(0.0, Color.WHITE), new Stop(1.0, Color.BLACK));
 
-    public LinearGradient mapping;
+    public final LinearGradient mapping;
 
     ColorMapping(final Stop... STOPS) {
         this.mapping = new LinearGradient(0, 0, 100, 0, false, CycleMethod.NO_CYCLE, STOPS);

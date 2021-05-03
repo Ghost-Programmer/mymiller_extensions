@@ -64,9 +64,7 @@ public class MessageHandler implements SingletonInterface<MessageHandler> {
     }
 
     public void addMessageType(String[] messageTypes) {
-        Arrays.stream(messageTypes).forEach(type -> {
-            this.addMessageType(type);
-        });
+        Arrays.stream(messageTypes).forEach(this::addMessageType);
     }
 
     /**

@@ -138,10 +138,10 @@ public class StringUtils extends ObjectUtils {
      * @return Formatted String with \n
      */
     public static String paragraphFormat(String string, final int maxWidth) {
-        String formatted = "";
+        StringBuilder formatted = new StringBuilder();
 
         if (string.length() < maxWidth) {
-            formatted = string;
+            formatted = new StringBuilder(string);
         } else {
             final String work = string.trim();
             int charCount = 0;
@@ -149,21 +149,21 @@ public class StringUtils extends ObjectUtils {
             for (final char c : work.toCharArray()) {
                 if (c != '\n') {
                     if (charCount < maxWidth) {
-                        formatted += c;
+                        formatted.append(c);
                         charCount++;
                     } else {
-                        formatted += '\n';
-                        formatted += c;
+                        formatted.append('\n');
+                        formatted.append(c);
                         charCount = 0;
                     }
                 } else {
-                    formatted += c;
+                    formatted.append(c);
                     charCount = 0;
                 }
             }
         }
 
-        return formatted;
+        return formatted.toString();
     }
 
     /**

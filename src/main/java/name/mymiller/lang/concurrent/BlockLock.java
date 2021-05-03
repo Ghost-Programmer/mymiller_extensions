@@ -16,7 +16,7 @@ public class BlockLock {
     /**
      * Used for synchronization
      */
-    private Object syncObject = new Object();
+    private final Object syncObject = new Object();
 
     /**
      * Once the lock is achieved will execute the Procedure and then release the lock.
@@ -51,11 +51,11 @@ public class BlockLock {
 
     /**
      * Continue processing but process this Function in the future, results can be check with a Future that is returned.
-     * @param function Function interface to execute once locked.
      * @param <T> Type of return
+     * @param function Function interface to execute once locked.
      * @return Future returned to check status and value
      */
-    public <T> Future<T> lockFuture(Function<T> function) {
+    public <T> Future lockFuture(Function<T> function) {
         return TaskManager.getInstance().submit(new BlockLockRunnableFunction(function));
     }
 
@@ -74,7 +74,7 @@ public class BlockLock {
      * @return Future returned to check status and value
      */
     public <T> Stream<T> lockRecursiveFutureAction(RecursiveFutureAction<T> recursiveFutureAction) {
-        return TaskManager.getInstance().invoke(new BlockLockRecurseFutureAction<T>(recursiveFutureAction));
+        return TaskManager.getInstance().invoke(new BlockLockRecurseFutureAction<>(recursiveFutureAction));
     }
 
     /**
@@ -85,7 +85,7 @@ public class BlockLock {
         /**
          * RecursiveFutureAction to execute
          */
-        private RecursiveFutureAction<T> recursiveFutureAction;
+        private final RecursiveFutureAction<T> recursiveFutureAction;
 
         /**
          * Constructor to generate internal RecursiveTask for processing
@@ -115,7 +115,7 @@ public class BlockLock {
         /**
          * RecursiveAction to execute
          */
-        private RecursiveAction recursiveAction;
+        private final RecursiveAction recursiveAction;
 
         /**
          * Constructor to generate internal Recursive Task for processing
@@ -143,7 +143,7 @@ public class BlockLock {
         /**
          * Procedure to run
          */
-        private Procedure procedure;
+        private final Procedure procedure;
 
         /**
          * Constructor with Procedure to run
@@ -180,7 +180,7 @@ public class BlockLock {
         /**
          * Function to run
          */
-        private Function<T> function;
+        private final Function<T> function;
 
         /**
          * Constructor with Function to run
@@ -194,10 +194,9 @@ public class BlockLock {
          * Computes a result, or throws an exception if unable to do so.
          *
          * @return computed result
-         * @throws Exception if unable to compute a result
          */
         @Override
-        public T call() throws Exception {
+        public T call() {
             synchronized (syncObject) {
                 return function.action();
             }

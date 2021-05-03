@@ -39,7 +39,7 @@ public class CollectorPipe<S, A, R> implements CollectorInterface<S, R> {
      * Object)
      */
     @Override
-    public S process(S data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) throws Throwable {
+    public S process(S data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
         this.collector.accumulator().accept(this.supplier, data);
         return data;
     }

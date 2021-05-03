@@ -22,7 +22,7 @@ public class NamedLock {
     /**
      * Syncrhonization Object
      */
-    private Object syncObject = new Object();
+    private final Object syncObject = new Object();
 
     /**
      * String containing the current lock
@@ -37,16 +37,16 @@ public class NamedLock {
     /**
      * The number of milliseconds to wait before checking the lock again.
      */
-    private Long waitTime;
+    private final Long waitTime;
     /**
      * The number of milliseconds to wait before forcing a relase of the lock.
      */
-    private Long maxWait;
+    private final Long maxWait;
 
     /**
      * Map tracking the time a thread has waited.
      */
-    private Map<Thread, Long> threadWait;
+    private final Map<Thread, Long> threadWait;
 
     /**
      * Indicates that a forceRelease is required.
@@ -155,12 +155,12 @@ public class NamedLock {
     }
     /**
      * Continue processing but process this Function in the future, results can be check with a Future that is returned.
+     * @param <T> Type of return
      * @param name String containing the instance to lock
      * @param function Function interface to execute once locked.
-     * @param <T> Type of return
      * @return Future returned to check status and value
      */
-    public <T> Future<T> lockFuture(String name, Function<T> function) {
+    public <T> Future lockFuture(String name, Function<T> function) {
         return TaskManager.getInstance().submit(new NamedLockRunnableFunction(name, function));
     }
     /**
@@ -179,7 +179,7 @@ public class NamedLock {
      * @return Future returned to check status and value
      */
     public <T> Stream<T> lockRecursiveFutureAction(String name, RecursiveFutureAction<T> recursiveFutureAction) {
-        return TaskManager.getInstance().invoke(new NamedLockRecurseFutureAction<T>(name, recursiveFutureAction));
+        return TaskManager.getInstance().invoke(new NamedLockRecurseFutureAction<>(name, recursiveFutureAction));
     }
 
     /**
@@ -190,11 +190,11 @@ public class NamedLock {
         /**
          * name of instance to lock
          */
-        private String name;
+        private final String name;
         /**
          * RecursiveFutureAction to execute
          */
-        private RecursiveFutureAction<T> recursiveFutureAction;
+        private final RecursiveFutureAction<T> recursiveFutureAction;
         /**
          * Constructor to generate internal RecursiveTask for processing
          * @param recursiveFutureAction
@@ -228,11 +228,11 @@ public class NamedLock {
         /**
          * name of instance to lock
          */
-        private String name;
+        private final String name;
         /**
          * RecursiveAction to execute
          */
-        private RecursiveAction recursiveAction;
+        private final RecursiveAction recursiveAction;
         /**
          * Constructor to generate internal Recursive Task for processing
          * @param recursiveAction
@@ -262,11 +262,11 @@ public class NamedLock {
         /**
          * name of instance to lock
          */
-        private String name;
+        private final String name;
         /**
          * Procedure to run
          */
-        private Procedure procedure;
+        private final Procedure procedure;
         /**
          * Constructor with Procedure to run
          * @param procedure Procedure to run
@@ -305,11 +305,11 @@ public class NamedLock {
         /**
          * name of instance to lock
          */
-        private String name;
+        private final String name;
         /**
          * Function to run
          */
-        private Function<T> function;
+        private final Function<T> function;
         /**
          * Constructor with Function to run
          * @param function Function to run
@@ -323,10 +323,9 @@ public class NamedLock {
          * Computes a result, or throws an exception if unable to do so.
          *
          * @return computed result
-         * @throws Exception if unable to compute a result
          */
         @Override
-        public T call() throws Exception {
+        public T call() {
             lock(name);
             try {
                 return function.action();

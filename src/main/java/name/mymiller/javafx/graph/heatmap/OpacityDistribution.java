@@ -31,7 +31,7 @@ public enum OpacityDistribution {
     CUSTOM(0.90, 0.56, 0.40, 0.28, 0.20, 0.14, 0.10, 0.07, 0.05, 0.03, 0.0),
     LINEAR(0.90, 0.81, 0.72, 0.63, 0.54, 0.45, 0.36, 0.27, 0.18, 0.09, 0.0);
 
-    public double[] distribution;
+    public final double[] distribution;
 
     OpacityDistribution(final double... DISTRIBUTION) {
         this.distribution = DISTRIBUTION;

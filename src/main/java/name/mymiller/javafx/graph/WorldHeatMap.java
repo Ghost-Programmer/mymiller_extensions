@@ -35,7 +35,7 @@ public class WorldHeatMap extends DisplayScreen {
     }
 
     @Override
-    protected void startDisplay(Stage stage, double height, double width) throws Exception {
+    protected void startDisplay(Stage stage, double height, double width) {
         stage.setTitle("World HeatMap");
 
         this.worldMap = WorldBuilder.create().resolution(Resolution.HI_RES).zoomEnabled(true).hoverEnabled(false)

@@ -15,7 +15,7 @@ public class MutexPipes {
     /**
      * ReentrantLock to use behind the pipe.
      */
-    private ReentrantLock mutex = new ReentrantLock();
+    private final ReentrantLock mutex = new ReentrantLock();
 
     /**
      * Locks the pipeline for all threads
@@ -45,10 +45,9 @@ public class MutexPipes {
          * @param pipelineName containing the name of this pipeline.
          * @param isParallel
          * @return Object after processing has occurred.
-         * @throws Throwable TODO
          */
         @Override
-        public S process(S data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) throws Throwable {
+        public S process(S data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
             mutex.lock();
             return data;
         }
@@ -65,10 +64,9 @@ public class MutexPipes {
          * @param pipelineName containing the name of this pipeline.
          * @param isParallel
          * @return Object after processing has occurred.
-         * @throws Throwable TODO
          */
         @Override
-        public S process(S data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) throws Throwable {
+        public S process(S data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
             mutex.unlock();
             return data;
         }

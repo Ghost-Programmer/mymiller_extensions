@@ -53,7 +53,7 @@ public abstract class RecursiveAction extends java.util.concurrent.RecursiveActi
 
         this.preProcess();
         if(this.split()) {
-           this.invokeAll(this.createSubTasks());
+           invokeAll(this.createSubTasks());
         } else {
             this.process();
         }

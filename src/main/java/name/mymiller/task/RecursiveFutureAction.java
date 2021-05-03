@@ -56,7 +56,7 @@ public abstract class RecursiveFutureAction<T> extends RecursiveTask<Stream<T>> 
 
         this.preProcess();
         if(this.split()) {
-            Stream<RecursiveFutureAction<T>> stream1 = this.invokeAll(this.createSubTasks()).stream();
+            Stream<RecursiveFutureAction<T>> stream1 = invokeAll(this.createSubTasks()).stream();
 
         } else {
             stream = Stream.of(this.process());

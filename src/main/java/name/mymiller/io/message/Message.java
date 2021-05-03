@@ -72,7 +72,7 @@ public class Message implements Comparable<Message>, Cloneable, Serializable {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    protected Object clone() {
         return new Message(this.getMessageType(), this.getData(), this.getUuid());
     }
 

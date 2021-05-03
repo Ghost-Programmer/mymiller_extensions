@@ -154,7 +154,7 @@ public class StringCache {
      * @return Set View
      */
     public synchronized String[] getCached() {
-        return this.cache.keySet().toArray(new String[this.cache.size()]);
+        return this.cache.keySet().toArray(new String[0]);
     }
 
     /**
@@ -212,9 +212,7 @@ public class StringCache {
     public Properties cacheProperties(Properties properties) {
         Properties cacheProperties = new Properties();
         Set<String> propertyNames = properties.stringPropertyNames();
-        propertyNames.forEach(propertyName -> {
-            cacheProperties.put(this.cache(propertyName),this.cache(properties.getProperty(propertyName)));
-        });
+        propertyNames.forEach(propertyName -> cacheProperties.put(this.cache(propertyName),this.cache(properties.getProperty(propertyName))));
 
         return cacheProperties;
     }

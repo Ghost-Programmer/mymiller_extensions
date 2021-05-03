@@ -59,12 +59,12 @@ public class PipeFuture<V> implements Future<V> {
     }
 
     @Override
-    public V get() throws InterruptedException, ExecutionException {
+    public V get() {
         return this.futureObject;
     }
 
     @Override
-    public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+    public V get(long timeout, TimeUnit unit) throws InterruptedException {
         unit.timedWait(this.syncObject, timeout);
         return this.futureObject;
     }

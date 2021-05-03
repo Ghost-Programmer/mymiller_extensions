@@ -15,7 +15,7 @@ public class SemaphorePipes {
     /**
      * Semaphore to use behind the pipe.
      */
-    private Semaphore mutex;
+    private final Semaphore mutex;
 
     /**
      * Constructor specifying the number of threads to permit at one time.
@@ -73,10 +73,9 @@ public class SemaphorePipes {
          * @param pipelineName containing the name of this pipeline.
          * @param isParallel
          * @return Object after processing has occurred.
-         * @throws Throwable TODO
          */
         @Override
-        public S process(S data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) throws Throwable {
+        public S process(S data, List<PipeFuture<?>> futures, String pipelineName, boolean isParallel) {
             mutex.release();
             return data;
         }

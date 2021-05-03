@@ -17,13 +17,12 @@ public class StreamUtils {
      * @param <T> Type of data in stream
      * @return Single Stream<T> of all streams combined.
      */
+    @SafeVarargs
     public static <T> Stream<T> concat(Stream<? extends T> ... streams ) {
         Stream.Builder<T> builder = Stream.builder();
         if(streams != null && streams.length > 0) {
             List<Stream<? extends T>> streamsList = ListUtils.safe(Arrays.asList(streams));
-            streamsList.forEach(stream -> {
-                stream.forEach(item -> builder.add(item));
-            });
+            streamsList.forEach(stream -> stream.forEach(builder::add));
         }
         return builder.build();
     }
@@ -69,16 +68,11 @@ public class StreamUtils {
         List<? extends B> listB = streamB.collect(Collectors.toList());
         List<C> listC = new ArrayList<>();
 
-        Iterator<? extends A> iteratorA = listA.iterator();
-        while(iteratorA.hasNext()) {
-            A a = iteratorA.next();
-            Iterator<? extends B> iteratorB = listB.iterator();
+        for (A a : listA) {
 
-            while(iteratorB.hasNext()) {
-                B b = iteratorB.next();
-
-                if(mapFunction.apply(a,b)) {
-                    listC.add(joinFunction.apply(a,b));
+            for (B b : listB) {
+                if (mapFunction.apply(a, b)) {
+                    listC.add(joinFunction.apply(a, b));
                 }
             }
         }

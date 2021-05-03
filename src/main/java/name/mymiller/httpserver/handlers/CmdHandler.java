@@ -64,31 +64,26 @@ public class CmdHandler extends AbstractContextHandler {
     @Override
     public void doPost(final HttpExchange exchange, final String pathInfo, final Map<String, Object> parameters)
             throws IOException {
+        // Set the response header status and length
         switch (pathInfo) {
-            case "/stop":
+            case "/stop" -> {
                 final String stopResponse = "Stopping Server on Port:"
                         + HttpSystem.getInstance().getAddress().getPort();
                 Logger.getLogger(this.getClass().getName()).info("Response: " + stopResponse);
-                // Set the response header status and length
-
                 this.sendResponse(exchange, HttpConstants.HTTP_OK_STATUS, stopResponse);
-
                 HttpSystem.getInstance().shutdown(HttpConstants.DELAY_TIME);
-                break;
-            case "/restart":
+            }
+            case "/restart" -> {
                 final String restartResponse = "Restarting Server on Port:"
                         + HttpSystem.getInstance().getAddress().getPort();
                 Logger.getLogger(this.getClass().getName()).info("Response: " + restartResponse);
-
                 this.sendResponse(exchange, HttpConstants.HTTP_OK_STATUS, restartResponse);
-
                 HttpSystem.getInstance().setRestart(true);
-                break;
-            default:
+            }
+            default -> {
                 Logger.getLogger(this.getClass().getName()).severe("Unknown POST Command: " + pathInfo);
-
                 this.sendResponse(exchange, HttpConstants.HTTP_NOT_ACCEPTABLE_STATUS, CmdHandler.UNKNOWN_COMMAND);
-                break;
+            }
         }
 
     }

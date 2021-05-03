@@ -102,7 +102,7 @@ public class AdvancedInetAddress {
 
             if (lines != null) {
                 for (final String line : lines) {
-                    if (line.indexOf(this.address.getHostAddress()) > -1) {
+                    if (line.contains(this.address.getHostAddress())) {
                         return line;
                     }
                 }
@@ -188,7 +188,7 @@ public class AdvancedInetAddress {
         if (this.mac == null) {
             final String line = this.arp(50);
 
-            if ((line == null) || (line.indexOf("--") > -1) || (line.indexOf("unknown host") > -1)) {
+            if ((line == null) || (line.contains("--")) || (line.contains("unknown host"))) {
                 try {
                     final Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces();
 
@@ -566,6 +566,6 @@ public class AdvancedInetAddress {
         } catch (final InterruptedException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "TraceRoute Failed", e);
         }
-        return list.toArray(new AdvancedInetAddress[list.size()]);
+        return list.toArray(new AdvancedInetAddress[0]);
     }
 }

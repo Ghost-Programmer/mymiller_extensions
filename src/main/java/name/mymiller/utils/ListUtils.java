@@ -23,7 +23,8 @@ public class ListUtils {
      * @return List<E> that contains the common elements between the Lists.
      */
     public static <E> List<E> intersection(List<E> a, List<E> b) {
-        return a.stream().distinct().filter(b::contains).collect(Collectors.toList());
+        b = ListUtils.safe(b);
+        return ListUtils.safe(a).stream().distinct().filter(b::contains).collect(Collectors.toList());
     }
 
     /**
@@ -57,9 +58,9 @@ public class ListUtils {
      * @return List<E> that contains the contents of both Lists.
      */
     public static <E> List<E> union(List<E> a, List<E> b) {
-        final List<E> unionList = new ArrayList<>(a);
-        unionList.addAll(b);
-        return unionList.stream().distinct().collect(Collectors.toList());
+        final List<E> unionList = new ArrayList<>(ListUtils.safe(a));
+        unionList.addAll(ListUtils.safe(b));
+        return ListUtils.safe(unionList.stream().distinct().collect(Collectors.toList()));
     }
 
     /**

@@ -109,6 +109,7 @@ public class Query {
      * @param <T> Type of object to filter
      * @return And QueryFilter with the filters added to it
      */
+    @SafeVarargs
     public static <T> And<T> and(QueryFilter<T>... filters) {
         return new And<>(filters);
     }
@@ -189,7 +190,7 @@ public class Query {
      * @return Contains QueryFilter to check if the object contains the value.
      */
     public static <T> Contains<T> contains(String value) {
-        return new Contains<T>(value);
+        return new Contains<>(value);
     }
 
     /**
@@ -200,7 +201,7 @@ public class Query {
      * @return Contains QueryFilter to check if the object contains the value.
      */
     public static <T> Contains<T> contains(String value, Function<T, String> getter) {
-        return new Contains<T>(value, getter);
+        return new Contains<>(value, getter);
     }
 
     /**
@@ -212,7 +213,7 @@ public class Query {
      * @return Contains QueryFilter to check if the object contains the value.
      */
     public static <T> Contains<T> contains(String value, Double weigth, Integer multiplier) {
-        return new Contains<T>(value, weigth, multiplier);
+        return new Contains<>(value, weigth, multiplier);
     }
 
     /**
@@ -225,7 +226,7 @@ public class Query {
      * @return Contains QueryFilter to check if the object contains the value.
      */
     public static <T> Contains<T> contains(String value, Function<T, String> getter, Double weight, Integer multiplier) {
-        return new Contains<T>(value, getter, weight, multiplier);
+        return new Contains<>(value, getter, weight, multiplier);
     }
 
     /**
@@ -585,6 +586,7 @@ public class Query {
      * @param <T> Type of object to filter
      * @return Or queryFilter to check if at least one QueryFilter in the Or is positive.
      */
+    @SafeVarargs
     public static <T> Or<T> or(QueryFilter<T>... filters) {
         return new Or<>(filters);
     }
@@ -623,6 +625,7 @@ public class Query {
      * @param <T> Type of object to filter
      * @return Or queryFilter to check if only one QueryFilter in the Or is positive.
      */
+    @SafeVarargs
     public static <T> Xor<T> xor(QueryFilter<T>... filters) {
         return new Xor<>(filters);
     }
@@ -635,7 +638,7 @@ public class Query {
         /**
          *
          */
-        private QueryFilter<T> filter;
+        private final QueryFilter<T> filter;
 
         /**
          * Constructor taking in the QueryFilter to use for processing
@@ -702,7 +705,7 @@ public class Query {
         /**
          * QueryFilter to use in the processing
          */
-        private QueryFilter<T> filter;
+        private final QueryFilter<T> filter;
 
         /**
          * Constructor for creating the QueryFilter for filter processing
@@ -721,11 +724,7 @@ public class Query {
          */
         @Override
         public boolean test(T t) {
-            if (filter.process(t) > 0D) {
-                return true;
-            }
-
-            return false;
+            return filter.process(t) > 0D;
         }
     }
 
@@ -754,6 +753,7 @@ public class Query {
          *
          * @param filters Variable argument list of filters to process
          */
+        @SafeVarargs
         public And(QueryFilter<T>... filters) {
             this.list = Arrays.asList(filters);
         }
@@ -793,7 +793,7 @@ public class Query {
         /**
          * Internal Add, to use in combination with a GreaterThan and LessThan
          */
-        private And and;
+        private final And and;
 
         /**
          * Check if value falls between two values
@@ -835,7 +835,7 @@ public class Query {
         /**
          * Internal Or filter
          */
-        private Or or;
+        private final Or or;
 
         /**
          * Check if value falls between min/max or equal
@@ -884,7 +884,7 @@ public class Query {
         /**
          * Getter function
          */
-        private Function<T, String> getter;
+        private final Function<T, String> getter;
 
         /**
          * Constructor to check if value is contained in the object
@@ -987,7 +987,7 @@ public class Query {
         /**
          * Value to compare against
          */
-        private T value;
+        private final T value;
 
         /**
          * Constructor to check if the object is greater than
@@ -1128,14 +1128,11 @@ public class Query {
                 if (this.getter != null) {
                     Object obj = this.getter.apply(object);
                     ObjectUtils.throwIfNotInstance(String.class, obj, "Value from getter must be of type String");
-                    if (object.toString().isEmpty()) {
-                        return this.getWeight();
-                    }
                 } else {
                     ObjectUtils.throwIfNotInstance(String.class, object, "Object must be of type String");
-                    if (object.toString().isEmpty()) {
-                        return this.getWeight();
-                    }
+                }
+                if (object.toString().isEmpty()) {
+                    return this.getWeight();
                 }
             }
 
@@ -1198,10 +1195,8 @@ public class Query {
         public Double process(T object) {
             if (this.getter != null) {
                 Object obj = this.getter.apply(object);
-                if (object == null) {
-                    return this.getWeight();
-                }
-            } else if (object == null) {
+            }
+            if (object == null) {
                 return this.getWeight();
             }
             return 0D;
@@ -1218,7 +1213,7 @@ public class Query {
         /**
          * Value to compare
          */
-        private T value;
+        private final T value;
         /**
          * Getter Function
          */
@@ -1317,7 +1312,7 @@ public class Query {
         /**
          * Getter Function
          */
-        private Function<T, R> getter;
+        private final Function<T, R> getter;
 
         /**
          * Constrctor with value to compare.
@@ -1437,7 +1432,7 @@ public class Query {
         /**
          * Not filter to use internally to flip IsEmpty.
          */
-        private Not not;
+        private final Not not;
 
         /**
          * Constructor with default weight.
@@ -1492,7 +1487,7 @@ public class Query {
         /**
          * Not query filter to flip
           */
-        private Not not;
+        private final Not not;
 
         /**
          * Constructor with default weight.
@@ -1559,6 +1554,7 @@ public class Query {
          *
          * @param filters Variable argument list of filters to process
          */
+        @SafeVarargs
         public Or(QueryFilter<T>... filters) {
             this.list = Arrays.asList(filters);
         }
@@ -1607,6 +1603,7 @@ public class Query {
          *
          * @param filters Variable argument list of filters to process
          */
+        @SafeVarargs
         public Xor(QueryFilter<T>... filters) {
             this.list = Arrays.asList(filters);
         }

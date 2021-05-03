@@ -100,10 +100,10 @@ public class World extends Region {
 	private final StyleableProperty<Color> selectedColor;
 	private final StyleableProperty<Color> locationColor;
 	// internal event handlers
-	protected EventHandler<MouseEvent> _mouseEnterHandler;
-	protected EventHandler<MouseEvent> _mousePressHandler;
-	protected EventHandler<MouseEvent> _mouseReleaseHandler;
-	protected EventHandler<MouseEvent> _mouseExitHandler;
+	protected final EventHandler<MouseEvent> _mouseEnterHandler;
+	protected final EventHandler<MouseEvent> _mousePressHandler;
+	protected final EventHandler<MouseEvent> _mouseReleaseHandler;
+	protected final EventHandler<MouseEvent> _mouseExitHandler;
 	private final BooleanProperty hoverEnabled;
 	private final BooleanProperty selectionEnabled;
 	private final ObjectProperty<Country> selectedCountry;
@@ -663,8 +663,7 @@ public class World extends Region {
 		double lowerRightY = 0;
 		for (final Country country : COUNTRIES) {
 			final List<CountryPath> paths = this.countryPaths.get(country.getName());
-			for (int i = 0; i < paths.size(); i++) {
-				final CountryPath path = paths.get(i);
+			for (final CountryPath path : paths) {
 				final Bounds bounds = path.getLayoutBounds();
 				upperLeftX = Math.min(bounds.getMinX(), upperLeftX);
 				upperLeftY = Math.min(bounds.getMinY(), upperLeftY);
@@ -1187,15 +1186,11 @@ public class World extends Region {
 		final double areaCenterX = BOUNDS[0] + (areaWidth * 0.5);
 		final double areaCenterY = BOUNDS[1] + (areaHeight * 0.5);
 		final Orientation orientation = areaWidth < areaHeight ? Orientation.VERTICAL : Orientation.HORIZONTAL;
-		double sf = 1.0;
-		switch (orientation) {
-			case VERTICAL:
-				sf = this.clamp(1.0, 10.0, 1 / (areaHeight / this.height));
-				break;
-			case HORIZONTAL:
-				sf = this.clamp(1.0, 10.0, 1 / (areaWidth / this.width));
-				break;
-		}
+		double sf = switch (orientation) {
+			case VERTICAL -> this.clamp(1.0, 10.0, 1 / (areaHeight / this.height));
+			case HORIZONTAL -> this.clamp(1.0, 10.0, 1 / (areaWidth / this.width));
+			default -> 1.0;
+		};
 
 		/*
 		 * Rectangle bounds = new Rectangle(BOUNDS[0], BOUNDS[1], areaWidth,
