@@ -1,13 +1,11 @@
 package name.mymiller.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * @author jmiller Provide a set of utilities to use on lists.
@@ -36,6 +34,17 @@ public class ListUtils {
      */
     public static <K,V> List<K> mapKeyToList(Map<K,V> map) {
         return ListUtils.safe(new ArrayList<>(map.keySet()));
+    }
+
+    /**
+     * Convert and Iterator of E to a List of E
+     * @param iterator Iterator of E to convert
+     * @param <E> Type to iterate over
+     * @return List of E converted.
+     */
+    public static <E> List<E> iterate(Iterator<E> iterator) {
+        Iterable<E> iterable = () -> iterator;
+        return  StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
     }
 
     /**
