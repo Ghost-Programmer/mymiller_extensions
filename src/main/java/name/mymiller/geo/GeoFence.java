@@ -3,7 +3,6 @@ package name.mymiller.geo;
 import name.mymiller.lang.IllegalValueException;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;

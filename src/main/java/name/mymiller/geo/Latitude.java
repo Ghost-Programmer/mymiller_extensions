@@ -1,7 +1,5 @@
 package name.mymiller.geo;
 
-import name.mymiller.lang.IllegalValueException;
-
 import java.io.Serializable;
 
 /**
