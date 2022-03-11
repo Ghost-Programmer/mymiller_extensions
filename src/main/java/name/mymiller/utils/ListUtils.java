@@ -176,7 +176,7 @@ public class ListUtils {
             }
 
             if (endIndex > safe.size()) {
-                endIndex = safe.size() - 1;
+                endIndex = safe.size();
             }
 
             return safe.subList(startIndex, endIndex);
